@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add to Brain – Lernen für E-Commerce</title>
+  <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <header class="kopf">
+    <a href="#start" class="logo">Add to Brain</a>
+    <nav class="menue" aria-label="Hauptmenü">
+      <a href="#start" class="paper-btn btn-small">Start</a>
+      <a href="#tagebuch" class="paper-btn btn-small">Tagebuch</a>
+      <a href="#glossar" class="paper-btn btn-small">Glossar</a>
+      <a href="#quiz" class="paper-btn btn-small">Quiz</a>
+      <a href="#sichern" class="paper-btn btn-small">Sichern</a>
+    </nav>
+  </header>
+
+  <main class="paper container">
+    <!-- START -->
+    <section id="start" class="seite">
+      <h1>Add to Brain</h1>
+      <p class="lesbar">Deine Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce. Alles, was du hier einträgst, bleibt nur in deinem Browser.</p>
+
+      <div class="kacheln">
+        <a href="#tagebuch" class="card kachel"><div class="card-body">
+          <h4 class="card-title">Praktikum</h4>
+          <p class="lesbar">Tagebuch führen und Wochenberichte erstellen.</p>
+        </div></a>
+        <a href="#quiz" class="card kachel"><div class="card-body">
+          <h4 class="card-title">Lernen</h4>
+          <p class="lesbar">Quiz mit Lernkartei: Was sitzt, kommt seltener dran.</p>
+        </div></a>
+        <a href="#glossar" class="card kachel"><div class="card-body">
+          <h4 class="card-title">Glossar</h4>
+          <p class="lesbar">Alle Begriffe nachschlagen und eigene hinzufügen.</p>
+        </div></a>
+      </div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Dein Fortschritt</h4>
+        <div id="fortschritt"></div>
+      </div></div>
+    </section>
+
+    <!-- TAGEBUCH -->
+    <section id="tagebuch" class="seite" hidden>
+      <h2>Praktikumstagebuch</h2>
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Neuer Eintrag</h4>
+        <form id="tb-form" class="formular">
+          <div class="reihe">
+            <label>Datum<input type="date" id="tb-datum" required></label>
+            <label>Von<input type="time" id="tb-von"></label>
+            <label>Bis<input type="time" id="tb-bis"></label>
+          </div>
+          <label>Tätigkeiten<textarea id="tb-taetigkeiten" rows="4" placeholder="Was habe ich heute gemacht?"></textarea></label>
+          <label>Gelerntes<textarea id="tb-gelernt" rows="3" placeholder="Was habe ich Neues gelernt?"></textarea></label>
+          <label>Offene Fragen<textarea id="tb-fragen" rows="2" placeholder="Was will ich noch klären?"></textarea></label>
+          <div class="knoepfe">
+            <button type="submit" class="btn-success">Speichern</button>
+            <button type="button" id="tb-abbrechen" hidden>Abbrechen</button>
+          </div>
+        </form>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Wochenbericht</h4>
+        <div class="reihe">
+          <label>Woche<input type="week" id="wb-woche"></label>
+          <button type="button" id="wb-erstellen" class="btn-primary">Erstellen</button>
+        </div>
+        <textarea id="wb-text" class="lesbar" rows="12" readonly hidden></textarea>
+        <button type="button" id="wb-kopieren" hidden>Kopieren</button>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Meine Einträge</h4>
+        <div id="tb-liste"></div>
+      </div></div>
+    </section>
+
+    <!-- GLOSSAR -->
+    <section id="glossar" class="seite" hidden>
+      <h2>Glossar</h2>
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Add to Brain</h4>
+        <p class="lesbar">Begriff gehört und nicht verstanden? Hier eintragen. Er kommt ins Glossar und ins Quiz.</p>
+        <form id="ab-form" class="formular">
+          <label>Begriff<input type="text" id="ab-begriff" required></label>
+          <label>Erklärung<textarea id="ab-erklaerung" rows="2" placeholder="Wenn du es noch nicht weißt: leer lassen und später ergänzen"></textarea></label>
+          <div class="knoepfe"><button type="submit" class="btn-secondary">Add to Brain</button></div>
+        </form>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Alle Begriffe</h4>
+        <input type="search" id="gl-suche" placeholder="Suchen …" aria-label="Glossar durchsuchen">
+        <dl id="gl-liste" class="glossar lesbar"></dl>
+      </div></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="seite" hidden>
+      <h2>Quiz</h2>
+      <div class="card"><div class="card-body">
+        <p id="qz-info" class="lesbar"></p>
+        <div id="qz-karte" hidden>
+          <p class="qz-stufe" id="qz-stufe"></p>
+          <p class="qz-frage lesbar" id="qz-frage"></p>
+          <div class="qz-antworten" id="qz-antworten"></div>
+          <p class="qz-rueckmeldung lesbar" id="qz-rueckmeldung" aria-live="polite"></p>
+          <button type="button" id="qz-weiter" class="btn-primary" hidden>Weiter</button>
+        </div>
+        <button type="button" id="qz-start" class="btn-primary">Los geht's</button>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">So funktioniert die Lernkartei</h4>
+        <p class="lesbar">Jeder Begriff liegt in einem von fünf Fächern. Richtig beantwortet, rutscht er ein Fach weiter und kommt seltener dran (Fach 1: sofort, 2: nach 1 Tag, 3: nach 3 Tagen, 4: nach 7 Tagen, 5: nach 14 Tagen). Falsch beantwortet, geht er zurück in Fach 1. Stufe 2 und 3 werden freigeschaltet, wenn die meisten Begriffe der Stufe davor mindestens in Fach 3 liegen.</p>
+      </div></div>
+    </section>
+
+    <!-- SICHERN -->
+    <section id="sichern" class="seite" hidden>
+      <h2>Sichern</h2>
+      <div class="card"><div class="card-body">
+        <p class="lesbar">Deine Daten liegen nur in diesem Browser. Wenn du die Browserdaten löschst oder ein anderes Gerät nimmst, sind sie dort nicht da. Speichere deshalb ab und zu eine Sicherung.</p>
+        <div class="knoepfe">
+          <button type="button" id="si-export" class="btn-success">Sicherung herunterladen</button>
+          <label class="paper-btn">Sicherung einlesen<input type="file" id="si-import" accept=".json,application/json" hidden></label>
+        </div>
+        <p id="si-meldung" class="lesbar" aria-live="polite"></p>
+      </div></div>
+    </section>
+  </main>
+
+  <footer class="fuss lesbar">Add to Brain · Lernseite von Elena Klisch · Design: <a href="https://www.getpapercss.com/">PaperCSS</a></footer>
+
+  <script src="js/daten.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
