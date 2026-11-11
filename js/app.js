@@ -1,5 +1,6 @@
 // Add to Brain – Logik
-// Alle Daten liegen nur im Browser (localStorage) unter dem Schlüssel 'addtobrain-v1'.
+// Alle Daten liegen im Browser (localStorage) unter dem Schlüssel 'addtobrain-v1'.
+// Wer sich anmeldet, synchronisiert sie zusätzlich über konto.js (Tagebuch verschlüsselt).
 (function () {
   'use strict';
 
@@ -8,7 +9,7 @@
   const TAG_MS = 24 * 60 * 60 * 1000;
 
   // ---------- Speicher ----------
-  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {} }; }
+  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {} }; }
   function laden() {
     try {
       const d = JSON.parse(localStorage.getItem(SCHLUESSEL));
@@ -18,6 +19,8 @@
   }
   let daten = laden();
   function speichern() {
+    daten.geaendert = Date.now();
+    if (window.KONTO) window.KONTO.geaendert();
     try { localStorage.setItem(SCHLUESSEL, JSON.stringify(daten)); }
     catch (e) { /* Speichern nicht möglich (z. B. privater Modus) */ }
   }
@@ -58,7 +61,7 @@
   }
 
   // ---------- Navigation ----------
-  const SEITEN = ['start', 'lernen', 'tagebuch', 'glossar', 'quiz', 'sichern'];
+  const SEITEN = ['start', 'lernen', 'tagebuch', 'glossar', 'quiz', 'sichern', 'konto'];
   function zeigeSeite() {
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
@@ -68,6 +71,7 @@
     if (ziel === 'tagebuch') zeigeTagebuch();
     if (ziel === 'glossar') zeigeGlossar();
     if (ziel === 'quiz') quizInfo();
+    if (ziel === 'konto' && window.KONTO) window.KONTO.zeige();
     if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', zeigeSeite);
@@ -85,7 +89,8 @@
       bis: $('tb-bis').value,
       taetigkeiten: $('tb-taetigkeiten').value.trim(),
       gelernt: $('tb-gelernt').value.trim(),
-      fragen: $('tb-fragen').value.trim()
+      fragen: $('tb-fragen').value.trim(),
+      geaendert: Date.now()
     };
     daten.tagebuch = daten.tagebuch.filter((e) => e.id !== eintrag.id).concat(eintrag);
     speichern();
@@ -128,7 +133,7 @@
       const b2 = el('button', 'Löschen', 'btn-small btn-danger'); b2.type = 'button';
       b2.addEventListener('click', () => {
         if (b2.dataset.sicher) {
-          daten.tagebuch = daten.tagebuch.filter((x) => x.id !== e.id); speichern(); zeigeTagebuch();
+          daten.tagebuch = daten.tagebuch.filter((x) => x.id !== e.id); daten.geloescht[e.id] = Date.now(); speichern(); zeigeTagebuch();
         } else { b2.dataset.sicher = '1'; b2.textContent = 'Wirklich löschen?'; }
       });
       kn.appendChild(b1); kn.appendChild(b2); box.appendChild(kn);
@@ -169,7 +174,7 @@
     ev.preventDefault();
     const begriff = $('ab-begriff').value.trim();
     if (!begriff) return;
-    daten.eigeneBegriffe.push({ id: 'eigen-' + Date.now(), begriff, erklaerung: $('ab-erklaerung').value.trim(), stufe: 1, eigen: true });
+    daten.eigeneBegriffe.push({ id: 'eigen-' + Date.now(), begriff, erklaerung: $('ab-erklaerung').value.trim(), stufe: 1, eigen: true, geaendert: Date.now() });
     speichern();
     $('ab-form').reset();
     zeigeGlossar();
@@ -194,7 +199,7 @@
         k.style.marginLeft = '8px';
         k.addEventListener('click', () => {
           const neu = prompt('Erklärung für „' + b.begriff + '“:', b.erklaerung || '');
-          if (neu !== null) { b.erklaerung = neu.trim(); speichern(); zeigeGlossar(); }
+          if (neu !== null) { b.erklaerung = neu.trim(); b.geaendert = Date.now(); speichern(); zeigeGlossar(); }
         });
         dd.appendChild(k);
       }
@@ -303,7 +308,7 @@
     if (runde && !richtig) runde.fehler[aktuell.id] = aktuell;
     const k = karte(aktuell.id);
     const fach = richtig ? Math.min(k.fach + 1, 5) : 1;
-    daten.kartei[aktuell.id] = { fach, faellig: Date.now() + FACH_TAGE[fach] * TAG_MS };
+    daten.kartei[aktuell.id] = { fach, faellig: Date.now() + FACH_TAGE[fach] * TAG_MS, zeit: Date.now() };
     speichern();
     document.querySelectorAll('#qz-antworten button').forEach((b) => { if (b !== knopf) b.disabled = true; });
     knopf.classList.add(richtig ? 'btn-success' : 'btn-danger');
@@ -372,7 +377,13 @@
   });
 
   // Zugriff für andere Skripte (z. B. lernen.js)
-  window.ATB = { get daten() { return daten; }, speichern };
+  // Daten von außen ersetzen (z. B. nach dem Zusammenführen mit dem Konto), ohne erneut hochzuladen
+  function ersetze(neu) {
+    daten = Object.assign(leer(), neu);
+    try { localStorage.setItem(SCHLUESSEL, JSON.stringify(daten)); } catch (e) { /* ignorieren */ }
+    zeigeSeite();
+  }
+  window.ATB = { get daten() { return daten; }, speichern, ersetze, leer };
 
   zeigeSeite();
 })();

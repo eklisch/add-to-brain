@@ -140,6 +140,12 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .balken-zeile .progress { height: 14px; margin: 0; }
 #fortschritt > p { font-size: 15px; margin: 6px 0 0; }
 
+/* Konto */
+.haken { display: flex !important; gap: 10px; align-items: flex-start; }
+.haken input { width: auto !important; margin-top: 6px; flex: 0 0 auto; }
+.haken span { font-size: 15px; line-height: 1.5; }
+.meldung.fehler { color: #a7342d; }
+
 /* Quiz-Ergebnis */
 .ergebnis .card-title { font-size: 34px; color: var(--akzent); }
 .ergebnis-zahl { font-family: var(--kopf); font-size: 24px; margin: 4px 0 8px; }

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111709" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111709" rel="stylesheet">
-  <link href="css/style.css?v=202611111709" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111729" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111729" rel="stylesheet">
+  <link href="css/style.css?v=202611111729" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -111,6 +111,77 @@
       </div>
     </section>
 
+    <!-- KONTO -->
+    <section id="konto" class="seite" hidden>
+      <h2>Mein Konto</h2>
+
+      <div id="ko-aus">
+        <p class="lesbar leise">Die Anmeldung ist freiwillig. Ohne Anmeldung bleibt alles nur in diesem Browser. Mit Anmeldung hast du deinen Lernstand und dein Tagebuch auf jedem Gerät – zum Beispiel zu Hause und im BTZ.</p>
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Anmelden</h4>
+          <form id="ko-form" class="formular">
+            <label>Deine E-Mail-Adresse<input type="email" id="ko-mail" required autocomplete="email"></label>
+            <label class="haken"><input type="checkbox" id="ko-einwilligung"> <span>Ich willige ein, dass mein Lernstand und – verschlüsselt – mein Tagebuch gespeichert werden, damit ich sie auf mehreren Geräten nutzen kann. Ich kann die Einwilligung jederzeit widerrufen, indem ich mein Konto lösche. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
+            <div class="knoepfe"><button type="submit" id="ko-senden" class="btn-primary">Anmeldelink schicken</button></div>
+          </form>
+          <p id="ko-meldung" class="lesbar meldung" aria-live="polite"></p>
+        </div></div>
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">So funktioniert es</h4>
+          <p class="lesbar">Du bekommst eine E-Mail mit einem Link. Ein Klick darauf, und du bist angemeldet – ganz ohne Passwort. Dein Tagebuch schützt du zusätzlich mit einem eigenen Tagebuch-Passwort: Es wird verschlüsselt, bevor es deinen Browser verlässt. Niemand außer dir kann es lesen – auch nicht die Betreiberin der Seite.</p>
+        </div></div>
+      </div>
+
+      <div id="ko-ein" hidden>
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Angemeldet</h4>
+          <p class="lesbar">Als <strong id="ko-email"></strong></p>
+          <p id="ko-sync" class="lesbar leise meldung" aria-live="polite"></p>
+          <div class="knoepfe"><button type="button" id="ko-jetzt" class="btn-small">Jetzt synchronisieren</button></div>
+        </div></div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Tagebuch-Schutz</h4>
+          <div id="ko-tb-aktiv" hidden>
+            <p class="lesbar">Dein Tagebuch wird verschlüsselt gespeichert und auf deinen Geräten abgeglichen.</p>
+          </div>
+          <div id="ko-tb-neu" hidden>
+            <p class="lesbar">Lege ein Tagebuch-Passwort fest. Damit wird dein Tagebuch verschlüsselt, bevor es gespeichert wird. <strong>Wichtig:</strong> Vergisst du das Passwort, kann niemand dein Tagebuch wiederherstellen – auch nicht die Betreiberin.</p>
+            <form id="ko-tb-neu-form" class="formular">
+              <label>Tagebuch-Passwort (mindestens 8 Zeichen)<input type="password" id="ko-pw1" autocomplete="new-password" required></label>
+              <label>Noch einmal<input type="password" id="ko-pw2" autocomplete="new-password" required></label>
+              <label class="haken"><input type="checkbox" id="ko-pw-verstanden"> <span>Ich habe verstanden: Ohne dieses Passwort komme ich nicht mehr an mein gespeichertes Tagebuch.</span></label>
+              <div class="knoepfe"><button type="submit" class="btn-primary">Tagebuch schützen</button></div>
+            </form>
+            <p id="ko-tb-meldung" class="lesbar meldung" aria-live="polite"></p>
+          </div>
+          <div id="ko-tb-entsperren" hidden>
+            <p class="lesbar">In deinem Konto liegt ein verschlüsseltes Tagebuch. Gib dein Tagebuch-Passwort ein, um es auf diesem Gerät zu öffnen.</p>
+            <form id="ko-tb-entsperren-form" class="formular">
+              <label>Tagebuch-Passwort<input type="password" id="ko-pw3" autocomplete="current-password" required></label>
+              <div class="knoepfe"><button type="submit" class="btn-primary">Tagebuch öffnen</button></div>
+            </form>
+            <p id="ko-tb-meldung2" class="lesbar meldung" aria-live="polite"></p>
+          </div>
+        </div></div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Abmelden</h4>
+          <p class="lesbar">Auf einem fremden oder gemeinsam genutzten Computer, zum Beispiel im BTZ: am besten „Abmelden und Daten entfernen“ wählen. Deine Daten bleiben in deinem Konto.</p>
+          <div class="knoepfe">
+            <button type="button" id="ko-abmelden" class="btn-small">Abmelden</button>
+            <button type="button" id="ko-abmelden-entfernen" class="btn-small">Abmelden und Daten entfernen</button>
+          </div>
+        </div></div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Konto löschen</h4>
+          <p class="lesbar">Löscht dein Konto und alle Daten, die auf dem Server gespeichert sind. Das lässt sich nicht rückgängig machen.</p>
+          <div class="knoepfe"><button type="button" id="ko-loeschen" class="btn-small btn-danger">Konto löschen</button></div>
+        </div></div>
+      </div>
+    </section>
+
     <!-- TAGEBUCH -->
     <section id="tagebuch" class="seite" hidden>
       <h2>Praktikumstagebuch</h2>
@@ -163,7 +234,7 @@
         </form>
       </div></div>
 
-      <div class="card"><div class="card-body">
+      <div class="card neue-spalte"><div class="card-body">
         <h4 class="card-title">Alle Begriffe</h4>
         <input type="search" id="gl-suche" placeholder="Suchen …" aria-label="Glossar durchsuchen">
         <dl id="gl-liste" class="glossar lesbar"></dl>
@@ -206,7 +277,7 @@
     <section id="sichern" class="seite" hidden>
       <h2>Sichern</h2>
       <div class="card"><div class="card-body">
-        <p class="lesbar">Deine Daten liegen nur in diesem Browser. Wenn du die Browserdaten löschst oder ein anderes Gerät nimmst, sind sie dort nicht da. Speichere deshalb ab und zu eine Sicherung.</p>
+        <p class="lesbar">Ohne Anmeldung liegen deine Daten nur in diesem Browser. Mit der Sicherungsdatei hast du jederzeit eine Kopie – oder du meldest dich unter „Mein Konto“ an, dann werden sie automatisch abgeglichen.</p>
         <div class="knoepfe">
           <button type="button" id="si-export" class="btn-success">Sicherung herunterladen</button>
           <label class="paper-btn">Sicherung einlesen<input type="file" id="si-import" accept=".json,application/json" hidden></label>
@@ -223,17 +294,20 @@
   </div>
 
   <div class="leiste" aria-label="Fortschritt und Steuerung">
+    <a href="#konto" class="leiste-link" id="leiste-konto">Anmelden</a>
     <a href="#sichern" class="leiste-link">Sichern</a>
+    <a href="datenschutz.html" class="leiste-link">Datenschutz</a>
     <a href="vorstellung.html" class="leiste-link">Über Add to Brain</a>
     <div class="balken" aria-hidden="true"><i id="balken"></i></div>
     <button class="pfeil" id="pfeil-links" type="button">Zurück</button>
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111709"></script>
-  <script src="js/module.js?v=202611111709"></script>
-  <script src="js/lernen.js?v=202611111709"></script>
-  <script src="js/app.js?v=202611111709"></script>
-  <script src="js/scroll.js?v=202611111709"></script>
+  <script src="js/daten.js?v=202611111729"></script>
+  <script src="js/module.js?v=202611111729"></script>
+  <script src="js/lernen.js?v=202611111729"></script>
+  <script src="js/app.js?v=202611111729"></script>
+  <script src="js/scroll.js?v=202611111729"></script>
+  <script src="js/konto.js?v=202611111729"></script>
 </body>
 </html>
