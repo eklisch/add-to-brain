@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111818" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111818" rel="stylesheet">
-  <link href="css/style.css?v=202611111818" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111825" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111825" rel="stylesheet">
+  <link href="css/style.css?v=202611111825" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -18,6 +18,7 @@
         <li><a href="#quiz">Quiz</a></li>
         <li><a href="#rechnen">Rechnen</a></li>
         <li><a href="#training">Gespräch</a></li>
+        <li><a href="#shop">Retro-Shop</a></li>
         <li><a href="#tagebuch">Tagebuch</a></li>
         <li><a href="#glossar">Glossar</a></li>
       </ul>
@@ -74,6 +75,14 @@
             <h4 class="card-title">Rechnen üben</h4>
             <p class="lesbar">Mehrwertsteuer, Rabatt, Kalkulation und Kennzahlen.</p>
           </div></a>
+          <a href="#shop" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Retro-Shop</h4>
+            <p class="lesbar">Missionen aus dem Alltag eines Onlineshops.</p>
+          </div></a>
+          <a href="#erfolge" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Erfolge</h4>
+            <p class="lesbar">Punkte, Rang, Abzeichen und Lerntage.</p>
+          </div></a>
         </div>
         <div class="card fortschritt-karte"><div class="card-body">
           <h4 class="card-title">Dein Fortschritt</h4>
@@ -117,6 +126,41 @@
           <div id="ln-fragen"></div>
           <p id="ln-ergebnis" class="qz-frage lesbar" aria-live="polite"></p>
           <div id="ln-ergebnis-knoepfe" class="knoepfe"></div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- RETRO-SHOP -->
+    <section id="shop" class="seite" hidden>
+      <div id="rs-liste">
+        <h2>Retro-Shop</h2>
+        <p class="lesbar leise">Willkommen im Retro-Shop, einem kleinen Onlineshop für Plattenspieler, Kameras, Spielkonsolen und Vintage-Mode. In jeder Mission erlebst du eine Situation aus dem Arbeitsalltag und entscheidest, was zu tun ist.</p>
+        <p id="rs-stand" class="hinweis"></p>
+        <div id="rs-missionen" class="module"></div>
+      </div>
+
+      <div id="rs-mission" hidden>
+        <button type="button" id="rs-zurueck" class="btn-small">Zur Übersicht</button>
+        <p class="qz-stufe" id="rs-thema"></p>
+        <h2 id="rs-titel"></h2>
+        <p id="rs-geschichte" class="lesbar rs-geschichte"></p>
+
+        <div class="card neue-spalte" id="rs-aufgabe"><div class="card-body">
+          <p class="qz-stufe" id="rs-schritt"></p>
+          <p class="qz-frage lesbar" id="rs-frage"></p>
+          <div class="qz-antworten" id="rs-antworten"></div>
+          <p id="rs-rueck" class="lesbar" aria-live="polite"></p>
+          <div class="knoepfe"><button type="button" id="rs-weiter" class="btn-primary" hidden>Weiter</button></div>
+        </div></div>
+
+        <div class="card ergebnis neue-spalte" id="rs-ende" hidden><div class="card-body">
+          <h3 class="card-title">Mission geschafft!</h3>
+          <p class="rs-ende-sterne" id="rs-ende-sterne"></p>
+          <p id="rs-ende-text" class="lesbar"></p>
+          <div class="knoepfe">
+            <button type="button" id="rs-naechste" class="btn-primary">Nächste Mission</button>
+            <button type="button" id="rs-zur-liste">Zur Übersicht</button>
+          </div>
         </div></div>
       </div>
     </section>
@@ -431,14 +475,15 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111818"></script>
-  <script src="js/module.js?v=202611111818"></script>
-  <script src="js/lernen.js?v=202611111818"></script>
-  <script src="js/gespraech.js?v=202611111818"></script>
-  <script src="js/rechnen.js?v=202611111818"></script>
-  <script src="js/app.js?v=202611111818"></script>
-  <script src="js/erfolge.js?v=202611111818"></script>
-  <script src="js/scroll.js?v=202611111818"></script>
-  <script src="js/konto.js?v=202611111818"></script>
+  <script src="js/daten.js?v=202611111825"></script>
+  <script src="js/module.js?v=202611111825"></script>
+  <script src="js/lernen.js?v=202611111825"></script>
+  <script src="js/gespraech.js?v=202611111825"></script>
+  <script src="js/rechnen.js?v=202611111825"></script>
+  <script src="js/missionen.js?v=202611111825"></script>
+  <script src="js/app.js?v=202611111825"></script>
+  <script src="js/erfolge.js?v=202611111825"></script>
+  <script src="js/scroll.js?v=202611111825"></script>
+  <script src="js/konto.js?v=202611111825"></script>
 </body>
 </html>

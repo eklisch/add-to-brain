@@ -9,7 +9,7 @@
   const TAG_MS = 24 * 60 * 60 * 1000;
 
   // ---------- Speicher ----------
-  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {}, gespraech: {}, rechnen: {}, tage: {}, erreicht: {} }; }
+  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {}, gespraech: {}, rechnen: {}, tage: {}, erreicht: {}, missionen: {} }; }
   function laden() {
     try {
       const d = JSON.parse(localStorage.getItem(SCHLUESSEL));
@@ -64,7 +64,7 @@
   }
 
   // ---------- Navigation ----------
-  const SEITEN = ['start', 'lernen', 'rechnen', 'training', 'tagebuch', 'glossar', 'quiz', 'erfolge', 'sichern', 'konto'];
+  const SEITEN = ['start', 'lernen', 'rechnen', 'training', 'shop', 'tagebuch', 'glossar', 'quiz', 'erfolge', 'sichern', 'konto'];
   function zeigeSeite() {
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
@@ -76,11 +76,17 @@
     if (ziel === 'quiz') quizInfo();
     if (ziel === 'training' && window.TRAINING) window.TRAINING.zeige();
     if (ziel === 'rechnen' && window.RECHNEN) window.RECHNEN.zeige();
+    if (ziel === 'shop' && window.MISSIONEN) window.MISSIONEN.zeige();
     if (ziel === 'erfolge' && window.ERFOLGE) window.ERFOLGE.zeige();
     if (ziel === 'konto' && window.KONTO) window.KONTO.zeige();
     if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', zeigeSeite);
+  // Klick auf die gerade offene Seite (z. B. im Menü): Seite neu aufbauen, etwa zurück zur Übersicht
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest && ev.target.closest('a[href^="#"]');
+    if (a && a.getAttribute('href') === location.hash) zeigeSeite();
+  });
   // Der Browser springt beim Laden selbst zum Anker – danach wieder an den Seitenanfang
   window.addEventListener('load', () => setTimeout(() => { if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0); }, 0));
 

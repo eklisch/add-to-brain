@@ -47,7 +47,10 @@
       fragenAlle: window.TRAINING ? window.TRAINING.FRAGEN.length : 14,
       tagebuch: (d.tagebuch || []).length,
       eigene: (d.eigeneBegriffe || []).length,
-      tage: Object.keys(d.tage || {}).length
+      tage: Object.keys(d.tage || {}).length,
+      missionen: Object.values(d.missionen || {}).filter((e) => e.geschafft).length,
+      missionenPerfekt: Object.values(d.missionen || {}).filter((e) => e.sterne === 4).length,
+      missionenAlle: window.MISSIONEN ? window.MISSIONEN.LISTE.length : 8
     };
   }
 
@@ -58,6 +61,7 @@
     ['Lernmodul bestanden', 50, (w) => w.module],
     ['Rechenaufgabe richtig', 5, (w) => w.gerechnet],
     ['Gesprächsfrage geübt', 10, (w) => w.fragenGeuebt],
+    ['Retro-Shop-Mission geschafft', 30, (w) => w.missionen],
     ['Tagebucheintrag', 10, (w) => w.tagebuch],
     ['Eigener Begriff', 5, (w) => w.eigene],
     ['Lerntag', 5, (w) => w.tage]
@@ -91,6 +95,9 @@
     { id: 'rechnen-alle', name: 'Alles durchgerechnet', wie: 'Löse in jedem Rechenthema mindestens eine Aufgabe richtig.', ok: (w) => w.themenGerechnet >= w.themenAlle },
     { id: 'gespraech1', name: 'Mutig gesprochen', wie: 'Übe deine erste Frage aus dem Vorstellungsgespräch.', ok: (w) => w.fragenGeuebt >= 1 },
     { id: 'gespraech-alle', name: 'Gesprächsbereit', wie: 'Übe alle Fragen aus dem Vorstellungsgespräch.', ok: (w) => w.fragenGeuebt >= w.fragenAlle },
+    { id: 'mission1', name: 'Erster Arbeitstag', wie: 'Schaff deine erste Mission im Retro-Shop.', ok: (w) => w.missionen >= 1 },
+    { id: 'mission-perfekt', name: 'Fehlerfrei', wie: 'Schaff eine Mission im Retro-Shop ohne Fehler.', ok: (w) => w.missionenPerfekt >= 1 },
+    { id: 'missionen', name: 'Der Shop läuft', wie: 'Schaff alle Missionen im Retro-Shop.', ok: (w) => w.missionen >= w.missionenAlle },
     { id: 'tagebuch1', name: 'Festgehalten', wie: 'Schreib deinen ersten Tagebucheintrag.', ok: (w) => w.tagebuch >= 1 },
     { id: 'tagebuch5', name: 'Eine Woche dokumentiert', wie: 'Schreib fünf Tagebucheinträge.', ok: (w) => w.tagebuch >= 5 },
     { id: 'eigenes', name: 'Eigene Worte', wie: 'Leg einen eigenen Begriff im Glossar an.', ok: (w) => w.eigene >= 1 },

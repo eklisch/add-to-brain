@@ -155,6 +155,9 @@
     // Rechen-Trainer: neuerer Stand je Thema gewinnt
     const rechnen = Object.assign({}, b.rechnen || {});
     Object.entries(a.rechnen || {}).forEach(([k, e]) => { const f = rechnen[k]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) rechnen[k] = e; });
+    // Retro-Shop: geschafft bleibt geschafft, beste Sterne behalten
+    const missionen = Object.assign({}, b.missionen || {});
+    Object.entries(a.missionen || {}).forEach(([id, e]) => { const f = missionen[id] || {}; missionen[id] = { geschafft: !!(e.geschafft || f.geschafft), sterne: Math.max(e.sterne || 0, f.sterne || 0), geaendert: Math.max(e.geaendert || 0, f.geaendert || 0) }; });
     // Lerntage zusammenlegen, Abzeichen mit dem frühesten Datum behalten
     const tage = Object.assign({}, b.tage || {}, a.tage || {});
     const erreicht = Object.assign({}, b.erreicht || {});
@@ -162,7 +165,7 @@
     // Gesprächsnotizen (verschlüsselt mit dem Tagebuch): neuere Fassung gewinnt
     const gespraech = Object.assign({}, (fernTb && fernTb.gespraech) || {});
     Object.entries(a.gespraech || {}).forEach(([id, e]) => { const f = gespraech[id]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) gespraech[id] = e; });
-    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht, gespraech, rechnen, tage, erreicht });
+    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht, gespraech, rechnen, tage, erreicht, missionen });
   }
 
   // ---------- Synchronisieren ----------
@@ -171,7 +174,7 @@
     const d = window.ATB.daten;
     const zeile = {
       user_id: sitzung.user.id,
-      lernstand: { kartei: d.kartei, module: d.module, eigeneBegriffe: d.eigeneBegriffe, rechnen: d.rechnen, tage: d.tage, erreicht: d.erreicht },
+      lernstand: { kartei: d.kartei, module: d.module, eigeneBegriffe: d.eigeneBegriffe, rechnen: d.rechnen, tage: d.tage, erreicht: d.erreicht, missionen: d.missionen },
       aktualisiert: new Date().toISOString()
     };
     if (tbSchluessel) {
