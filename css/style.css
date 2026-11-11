@@ -154,6 +154,16 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
 .ln-frage { border-top: 2px dashed #c9c4b8; padding-top: 12px; margin-top: 12px; }
 .ln-frage:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
 
+/* Schwebende Vorlese-Leiste: bleibt beim Vorlesen immer sichtbar */
+.schwebe {
+  position: fixed; left: 50%; bottom: calc(var(--leiste) + 12px); transform: translateX(-50%); z-index: 30;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--weiss); border: 2px solid var(--tinte); border-radius: var(--rand);
+  padding: 8px 16px; box-shadow: 6px 14px 18px -12px rgba(0,0,0,.3);
+}
+.schwebe button { margin: 0; }
+.schwebe-text { font-family: var(--kopf); font-size: 20px; color: var(--akzent); }
+
 /* ---------- Leiste unten (fixiert): Links, Fortschritt, Pfeile ---------- */
 .leiste {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;

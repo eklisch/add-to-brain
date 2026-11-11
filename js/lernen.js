@@ -133,10 +133,16 @@
     stimme.speak(u);
   }
 
+  function schwebe(sichtbar, pausiert) {
+    $('ln-schwebe').hidden = !sichtbar;
+    $('ln-s-pause').textContent = pausiert ? 'Weiterlesen' : 'Pause';
+  }
+
   function starteVorlesen() {
     if (!stimme) return;
     stimme.cancel();
     liest = true;
+    schwebe(true, false);
     if (satzIndex >= saetze.length) satzIndex = 0;
     $('ln-play').hidden = true;
     $('ln-pause').hidden = false;
@@ -145,6 +151,7 @@
   function pausiereVorlesen() {
     liest = false;
     if (stimme) stimme.cancel();
+    schwebe(true, true);
     $('ln-play').textContent = 'Weiterlesen';
     $('ln-play').hidden = false;
     $('ln-pause').hidden = true;
@@ -152,6 +159,7 @@
   function stoppeVorlesen(fertig) {
     liest = false;
     if (stimme) stimme.cancel();
+    if ($('ln-schwebe')) schwebe(false, false);
     saetze.forEach((s) => s.classList.remove('liest'));
     if (fertig !== false) satzIndex = 0;
     if ($('ln-play')) { $('ln-play').textContent = 'Vorlesen'; $('ln-play').hidden = false; $('ln-pause').hidden = true; }
@@ -168,6 +176,8 @@
   $('ln-play').addEventListener('click', starteVorlesen);
   $('ln-pause').addEventListener('click', pausiereVorlesen);
   $('ln-stopp').addEventListener('click', () => stoppeVorlesen(true));
+  $('ln-s-pause').addEventListener('click', () => { if (liest) pausiereVorlesen(); else starteVorlesen(); });
+  $('ln-s-stopp').addEventListener('click', () => stoppeVorlesen(true));
   $('ln-tempo').addEventListener('change', () => { if (liest) { stimme.cancel(); liesSatz(); } });
   $('ln-zurueck').addEventListener('click', zeigeListe);
   window.addEventListener('hashchange', () => stoppeVorlesen(true));
