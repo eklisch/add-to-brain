@@ -1,4 +1,4 @@
-// Add to Brain – Retro-Shop: Missionen aus dem Arbeitsalltag eines kleinen Onlineshops
+// Add to Brain – Praxis: Missionen aus dem Arbeitsalltag ausgedachter Onlineshops
 (function () {
   'use strict';
 
@@ -10,10 +10,15 @@
     return e;
   }
 
+  // Die Shops – weitere Shops einfach hier ergänzen und bei den Missionen mit shop: '…' zuordnen
+  const SHOPS = [
+    { id: 'retro', name: 'Retro-Shop', text: 'Ein kleiner Onlineshop für Plattenspieler, Kameras, Spielkonsolen und Vintage-Mode.' }
+  ];
+
   // Jede Mission: kurze Geschichte und vier Entscheidungen mit Erklärung
   const MISSIONEN = [
     {
-      id: 'r1', titel: 'Ein neuer Plattenspieler', thema: 'Artikel anlegen',
+      id: 'r1', shop: 'retro', titel: 'Ein neuer Plattenspieler', thema: 'Artikel anlegen',
       geschichte: 'Lena bringt einen gebrauchten Plattenspieler aus den 70ern ins Lager. Er funktioniert, hat aber einen Kratzer am Deckel. Du sollst ihn im Shop einstellen.',
       schritte: [
         { frage: 'Welcher Produkttitel ist am besten?', antworten: ['Super Teil!!!', 'Plattenspieler von Dual, 70er Jahre, gebraucht, funktionsfähig', 'Plattenspieler'], richtig: 1,
@@ -27,7 +32,7 @@
       ]
     },
     {
-      id: 'r2', titel: 'Die erste Bestellung des Tages', thema: 'Bestellablauf',
+      id: 'r2', shop: 'retro', titel: 'Die erste Bestellung des Tages', thema: 'Bestellablauf',
       geschichte: 'Um 9 Uhr kommt eine Bestellung rein: eine Polaroid-Kamera und zwei Filme. Der Kunde hat per Vorkasse bestellt.',
       schritte: [
         { frage: 'Was prüfst du zuerst?', antworten: ['Ob das Geld schon eingegangen ist', 'Ob der Kunde nett klingt', 'Nichts, sofort verschicken'], richtig: 0,
@@ -41,7 +46,7 @@
       ]
     },
     {
-      id: 'r3', titel: 'Wo ist mein Paket?', thema: 'Kundenservice',
+      id: 'r3', shop: 'retro', titel: 'Wo ist mein Paket?', thema: 'Kundenservice',
       geschichte: 'Frau Yilmaz schreibt verärgert: Ihr Gameboy sollte vor drei Tagen ankommen, aber er ist nicht da.',
       schritte: [
         { frage: 'Wie beginnst du deine Antwort?', antworten: ['Das ist nicht unsere Schuld.', 'Sehr geehrte Frau Yilmaz, vielen Dank für Ihre Nachricht. Es tut mir leid, dass Ihr Paket noch nicht angekommen ist.', 'Hallo, keine Panik!'], richtig: 1,
@@ -55,7 +60,7 @@
       ]
     },
     {
-      id: 'r4', titel: 'Die Lederjacke kommt zurück', thema: 'Retoure und Widerruf',
+      id: 'r4', shop: 'retro', titel: 'Die Lederjacke kommt zurück', thema: 'Retoure und Widerruf',
       geschichte: 'Ein Kunde schickt eine Vintage-Lederjacke zurück. Er schreibt: Sie passt nicht. Gekauft hat er sie vor zehn Tagen.',
       schritte: [
         { frage: 'Darf er die Jacke einfach zurückgeben?', antworten: ['Nein, gekauft ist gekauft', 'Ja, Verbraucher haben 14 Tage Widerrufsrecht ab Erhalt der Ware', 'Nur, wenn sie kaputt ist'], richtig: 1,
@@ -69,7 +74,7 @@
       ]
     },
     {
-      id: 'r5', titel: 'Retro-Woche im Newsletter', thema: 'Marketing',
+      id: 'r5', shop: 'retro', titel: 'Retro-Woche im Newsletter', thema: 'Marketing',
       geschichte: 'Der Shop plant eine Retro-Woche mit Rabatten. Du sollst dich um den Newsletter und die Preise kümmern.',
       schritte: [
         { frage: 'Wem darfst du den Newsletter schicken?', antworten: ['Allen, deren E-Mail-Adresse wir haben', 'Nur Personen, die sich angemeldet und die Anmeldung per Link bestätigt haben', 'Jedem, der mal etwas gekauft hat, ohne Ausnahme'], richtig: 1,
@@ -83,7 +88,7 @@
       ]
     },
     {
-      id: 'r6', titel: 'Ein Stern und ein Wutausbruch', thema: 'Bewertungen',
+      id: 'r6', shop: 'retro', titel: 'Ein Stern und ein Wutausbruch', thema: 'Bewertungen',
       geschichte: 'Unter der Walkman-Seite steht eine Bewertung mit einem Stern: Kam kaputt an, totaler Schrott, nie wieder!',
       schritte: [
         { frage: 'Was machst du mit der Bewertung?', antworten: ['Löschen lassen, sie schadet dem Shop', 'Öffentlich sachlich antworten', 'Mit einer gefälschten Fünf-Sterne-Bewertung ausgleichen'], richtig: 1,
@@ -97,7 +102,7 @@
       ]
     },
     {
-      id: 'r7', titel: 'Alles muss gezählt werden', thema: 'Lager',
+      id: 'r7', shop: 'retro', titel: 'Alles muss gezählt werden', thema: 'Lager',
       geschichte: 'Es ist Ende Dezember. Im Lager stehen Kisten mit Kassetten, Spielkonsolen und Kameras. Die Chefin sagt: Wir müssen Inventur machen.',
       schritte: [
         { frage: 'Was ist eine Inventur?', antworten: ['Das Zählen aller Waren im Lager zu einem Stichtag', 'Eine Werbeaktion', 'Das Verpacken von Paketen'], richtig: 0,
@@ -111,7 +116,7 @@
       ]
     },
     {
-      id: 'r8', titel: 'Gefunden werden', thema: 'Suchmaschinen',
+      id: 'r8', shop: 'retro', titel: 'Gefunden werden', thema: 'Suchmaschinen',
       geschichte: 'Der Shop verkauft schöne Retro-Telefone, aber kaum jemand findet sie über Suchmaschinen. Du sollst die Produktseite verbessern.',
       schritte: [
         { frage: 'Was bedeutet SEO?', antworten: ['Suchmaschinenoptimierung', 'Sicherer E-Mail-Ordner', 'Sonderangebot ohne Ende'], richtig: 0,
@@ -145,7 +150,14 @@
     const box = $('rs-missionen');
     box.textContent = '';
     const s = stand();
-    MISSIONEN.forEach((m, i) => {
+    SHOPS.forEach((shop) => {
+      const kopf = el('div', null, 'rs-shop');
+      kopf.appendChild(el('h3', shop.name));
+      kopf.appendChild(el('p', shop.text, 'lesbar leise'));
+      box.appendChild(kopf);
+      MISSIONEN.forEach((m, i) => { if (m.shop === shop.id) karteFuer(m, i); });
+    });
+    function karteFuer(m, i) {
       const e = s[m.id];
       const karte = el('div', null, 'card modulkarte');
       const body = el('div', null, 'card-body');
@@ -159,7 +171,7 @@
       body.appendChild(k);
       karte.appendChild(body);
       box.appendChild(karte);
-    });
+    }
     const fertig = MISSIONEN.filter((m) => s[m.id] && s[m.id].geschafft).length;
     $('rs-stand').textContent = fertig + ' von ' + MISSIONEN.length + ' Missionen geschafft';
   }
@@ -171,7 +183,7 @@
     $('rs-liste').hidden = true;
     $('rs-mission').hidden = false;
     $('rs-titel').textContent = m.titel;
-    $('rs-thema').textContent = 'Mission ' + (i + 1) + ' · ' + m.thema;
+    $('rs-thema').textContent = ((SHOPS.find((x) => x.id === m.shop) || {}).name || 'Praxis') + ' · Mission ' + (i + 1) + ' · ' + m.thema;
     $('rs-geschichte').textContent = m.geschichte;
     $('rs-ende').hidden = true;
     $('rs-aufgabe').hidden = false;
@@ -229,5 +241,5 @@
   $('rs-zur-liste').addEventListener('click', zeigeListe);
   $('rs-naechste').addEventListener('click', () => starte(aktuell + 1));
 
-  window.MISSIONEN = { zeige: zeigeListe, LISTE: MISSIONEN };
+  window.MISSIONEN = { zeige: zeigeListe, LISTE: MISSIONEN, SHOPS };
 })();

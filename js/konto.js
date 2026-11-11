@@ -155,7 +155,7 @@
     // Rechen-Trainer: neuerer Stand je Thema gewinnt
     const rechnen = Object.assign({}, b.rechnen || {});
     Object.entries(a.rechnen || {}).forEach(([k, e]) => { const f = rechnen[k]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) rechnen[k] = e; });
-    // Retro-Shop: geschafft bleibt geschafft, beste Sterne behalten
+    // Praxis-Missionen: geschafft bleibt geschafft, beste Sterne behalten
     const missionen = Object.assign({}, b.missionen || {});
     Object.entries(a.missionen || {}).forEach(([id, e]) => { const f = missionen[id] || {}; missionen[id] = { geschafft: !!(e.geschafft || f.geschafft), sterne: Math.max(e.sterne || 0, f.sterne || 0), geaendert: Math.max(e.geaendert || 0, f.geaendert || 0) }; });
     // Lerntage zusammenlegen, Abzeichen mit dem frühesten Datum behalten

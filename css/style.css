@@ -156,7 +156,9 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .gs-link:hover { color: var(--akzent); transform: none; box-shadow: none; }
 .gs-zeile.aktiv .gs-link { font-weight: 700; color: var(--akzent); }
 
-/* Retro-Shop */
+/* Praxis */
+.rs-shop h3 { font-family: var(--kopf); font-weight: 400; font-size: 30px; margin: 8px 0 0; }
+.rs-shop p { margin: 4px 0 4px; }
 .rs-geschichte { font-size: 19px; max-width: 34em; }
 .rs-sterne, .rs-ende-sterne { color: #d9a400; letter-spacing: 2px; }
 .rs-ende-sterne { font-size: 34px; margin: 4px 0; }
