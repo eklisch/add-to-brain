@@ -98,7 +98,7 @@
     $('ln-zum-quiz').hidden = false;
     $('ln-vorlesen-hinweis').hidden = !!stimme;
     $('ln-steuerung').hidden = !stimme;
-    window.scrollTo(0, 0);
+    if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }
 
   // ---------- Vorlesen ----------
@@ -115,7 +115,8 @@
     if (saetze[i]) {
       saetze[i].classList.add('liest');
       const r = saetze[i].getBoundingClientRect();
-      if (r.top < 80 || r.bottom > window.innerHeight - 40) saetze[i].scrollIntoView({ block: 'center', behavior: 'smooth' });
+      const ausserhalb = r.top < 80 || r.bottom > window.innerHeight - 70 || r.left < 0 || r.right > window.innerWidth;
+      if (ausserhalb) saetze[i].scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
     }
   }
 
@@ -205,7 +206,7 @@
     $('ln-ergebnis-knoepfe').textContent = '';
     $('ln-zum-quiz').hidden = true;
     $('ln-quiz').hidden = false;
-    $('ln-quiz').scrollIntoView({ behavior: 'smooth' });
+    $('ln-quiz').scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   });
 
   function quizFertig(m, richtige) {

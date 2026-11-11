@@ -68,7 +68,7 @@
     if (ziel === 'tagebuch') zeigeTagebuch();
     if (ziel === 'glossar') zeigeGlossar();
     if (ziel === 'quiz') quizInfo();
-    window.scrollTo(0, 0);
+    if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', zeigeSeite);
 
@@ -123,7 +123,7 @@
         $('tb-datum').value = e.datum; $('tb-von').value = e.von; $('tb-bis').value = e.bis;
         $('tb-taetigkeiten').value = e.taetigkeiten; $('tb-gelernt').value = e.gelernt; $('tb-fragen').value = e.fragen;
         $('tb-abbrechen').hidden = false;
-        $('tb-form').scrollIntoView({ behavior: 'smooth' });
+        $('tb-form').scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
       });
       const b2 = el('button', 'Löschen', 'btn-small btn-danger'); b2.type = 'button';
       b2.addEventListener('click', () => {
@@ -284,7 +284,7 @@
       const begriffe = alleBegriffe().filter((b) => b.stufe === s);
       const sitzen = begriffe.filter((b) => karte(b.id).fach >= 3).length;
       const prozent = begriffe.length ? Math.round(sitzen / begriffe.length * 100) : 0;
-      const zeile = el('div', null, 'balken');
+      const zeile = el('div', null, 'balken-zeile');
       zeile.appendChild(el('p', 'Stufe ' + s + (s > max ? ' (gesperrt)' : '') + ': ' + sitzen + ' von ' + begriffe.length + ' sitzen'));
       const p = el('div', null, 'progress');
       const bar = el('div', null, 'bar ' + (s > max ? 'muted' : prozent >= 80 ? 'success' : 'secondary'));

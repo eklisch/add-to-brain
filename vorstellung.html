@@ -126,10 +126,9 @@ mark{background:linear-gradient(transparent 55%, var(--markierung) 55%);color:in
 .zahl .von{color:var(--grau)}
 .balken{flex:1;height:2px;background:rgba(65,64,62,.15);position:relative;overflow:hidden;border-radius:2px}
 .balken i{position:absolute;inset:0 auto 0 0;width:20%;background:var(--akzent);transition:width .5s ease}
-.pfeil{width:44px;height:44px;border:2px solid var(--tinte);border-radius:var(--rand);display:grid;place-items:center;transition:transform .2s, opacity .2s}
+.pfeil{font-family:var(--kopf);font-size:20px;padding:4px 16px;border:2px solid var(--tinte);border-radius:var(--rand);transition:transform .2s, opacity .2s}
 .pfeil:hover{transform:scale(1.06)}
 .pfeil[disabled]{opacity:.25;cursor:default;transform:none}
-.pfeil svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- Modal für Impressum und Datenschutz ---------- */
 dialog{border:2px solid var(--tinte);border-radius:var(--rand);background:var(--weiss);color:var(--tinte);padding:40px;max-width:min(640px, calc(100vw - 32px));max-height:80vh;margin:auto}
@@ -184,7 +183,7 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
       <span class="kicker zeig">Lernen für den E-Commerce</span>
       <h1 class="zeig">Wissen in den<br><mark>Warenkorb.</mark></h1>
       <p class="lead zeig">Die ruhige Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau oder zum Kaufmann im E-Commerce.</p>
-      <div class="zeig"><a href="#idee" class="btn" data-ziel="1">Entdecken →</a></div>
+      <div class="zeig"><a href="#idee" class="btn" data-ziel="1">Entdecken</a></div>
     </div>
     <div class="stapel zeig" aria-hidden="true">
       <div class="blatt"></div>
@@ -272,7 +271,7 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
       <span class="kicker zeig">Bereit?</span>
       <h2 class="zeig">Leg den ersten Begriff in deinen Kopf.</h2>
       <p class="lead zeig">Starte mit Modul 1 – oder schreib dir den ersten Begriff auf, den du heute gehört hast.</p>
-      <div class="zeig"><a href="index.html" class="btn btn-akzent">Lernseite öffnen →</a></div>
+      <div class="zeig"><a href="index.html" class="btn btn-akzent">Lernseite öffnen</a></div>
     </div>
     <footer class="rechtliches">
       <span>© 2026 Add to Brain</span>
@@ -286,8 +285,8 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
 <div class="fuss" aria-label="Seitensteuerung">
   <div class="zahl" aria-live="polite"><span id="akt">01</span> <span class="von">/ 05</span></div>
   <div class="balken" aria-hidden="true"><i id="balken"></i></div>
-  <button class="pfeil" id="zurueck" type="button" aria-label="Vorherige Seite"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-  <button class="pfeil" id="weiter" type="button" aria-label="Nächste Seite"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+  <button class="pfeil" id="zurueck" type="button">Zurück</button>
+  <button class="pfeil" id="weiter" type="button">Weiter</button>
 </div>
 
 <!-- Modals -->

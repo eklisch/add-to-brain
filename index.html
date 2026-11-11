@@ -11,18 +11,19 @@
 </head>
 <body>
   <header class="kopf">
-    <a href="#start" class="logo">Add to Brain</a>
-    <nav class="menue" aria-label="Hauptmenü">
-      <a href="#start" class="paper-btn btn-small">Start</a>
-      <a href="#lernen" class="paper-btn btn-small">Lernen</a>
-      <a href="#tagebuch" class="paper-btn btn-small">Tagebuch</a>
-      <a href="#glossar" class="paper-btn btn-small">Glossar</a>
-      <a href="#quiz" class="paper-btn btn-small">Quiz</a>
-      <a href="#sichern" class="paper-btn btn-small">Sichern</a>
+    <a href="#start" class="logo">Add <span>to</span> Brain</a>
+    <nav aria-label="Hauptmenü">
+      <ul class="menue">
+        <li><a href="#lernen">Lernen</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#tagebuch">Tagebuch</a></li>
+        <li><a href="#glossar">Glossar</a></li>
+      </ul>
     </nav>
+    <a href="#quiz" class="cta">Weiterlernen</a>
   </header>
 
-  <main class="paper container">
+  <main class="spur" id="spur">
     <!-- START -->
     <section id="start" class="seite">
       <h1>Add to Brain</h1>
@@ -47,6 +48,8 @@
         </div></a>
       </div>
 
+      <p class="lesbar leise">Tipp: Mit dem Mausrad oder dem Knopf „Weiter“ unten rechts geht es nach rechts weiter.</p>
+
       <div class="card"><div class="card-body">
         <h4 class="card-title">Dein Fortschritt</h4>
         <div id="fortschritt"></div>
@@ -62,7 +65,7 @@
       </div>
 
       <div id="ln-modul" hidden>
-        <button type="button" id="ln-zurueck" class="btn-small">← Zur Übersicht</button>
+        <button type="button" id="ln-zurueck" class="btn-small">Zur Übersicht</button>
         <h2 id="ln-titel"></h2>
         <div class="card vorlesen"><div class="card-body">
           <div id="ln-steuerung" class="knoepfe">
@@ -95,23 +98,7 @@
     <!-- TAGEBUCH -->
     <section id="tagebuch" class="seite" hidden>
       <h2>Praktikumstagebuch</h2>
-      <div class="card"><div class="card-body">
-        <h4 class="card-title">Neuer Eintrag</h4>
-        <form id="tb-form" class="formular">
-          <div class="reihe">
-            <label>Datum<input type="date" id="tb-datum" required></label>
-            <label>Von<input type="time" id="tb-von"></label>
-            <label>Bis<input type="time" id="tb-bis"></label>
-          </div>
-          <label>Tätigkeiten<textarea id="tb-taetigkeiten" rows="4" placeholder="Was habe ich heute gemacht?"></textarea></label>
-          <label>Gelerntes<textarea id="tb-gelernt" rows="3" placeholder="Was habe ich Neues gelernt?"></textarea></label>
-          <label>Offene Fragen<textarea id="tb-fragen" rows="2" placeholder="Was will ich noch klären?"></textarea></label>
-          <div class="knoepfe">
-            <button type="submit" class="btn-success">Speichern</button>
-            <button type="button" id="tb-abbrechen" hidden>Abbrechen</button>
-          </div>
-        </form>
-      </div></div>
+      <p class="lesbar leise">Ein Eintrag pro Praktikumstag. Aus den Einträgen einer Woche entsteht auf Knopfdruck der Wochenbericht.</p>
 
       <div class="card"><div class="card-body">
         <h4 class="card-title">Wochenbericht</h4>
@@ -121,6 +108,24 @@
         </div>
         <textarea id="wb-text" class="lesbar" rows="12" readonly hidden></textarea>
         <button type="button" id="wb-kopieren" hidden>Kopieren</button>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Neuer Eintrag</h4>
+        <form id="tb-form" class="formular">
+          <div class="reihe">
+            <label>Datum<input type="date" id="tb-datum" required></label>
+            <label>Von<input type="time" id="tb-von"></label>
+            <label>Bis<input type="time" id="tb-bis"></label>
+          </div>
+          <label>Tätigkeiten<textarea id="tb-taetigkeiten" rows="3" placeholder="Was habe ich heute gemacht?"></textarea></label>
+          <label>Gelerntes<textarea id="tb-gelernt" rows="2" placeholder="Was habe ich Neues gelernt?"></textarea></label>
+          <label>Offene Fragen<textarea id="tb-fragen" rows="2" placeholder="Was will ich noch klären?"></textarea></label>
+          <div class="knoepfe">
+            <button type="submit" class="btn-success">Speichern</button>
+            <button type="button" id="tb-abbrechen" hidden>Abbrechen</button>
+          </div>
+        </form>
       </div></div>
 
       <div class="card"><div class="card-body">
@@ -184,11 +189,18 @@
     </section>
   </main>
 
-  <footer class="fuss lesbar">Add to Brain · Lernseite von Elena Klisch · Design: <a href="https://www.getpapercss.com/">PaperCSS</a></footer>
+  <div class="leiste" aria-label="Fortschritt und Steuerung">
+    <a href="#sichern" class="leiste-link">Sichern</a>
+    <a href="vorstellung.html" class="leiste-link">Über Add to Brain</a>
+    <div class="balken" aria-hidden="true"><i id="balken"></i></div>
+    <button class="pfeil" id="pfeil-links" type="button">Zurück</button>
+    <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
+  </div>
 
   <script src="js/daten.js"></script>
   <script src="js/module.js"></script>
   <script src="js/lernen.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/scroll.js"></script>
 </body>
 </html>
