@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111809" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111809" rel="stylesheet">
-  <link href="css/style.css?v=202611111809" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111813" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111813" rel="stylesheet">
+  <link href="css/style.css?v=202611111813" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -16,6 +16,7 @@
       <ul class="menue">
         <li><a href="#lernen">Lernen</a></li>
         <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#rechnen">Rechnen</a></li>
         <li><a href="#training">Gespräch</a></li>
         <li><a href="#tagebuch">Tagebuch</a></li>
         <li><a href="#glossar">Glossar</a></li>
@@ -69,9 +70,9 @@
             <h4 class="card-title">Gespräch üben</h4>
             <p class="lesbar">Fragen aus dem Vorstellungsgespräch laut beantworten.</p>
           </div></a>
-          <a href="#konto" class="card kachel"><div class="card-body">
-            <h4 class="card-title">Mein Konto</h4>
-            <p class="lesbar">Freiwillig anmelden und auf allen Geräten lernen.</p>
+          <a href="#rechnen" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Rechnen üben</h4>
+            <p class="lesbar">Mehrwertsteuer, Rabatt, Kalkulation und Kennzahlen.</p>
           </div></a>
         </div>
         <div class="card fortschritt-karte"><div class="card-body">
@@ -118,6 +119,45 @@
           <div id="ln-ergebnis-knoepfe" class="knoepfe"></div>
         </div></div>
       </div>
+    </section>
+
+    <!-- RECHNEN -->
+    <section id="rechnen" class="seite" hidden>
+      <h2>Rechnen üben</h2>
+      <p class="lesbar leise">Typische Rechnungen aus dem Onlinehandel: Mehrwertsteuer, Rabatt, Kalkulation und Kennzahlen. Die Zahlen sind jedes Mal neu. Nach dem Prüfen siehst du den Rechenweg.</p>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Thema</h4>
+        <div class="knoepfe rc-themen" id="rc-themen"></div>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
+        <p class="qz-stufe" id="rc-titel"></p>
+        <p class="rc-aufgabe" id="rc-aufgabe"></p>
+        <form id="rc-form" class="rc-form" autocomplete="off">
+          <label for="rc-eingabe" class="unsichtbar">Deine Lösung</label>
+          <input id="rc-eingabe" type="text" inputmode="decimal" placeholder="Deine Lösung">
+          <span id="rc-einheit" class="rc-einheit"></span>
+          <button type="submit" id="rc-pruefen" class="btn-primary">Prüfen</button>
+        </form>
+        <p id="rc-rueck" class="lesbar meldung" aria-live="polite"></p>
+        <div id="rc-weg" hidden>
+          <h4 class="card-title">Rechenweg</h4>
+          <ol id="rc-weg-liste" class="lesbar rc-weg"></ol>
+        </div>
+        <div class="knoepfe"><button type="button" id="rc-naechste" class="btn-primary" hidden>Nächste Aufgabe</button></div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title" id="rc-formeln-titel">Formeln</h4>
+        <ul id="rc-formeln" class="lesbar rc-formeln"></ul>
+        <p class="hinweis">Tipp: Runde Geldbeträge auf zwei Stellen nach dem Komma. Komma oder Punkt – beides geht.</p>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Dein Stand</h4>
+        <ul id="rc-stand" class="lesbar rc-formeln"></ul>
+      </div></div>
     </section>
 
     <!-- TRAINING: Vorstellungsgespräch -->
@@ -362,12 +402,13 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111809"></script>
-  <script src="js/module.js?v=202611111809"></script>
-  <script src="js/lernen.js?v=202611111809"></script>
-  <script src="js/gespraech.js?v=202611111809"></script>
-  <script src="js/app.js?v=202611111809"></script>
-  <script src="js/scroll.js?v=202611111809"></script>
-  <script src="js/konto.js?v=202611111809"></script>
+  <script src="js/daten.js?v=202611111813"></script>
+  <script src="js/module.js?v=202611111813"></script>
+  <script src="js/lernen.js?v=202611111813"></script>
+  <script src="js/gespraech.js?v=202611111813"></script>
+  <script src="js/rechnen.js?v=202611111813"></script>
+  <script src="js/app.js?v=202611111813"></script>
+  <script src="js/scroll.js?v=202611111813"></script>
+  <script src="js/konto.js?v=202611111813"></script>
 </body>
 </html>

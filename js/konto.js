@@ -152,10 +152,13 @@
     const geloescht = Object.assign({}, (fernTb && fernTb.geloescht) || {}, a.geloescht || {});
     let tagebuch = fernTb ? vereinen(a.tagebuch, fernTb.tagebuch) : a.tagebuch;
     tagebuch = tagebuch.filter((e) => !geloescht[e.id]);
+    // Rechen-Trainer: neuerer Stand je Thema gewinnt
+    const rechnen = Object.assign({}, b.rechnen || {});
+    Object.entries(a.rechnen || {}).forEach(([k, e]) => { const f = rechnen[k]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) rechnen[k] = e; });
     // Gesprächsnotizen (verschlüsselt mit dem Tagebuch): neuere Fassung gewinnt
     const gespraech = Object.assign({}, (fernTb && fernTb.gespraech) || {});
     Object.entries(a.gespraech || {}).forEach(([id, e]) => { const f = gespraech[id]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) gespraech[id] = e; });
-    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht, gespraech });
+    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht, gespraech, rechnen });
   }
 
   // ---------- Synchronisieren ----------
@@ -164,7 +167,7 @@
     const d = window.ATB.daten;
     const zeile = {
       user_id: sitzung.user.id,
-      lernstand: { kartei: d.kartei, module: d.module, eigeneBegriffe: d.eigeneBegriffe },
+      lernstand: { kartei: d.kartei, module: d.module, eigeneBegriffe: d.eigeneBegriffe, rechnen: d.rechnen },
       aktualisiert: new Date().toISOString()
     };
     if (tbSchluessel) {
