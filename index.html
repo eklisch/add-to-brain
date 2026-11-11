@@ -25,35 +25,51 @@
 
   <main class="spur" id="spur">
     <!-- START -->
-    <section id="start" class="seite">
-      <h1>Add to Brain</h1>
-      <p class="lesbar">Deine Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce. Alles, was du hier einträgst, bleibt nur in deinem Browser.</p>
-
-      <div class="kacheln">
-        <a href="#tagebuch" class="card kachel"><div class="card-body">
-          <h4 class="card-title">Praktikum</h4>
-          <p class="lesbar">Tagebuch führen und Wochenberichte erstellen.</p>
-        </div></a>
-        <a href="#lernen" class="card kachel"><div class="card-body">
-          <h4 class="card-title">Lernen</h4>
-          <p class="lesbar">Lerntexte zum Lesen und Vorlesen, mit Mini-Quiz.</p>
-        </div></a>
-        <a href="#quiz" class="card kachel"><div class="card-body">
-          <h4 class="card-title">Quiz</h4>
-          <p class="lesbar">Lernkartei: Was sitzt, kommt seltener dran.</p>
-        </div></a>
-        <a href="#glossar" class="card kachel"><div class="card-body">
-          <h4 class="card-title">Glossar</h4>
-          <p class="lesbar">Alle Begriffe nachschlagen und eigene hinzufügen.</p>
-        </div></a>
+    <section id="start" class="seite start">
+      <div class="hero">
+        <div class="hero-text">
+          <span class="kicker">Deine Lernseite für den E-Commerce</span>
+          <h1>Wissen in den <mark>Warenkorb.</mark></h1>
+          <p class="lead">Lernen, üben und festhalten – für Praktikum, Vorstellungsgespräch und Ausbildung.</p>
+          <a href="#lernen" class="cta gross">Lernen starten</a>
+        </div>
+        <a href="#glossar" class="stapel" aria-label="Begriff des Tages – zum Glossar">
+          <span class="blatt"></span>
+          <span class="blatt"></span>
+          <span class="blatt">
+            <span class="klein">Begriff des Tages</span>
+            <span>
+              <span class="wort" id="bdt-wort"></span>
+              <span class="erkl" id="bdt-erkl"></span>
+            </span>
+            <span class="stempel">add to brain</span>
+          </span>
+        </a>
       </div>
-
-      <p class="lesbar leise">Tipp: Mit dem Mausrad oder dem Knopf „Weiter“ unten rechts geht es nach rechts weiter.</p>
-
-      <div class="card"><div class="card-body">
-        <h4 class="card-title">Dein Fortschritt</h4>
-        <div id="fortschritt"></div>
-      </div></div>
+      <div class="start-rest">
+        <div class="kacheln">
+          <a href="#tagebuch" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Praktikum</h4>
+            <p class="lesbar">Tagebuch führen und Wochenberichte erstellen.</p>
+          </div></a>
+          <a href="#lernen" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Lernen</h4>
+            <p class="lesbar">Lerntexte zum Lesen und Vorlesen, mit Mini-Quiz.</p>
+          </div></a>
+          <a href="#quiz" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Quiz</h4>
+            <p class="lesbar">Lernkartei: Was sitzt, kommt seltener dran.</p>
+          </div></a>
+          <a href="#glossar" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Glossar</h4>
+            <p class="lesbar">Alle Begriffe nachschlagen und eigene hinzufügen.</p>
+          </div></a>
+        </div>
+        <div class="card fortschritt-karte"><div class="card-body">
+          <h4 class="card-title">Dein Fortschritt</h4>
+          <div id="fortschritt"></div>
+        </div></div>
+      </div>
     </section>
 
     <!-- LERNEN -->

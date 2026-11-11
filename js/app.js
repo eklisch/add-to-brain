@@ -275,8 +275,18 @@
     $('qz-weiter').focus();
   }
 
+  // ---------- Begriff des Tages (jeden Tag ein anderer) ----------
+  function begriffDesTages() {
+    const liste = window.BEGRIFFE;
+    const tag = Math.floor(Date.now() / TAG_MS);
+    const b = liste[tag % liste.length];
+    $('bdt-wort').textContent = b.begriff;
+    $('bdt-erkl').textContent = b.erklaerung;
+  }
+
   // ---------- Fortschritt ----------
   function zeigeFortschritt() {
+    begriffDesTages();
     const box = $('fortschritt');
     box.textContent = '';
     const max = freigeschalteteStufe();
