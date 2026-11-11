@@ -140,6 +140,18 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .balken-zeile .progress { height: 14px; margin: 0; }
 #fortschritt > p { font-size: 15px; margin: 6px 0 0; }
 
+/* Kurze Nachricht oben */
+.toast {
+  position: fixed; top: calc(var(--header) + 8px); left: 50%; z-index: 40;
+  transform: translate(-50%, -12px); opacity: 0; pointer-events: none;
+  max-width: min(560px, calc(100vw - 32px));
+  background: var(--weiss); border: 2px solid var(--akzent); border-radius: var(--rand);
+  padding: 12px 20px; font-family: var(--lesbar); font-size: 16px; color: var(--tinte);
+  box-shadow: 6px 14px 18px -12px rgba(0,0,0,.3);
+  transition: opacity .3s, transform .3s;
+}
+.toast.sichtbar { opacity: 1; transform: translate(-50%, 0); }
+
 /* Konto */
 .haken { display: flex !important; gap: 10px; align-items: flex-start; }
 .haken input { width: auto !important; margin-top: 6px; flex: 0 0 auto; }

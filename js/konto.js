@@ -18,6 +18,20 @@
   const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
   const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
   function meldung(id, text, fehler) { const e = $(id); if (!e) return; e.textContent = text || ''; e.classList.toggle('fehler', !!fehler); }
+  // Kurze Nachricht oben, die nach ein paar Sekunden verschwindet
+  function hinweis(text) {
+    let t = document.getElementById('toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = text;
+    t.classList.add('sichtbar');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('sichtbar'), 4500);
+  }
+  // Einrichtung fertig: zur Startseite
+  function fertig(text) {
+    if (location.hash !== '#start') location.hash = 'start';
+    hinweis(text);
+  }
   function uhrzeit(d) { return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
 
   let sitzung = lese(S_SITZUNG);   // {access_token, refresh_token, expires_at, user:{id,email}}
@@ -64,6 +78,13 @@
     schreibe(S_SITZUNG, sitzung);
     window.dispatchEvent(new HashChangeEvent('hashchange'));
     await synchronisieren();
+    if (tbSchluessel) {
+      fertig('Willkommen, du bist angemeldet! Dein Lernstand und dein Tagebuch sind synchronisiert.');
+    } else {
+      hinweis('Du bist angemeldet! Jetzt noch dein Tagebuch schützen.');
+      const ziel = fernTagebuch ? $('ko-tb-entsperren') : $('ko-tb-neu');
+      if (ziel) setTimeout(() => ziel.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }), 300);
+    }
     return true;
   }
 
@@ -234,9 +255,12 @@
     tbSchluessel = await schluesselAusPasswort(p1, salt);
     await schluesselMerken(tbSchluessel, salt);
     $('ko-tb-neu-form').reset();
-    await hochladen().catch((e) => meldung('ko-tb-meldung', e.message, true));
-    meldung('ko-tb-meldung', '');
-    zeige();
+    try {
+      await hochladen();
+      meldung('ko-tb-meldung', '');
+      zeige();
+      fertig('Fertig eingerichtet! Dein Tagebuch ist jetzt verschlüsselt geschützt.');
+    } catch (e) { meldung('ko-tb-meldung', e.message, true); zeige(); }
   });
 
   // Tagebuch auf einem weiteren Gerät entsperren
@@ -251,6 +275,7 @@
       $('ko-tb-entsperren-form').reset();
       meldung('ko-tb-meldung2', '');
       await synchronisieren();
+      fertig('Tagebuch geöffnet! Deine Einträge sind jetzt auch auf diesem Gerät.');
     } catch (e) {
       meldung('ko-tb-meldung2', 'Das Passwort passt nicht. Versuch es noch einmal.', true);
     }
