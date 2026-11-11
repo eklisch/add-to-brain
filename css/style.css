@@ -75,11 +75,11 @@ h2 { font-size: clamp(36px, 4vw, 56px); line-height: 1.1; margin: 0 0 16px; }
 
 /* ---------- Startseite: ruhiger Header ---------- */
 .kicker { display: block; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; color: var(--grau); margin-bottom: 16px; }
-.hero h1 { font-size: clamp(56px, 8vw, 120px); line-height: 1.02; margin: 0; }
+.hero h1 { font-size: clamp(40px, min(8vw, 13vh), 120px); line-height: 1.02; margin: 0; }
 .hero mark { background: linear-gradient(transparent 58%, var(--markierung) 58%); color: inherit; padding: 0 2px; }
-.lead, .lead.lesbar { font-size: clamp(19px, 1.6vw, 23px); max-width: 32ch; margin: 24px 0 36px; }
+.lead, .lead.lesbar { font-size: clamp(17px, min(1.6vw, 2.6vh), 23px); max-width: 32ch; margin: min(24px, 3vh) 0 min(36px, 4.5vh); }
 .cta.gross { font-size: 24px; padding: 10px 28px; display: inline-block; }
-.stapel { position: relative; display: block; width: 100%; max-width: 420px; height: min(56vh, 480px); justify-self: center; color: inherit; text-decoration: none; background-image: none; }
+.stapel { position: relative; display: block; width: 100%; max-width: 420px; height: min(calc(100vh - var(--header) - var(--leiste) - 80px), 480px); justify-self: center; color: inherit; text-decoration: none; background-image: none; }
 .blatt { position: absolute; inset: 0; background: var(--weiss); border: 2px solid var(--tinte); border-radius: var(--rand); padding: 32px; box-shadow: 15px 28px 25px -18px rgba(0,0,0,.2); }
 .blatt:nth-child(1) { transform: rotate(-6deg) translate(-16px, 10px); background: var(--karton); }
 .blatt:nth-child(2) { transform: rotate(3deg) translate(12px, -6px); background: #f0ebdf; }
@@ -178,7 +178,7 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
   html, body { height: 100%; overflow: hidden; }
   .spur {
     position: fixed; top: var(--header); bottom: var(--leiste); left: 0; right: 0;
-    padding: 16px 0 16px var(--pad);
+    padding: 16px 0;
     overflow-x: auto; overflow-y: hidden;
     scrollbar-width: none;
   }
@@ -188,19 +188,27 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
     column-width: var(--spalte);
     column-gap: 64px;
     column-fill: auto;
+    padding-left: var(--pad);
     padding-right: var(--pad);
   }
   .seite > * + * { margin-top: 0; }
   .seite > * { margin-bottom: 24px; }
-  /* Karten, Formulare und Quizfragen nicht zwischen zwei Spalten zerreißen */
-  .card, .kachel, .eintrag, .ln-frage, .formular label, .reihe, .knoepfe, .qz-antworten button,
-  .glossar dt, .modulkarte, .balken-zeile, .lerntext h3, .lerntext li {
+  /* Große Karten dürfen in der nächsten Spalte weiterlaufen – wie ein zweites Blatt.
+     Jedes Stück bekommt dabei seinen eigenen Papierrahmen. */
+  .card, .card-body { -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  /* Kleine Bausteine bleiben zusammen: Eingabefelder, Knöpfe, Quizfragen, Kacheln */
+  .kachel, .modulkarte, .eintrag, .ln-frage, .formular label, .reihe, .knoepfe, .qz-antworten button,
+  .glossar dt, .balken-zeile, .lerntext h3, .lerntext li, .card-title {
     break-inside: avoid;
   }
+  .card-title { break-after: avoid; }
+  .card p { orphans: 2; widows: 2; }
+  /* Große Formulare beginnen oben auf einem neuen Blatt (keine leeren Mini-Blätter) */
+  .neue-spalte { break-before: column; }
   .glossar dt { break-after: avoid; }
   .lerntext h3 { break-after: avoid; }
   /* Startseite: erst der Header über die ganze Breite, rechts davon Kacheln und Fortschritt */
-  .seite.start { columns: auto; display: flex; gap: 96px; align-items: center; padding-right: var(--pad); width: max-content; }
+  .seite.start { columns: auto; display: flex; gap: 96px; align-items: center; padding-left: var(--pad); padding-right: var(--pad); width: max-content; }
   .start .hero { flex: 0 0 calc(100vw - 2 * var(--pad)); height: 100%; grid-template-columns: 1.15fr .85fr; gap: 6vw; margin: 0; }
   .start .start-rest { flex: 0 0 auto; display: flex; gap: 48px; align-items: center; height: 100%; margin: 0; }
   .start .kacheln { display: grid; grid-template-columns: repeat(2, 300px); gap: 20px; }
@@ -212,7 +220,10 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
   .module > * { margin-bottom: 16px; }
   #ln-modul[hidden], #ln-liste[hidden], #qz-karte[hidden], #ln-quiz[hidden] { display: none; }
   .card .card-body > * + * { margin-top: 12px; }
-  .card textarea { max-height: 28vh; }
+  .card textarea { max-height: 22vh; }
+  .kicker { margin-bottom: min(16px, 2vh); }
+  .blatt { padding: min(32px, 4vh) 32px; }
+  .blatt .wort { font-size: clamp(30px, min(4vw, 7vh), 60px); }
   .kopf, .leiste { padding-left: var(--pad); padding-right: var(--pad); }
 }
 
