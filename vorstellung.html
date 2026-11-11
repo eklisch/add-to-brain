@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add to Brain – Wissen in den Warenkorb</title>
+<meta name="description" content="Add to Brain: die ruhige Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung im E-Commerce.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Farben nach der 60-30-10-Regel
+   60 % Papier (Hintergrund) · 30 % Karton (Flächen) · 10 % Tinte-Blau (Akzent)
+   ========================================================= */
+:root{
+  --papier:#f5f2ea;      /* 60 % */
+  --karton:#ebe5d6;      /* 30 % */
+  --weiss:#fffdf8;
+  --tinte:#41403e;       /* Text */
+  --grau:#7a766d;
+  --akzent:#2f6fb3;      /* 10 % – nur Buttons und Highlights */
+  --markierung:#fff1a8;
+  --kopf:'Patrick Hand', 'Comic Sans MS', cursive;
+  --text:'Nunito', system-ui, sans-serif;
+  --rand:255px 15px 225px 15px/15px 225px 15px 255px; /* handgezeichnete Kante */
+  --pad:clamp(24px, 6vw, 96px);
+  --header:72px;
+  --footer:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--papier);color:var(--tinte);font-family:var(--text);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px dashed var(--akzent);outline-offset:4px}
+
+/* ---------- Typografie ---------- */
+h1,h2,h3,.logo{font-family:var(--kopf);font-weight:400;line-height:1.05;letter-spacing:.2px}
+h1{font-size:clamp(56px, 9vw, 132px)}
+h2{font-size:clamp(40px, 5vw, 72px);margin-bottom:24px}
+h3{font-size:30px;margin-bottom:8px}
+.kicker{font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--grau);margin-bottom:20px;display:block}
+.lead{font-size:clamp(19px, 1.6vw, 23px);max-width:34ch;color:var(--tinte)}
+.leise{color:var(--grau)}
+mark{background:linear-gradient(transparent 55%, var(--markierung) 55%);color:inherit;padding:0 2px}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--kopf);font-size:24px;padding:10px 26px;border:2px solid var(--tinte);border-radius:var(--rand);text-decoration:none;transition:transform .25s ease, box-shadow .25s ease, background .25s ease}
+.btn:hover{transform:translateY(-2px) rotate(-.6deg);box-shadow:2px 8px 8px -5px rgba(0,0,0,.25)}
+.btn-akzent{background:var(--akzent);border-color:var(--akzent);color:#fff}
+.btn-akzent:hover{background:#285f9a}
+
+/* ---------- Header (fixiert) ---------- */
+.kopf{position:fixed;top:0;left:0;right:0;height:var(--header);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);background:linear-gradient(var(--papier) 70%, rgba(245,242,234,0))}
+.logo{font-size:30px;text-decoration:none}
+.logo span{color:var(--akzent)}
+.menue{display:flex;gap:clamp(16px, 3vw, 40px);list-style:none}
+.menue a{text-decoration:none;font-size:16px;color:var(--grau);padding:4px 0;border-bottom:2px solid transparent;transition:color .2s, border-color .2s}
+.menue a:hover,.menue a.aktiv{color:var(--tinte);border-color:var(--akzent)}
+.kopf .btn{font-size:20px;padding:6px 18px}
+
+/* ---------- Buch: horizontale Spur ---------- */
+.buch{position:fixed;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.buch::-webkit-scrollbar{display:none}
+.seite{flex:0 0 100vw;width:100vw;height:100vh;scroll-snap-align:start;padding:calc(var(--header) + 24px) var(--pad) calc(var(--footer) + 24px);display:grid;align-items:center;position:relative;overflow:hidden}
+.seite + .seite{border-left:1px solid rgba(65,64,62,.08)} /* feine Falz zwischen den Seiten */
+
+/* ---------- Sanftes Einblenden ---------- */
+.zeig{opacity:0;transform:translateY(18px);transition:opacity .9s ease, transform .9s ease}
+.sichtbar .zeig{opacity:1;transform:none}
+.sichtbar .zeig:nth-child(2){transition-delay:.12s}
+.sichtbar .zeig:nth-child(3){transition-delay:.24s}
+.sichtbar .zeig:nth-child(4){transition-delay:.36s}
+
+/* ---------- Seite 1: Cover ---------- */
+.cover{grid-template-columns:1.1fr .9fr;gap:6vw}
+.cover p.lead{margin:28px 0 40px}
+.stapel{position:relative;height:min(58vh, 520px);max-width:440px;width:100%;justify-self:center}
+.blatt{position:absolute;inset:0;background:var(--weiss);border:2px solid var(--tinte);border-radius:var(--rand);padding:36px;box-shadow:15px 28px 25px -18px rgba(0,0,0,.2)}
+.blatt:nth-child(1){transform:rotate(-6deg) translate(-18px, 10px);background:var(--karton)}
+.blatt:nth-child(2){transform:rotate(3deg) translate(14px, -6px);background:#f0ebdf}
+.blatt:nth-child(3){transform:rotate(-1deg);display:flex;flex-direction:column;justify-content:space-between}
+.blatt .klein{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--grau)}
+.blatt .wort{font-family:var(--kopf);font-size:clamp(44px, 4.5vw, 68px);line-height:1}
+.blatt .erkl{font-size:17px;color:var(--grau);max-width:28ch}
+.blatt .stempel{align-self:flex-end;font-family:var(--kopf);font-size:22px;color:var(--akzent);border:2px solid var(--akzent);border-radius:var(--rand);padding:2px 14px;transform:rotate(-6deg)}
+
+/* ---------- Seite 2: Problem & Lösung ---------- */
+.idee{grid-template-columns:5fr 6fr;gap:7vw}
+.idee .lead + .lead{margin-top:20px}
+.karten{display:grid;gap:20px}
+.karte{background:var(--weiss);border:2px solid var(--tinte);border-radius:var(--rand);padding:24px 28px;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start;transition:transform .3s ease, box-shadow .3s ease}
+.karte:hover{transform:translateX(6px);box-shadow:4px 10px 12px -8px rgba(0,0,0,.25)}
+.karte p{font-size:16px;color:var(--grau)}
+.icon{width:56px;height:56px;border-radius:50%;background:var(--karton);display:grid;place-items:center}
+.icon svg{width:28px;height:28px;stroke:var(--tinte);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Seite 3: Funktionen ---------- */
+.funktionen{grid-template-rows:auto 1fr auto;align-content:center;gap:40px}
+.galerie{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:clamp(20px, 3vw, 40px)}
+.fkarte{background:var(--weiss);border:2px solid var(--tinte);border-radius:var(--rand);padding:36px 32px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .35s ease, box-shadow .35s ease, background .35s ease}
+.fkarte:hover{transform:translateY(-8px) rotate(-.5deg);box-shadow:8px 22px 22px -16px rgba(0,0,0,.28);background:#fffbea}
+.fkarte .nr{font-family:var(--kopf);font-size:56px;color:var(--akzent);line-height:1}
+.fkarte p{color:var(--grau);font-size:17px}
+.bald{font-size:16px;color:var(--grau)}
+.bald strong{color:var(--tinte);font-weight:600}
+
+/* ---------- Seite 4: Über das Projekt ---------- */
+.projekt{grid-template-columns:6fr 5fr;gap:7vw}
+.zitat{font-family:var(--kopf);font-size:clamp(30px, 3vw, 46px);line-height:1.2;position:relative;padding-left:32px;border-left:3px solid var(--akzent);margin-bottom:28px}
+.versprechen{background:var(--karton);border-radius:var(--rand);padding:36px 40px}
+.versprechen ul{list-style:none;display:grid;gap:16px;margin-top:16px}
+.versprechen li{display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:17px}
+.versprechen li::before{content:"✓";font-family:var(--kopf);font-size:24px;color:var(--akzent);line-height:1.1}
+
+/* ---------- Seite 5: Backcover ---------- */
+.backcover{grid-template-rows:1fr auto;text-align:center}
+.backcover .mitte{display:grid;justify-items:center;gap:28px;align-self:center}
+.backcover h2{margin:0;max-width:16ch}
+.backcover .lead{max-width:40ch}
+.rechtliches{display:flex;justify-content:center;gap:28px;font-size:14px;color:var(--grau)}
+.rechtliches button{text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- Fuß: Fortschritt + Pfeile (fixiert) ---------- */
+.fuss{position:fixed;left:0;right:0;bottom:0;height:var(--footer);z-index:20;display:flex;align-items:center;gap:24px;padding:0 var(--pad);background:linear-gradient(rgba(245,242,234,0), var(--papier) 40%)}
+.zahl{font-family:var(--kopf);font-size:22px;min-width:72px;font-variant-numeric:tabular-nums}
+.zahl .von{color:var(--grau)}
+.balken{flex:1;height:2px;background:rgba(65,64,62,.15);position:relative;overflow:hidden;border-radius:2px}
+.balken i{position:absolute;inset:0 auto 0 0;width:20%;background:var(--akzent);transition:width .5s ease}
+.pfeil{width:44px;height:44px;border:2px solid var(--tinte);border-radius:var(--rand);display:grid;place-items:center;transition:transform .2s, opacity .2s}
+.pfeil:hover{transform:scale(1.06)}
+.pfeil[disabled]{opacity:.25;cursor:default;transform:none}
+.pfeil svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Modal für Impressum und Datenschutz ---------- */
+dialog{border:2px solid var(--tinte);border-radius:var(--rand);background:var(--weiss);color:var(--tinte);padding:40px;max-width:min(640px, calc(100vw - 32px));max-height:80vh;margin:auto}
+dialog::backdrop{background:rgba(65,64,62,.35);backdrop-filter:blur(2px)}
+dialog h2{font-size:44px;margin-bottom:16px}
+dialog h3{font-size:24px;margin:20px 0 4px}
+dialog p{font-size:16px}
+dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
+.platzhalter{background:var(--markierung);padding:0 4px}
+
+/* ---------- Mobil: normales vertikales Scrollen ---------- */
+@media (max-width:767px){
+  :root{--header:60px}
+  .menue{display:none}
+  .buch{position:static;display:block;overflow:visible;scroll-snap-type:none}
+  .seite{width:100%;height:auto;min-height:auto;padding:calc(var(--header) + 40px) 20px 64px;display:block}
+  .seite + .seite{border-left:0;border-top:1px solid rgba(65,64,62,.08)}
+  .cover,.idee,.projekt{display:grid;grid-template-columns:1fr;gap:48px}
+  .stapel{height:380px;max-width:320px}
+  .galerie{grid-template-columns:1fr}
+  .fkarte{min-height:auto;gap:24px}
+  .funktionen{display:grid;gap:32px}
+  .backcover{display:grid;gap:56px;padding-bottom:120px}
+  .pfeil{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;scroll-behavior:auto !important}
+  .zeig{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <a href="#cover" class="logo" data-ziel="0">Add <span>to</span> Brain</a>
+  <nav aria-label="Seiten">
+    <ul class="menue">
+      <li><a href="#idee" data-ziel="1">Idee</a></li>
+      <li><a href="#funktionen" data-ziel="2">Funktionen</a></li>
+      <li><a href="#projekt" data-ziel="3">Projekt</a></li>
+      <li><a href="#start" data-ziel="4">Start</a></li>
+    </ul>
+  </nav>
+  <a href="index.html" class="btn btn-akzent">Loslegen</a>
+</header>
+
+<main class="buch" id="buch">
+
+  <!-- 1 · COVER -->
+  <section class="seite cover" id="cover" aria-label="Cover">
+    <div>
+      <span class="kicker zeig">Lernen für den E-Commerce</span>
+      <h1 class="zeig">Wissen in den<br><mark>Warenkorb.</mark></h1>
+      <p class="lead zeig">Die ruhige Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau oder zum Kaufmann im E-Commerce.</p>
+      <div class="zeig"><a href="#idee" class="btn" data-ziel="1">Entdecken →</a></div>
+    </div>
+    <div class="stapel zeig" aria-hidden="true">
+      <div class="blatt"></div>
+      <div class="blatt"></div>
+      <div class="blatt">
+        <span class="klein">Begriff des Tages</span>
+        <div>
+          <div class="wort">Conversion Rate</div>
+          <p class="erkl">Wie viel Prozent der Besucher eines Shops etwas kaufen.</p>
+        </div>
+        <span class="stempel">add to brain</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · IDEE: PROBLEM & LÖSUNG -->
+  <section class="seite idee" id="idee" aria-label="Idee">
+    <div>
+      <span class="kicker zeig">Die Idee</span>
+      <h2 class="zeig">Viele neue Wörter.<br>Wenig Zeit.</h2>
+      <p class="lead zeig">Fulfillment, SEO, Retourenquote: Im E-Commerce prasseln ständig neue Begriffe auf einen ein. Und das Vorstellungsgespräch rückt näher.</p>
+      <p class="lead zeig"><strong>Add to Brain</strong> macht daraus kleine, ruhige Lernhäppchen – zum Lesen, Hören und Üben.</p>
+    </div>
+    <div class="karten">
+      <div class="karte zeig">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/></svg></div>
+        <div><h3>Lesen oder hören</h3><p>Lerntexte, die man sich vorlesen lassen kann – Satz für Satz markiert, im eigenen Tempo.</p></div>
+      </div>
+      <div class="karte zeig">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div>
+        <div><h3>Üben mit System</h3><p>Eine Lernkartei mit fünf Fächern: Was sitzt, kommt seltener dran. Neue Stufen schalten sich frei.</p></div>
+      </div>
+      <div class="karte zeig">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5M8 8h4"/></svg></div>
+        <div><h3>Festhalten</h3><p>Ein Praktikumstagebuch, aus dem der Wochenbericht auf Knopfdruck entsteht.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · FUNKTIONEN -->
+  <section class="seite funktionen" id="funktionen" aria-label="Funktionen">
+    <div>
+      <span class="kicker zeig">Funktionen</span>
+      <h2 class="zeig">Drei Dinge, die wirklich helfen.</h2>
+    </div>
+    <div class="galerie">
+      <article class="fkarte zeig">
+        <span class="nr">01</span>
+        <div><h3>Lernmodule</h3><p>Von Grundbegriffen bis Kennzahlen: kurze Texte mit Vorlesefunktion und einem Mini-Quiz am Ende.</p></div>
+      </article>
+      <article class="fkarte zeig">
+        <span class="nr">02</span>
+        <div><h3>Quiz mit Lernkartei</h3><p>Fragen, die sich dem eigenen Fortschritt anpassen. Eigene Begriffe kommen mit „Add to Brain“ dazu.</p></div>
+      </article>
+      <article class="fkarte zeig">
+        <span class="nr">03</span>
+        <div><h3>Praktikumstagebuch</h3><p>Datum, Arbeitszeit, Tätigkeiten, Gelerntes, offene Fragen – und daraus der Wochenbericht.</p></div>
+      </article>
+    </div>
+    <p class="bald zeig"><strong>Demnächst:</strong> Trainer fürs Vorstellungsgespräch · Rechen-Trainer · Fehler-Detektiv</p>
+  </section>
+
+  <!-- 4 · ÜBER DAS PROJEKT -->
+  <section class="seite projekt" id="projekt" aria-label="Über das Projekt">
+    <div>
+      <span class="kicker zeig">Über das Projekt</span>
+      <p class="zitat zeig">Von einer Teilnehmerin – für alle, die gerade denselben Weg gehen.</p>
+      <p class="lead zeig">Entstanden ist Add to Brain, während ich mich selbst auf meine Umschulung zur Kauffrau im E-Commerce vorbereite. Was mir beim Lernen hilft, sollen auch andere nutzen können – kostenlos und ohne Anmeldung.</p>
+      <p class="leise zeig" style="margin-top:20px">Elena Klisch</p>
+    </div>
+    <div class="versprechen zeig">
+      <h3>Versprochen</h3>
+      <ul>
+        <li>Kein Konto, keine Anmeldung.</li>
+        <li>Deine Einträge bleiben in deinem Browser – niemand sonst sieht sie.</li>
+        <li>Ruhiges Design, das man auch lange ansehen kann.</li>
+        <li>Sichern und Wiederherstellen per Datei.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5 · BACKCOVER -->
+  <section class="seite backcover" id="start" aria-label="Loslegen">
+    <div class="mitte">
+      <span class="kicker zeig">Bereit?</span>
+      <h2 class="zeig">Leg den ersten Begriff in deinen Kopf.</h2>
+      <p class="lead zeig">Starte mit Modul 1 – oder schreib dir den ersten Begriff auf, den du heute gehört hast.</p>
+      <div class="zeig"><a href="index.html" class="btn btn-akzent">Lernseite öffnen →</a></div>
+    </div>
+    <footer class="rechtliches">
+      <span>© 2026 Add to Brain</span>
+      <button type="button" data-modal="impressum">Impressum</button>
+      <button type="button" data-modal="datenschutz">Datenschutz</button>
+    </footer>
+  </section>
+</main>
+
+<!-- Fixierter Fuß: Seitenzahl, Fortschritt, Pfeile -->
+<div class="fuss" aria-label="Seitensteuerung">
+  <div class="zahl" aria-live="polite"><span id="akt">01</span> <span class="von">/ 05</span></div>
+  <div class="balken" aria-hidden="true"><i id="balken"></i></div>
+  <button class="pfeil" id="zurueck" type="button" aria-label="Vorherige Seite"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="pfeil" id="weiter" type="button" aria-label="Nächste Seite"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+</div>
+
+<!-- Modals -->
+<dialog id="impressum" aria-labelledby="imp-t">
+  <button class="zu" type="button" aria-label="Schließen">×</button>
+  <h2 id="imp-t">Impressum</h2>
+  <p>Angaben gemäß § 5 DDG</p>
+  <h3>Verantwortlich</h3>
+  <p><span class="platzhalter">[Vor- und Nachname]</span><br><span class="platzhalter">[Straße und Hausnummer]</span><br><span class="platzhalter">[PLZ und Ort]</span></p>
+  <h3>Kontakt</h3>
+  <p>E-Mail: <span class="platzhalter">[E-Mail-Adresse]</span></p>
+  <p class="leise" style="margin-top:20px">Hinweis: Platzhalter vor der Veröffentlichung ausfüllen.</p>
+</dialog>
+
+<dialog id="datenschutz" aria-labelledby="ds-t">
+  <button class="zu" type="button" aria-label="Schließen">×</button>
+  <h2 id="ds-t">Datenschutz</h2>
+  <h3>Deine Einträge</h3>
+  <p>Add to Brain speichert Tagebuch, eigene Begriffe und Lernfortschritt ausschließlich im lokalen Speicher deines Browsers (localStorage). Diese Daten werden nicht an uns oder an Dritte übertragen. Du kannst sie jederzeit löschen, indem du die Browserdaten für diese Seite löschst.</p>
+  <h3>Hosting</h3>
+  <p>Die Seite wird über GitHub Pages bereitgestellt (GitHub Inc.). Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie die IP-Adresse.</p>
+  <h3>Schriften</h3>
+  <p class="platzhalter">Derzeit werden Schriften von Google Fonts geladen. Vor der Veröffentlichung sollten die Schriften lokal eingebunden werden; dann entfällt dieser Absatz.</p>
+  <h3>Verantwortlich</h3>
+  <p>Siehe Impressum.</p>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  var buch = document.getElementById('buch');
+  var seiten = Array.prototype.slice.call(document.querySelectorAll('.seite'));
+  var akt = document.getElementById('akt');
+  var balken = document.getElementById('balken');
+  var zurueck = document.getElementById('zurueck');
+  var weiter = document.getElementById('weiter');
+  var menue = document.querySelectorAll('.menue a');
+  var mobil = window.matchMedia('(max-width: 767px)');
+  var index = 0, sperre = false;
+
+  function zuSeite(i){
+    i = Math.max(0, Math.min(seiten.length - 1, i));
+    if (mobil.matches) { seiten[i].scrollIntoView({behavior:'smooth', block:'start'}); return; }
+    buch.scrollTo({left: i * buch.clientWidth, behavior:'smooth'});
+  }
+
+  function anzeigen(i){
+    index = i;
+    akt.textContent = String(i + 1).padStart(2, '0');
+    balken.style.width = ((i + 1) / seiten.length * 100) + '%';
+    zurueck.disabled = i === 0;
+    weiter.disabled = i === seiten.length - 1;
+    menue.forEach(function(a){ a.classList.toggle('aktiv', +a.dataset.ziel === i); });
+  }
+
+  // Aktuelle Seite ermitteln + Texte sanft einblenden
+  var beobachter = new IntersectionObserver(function(eintraege){
+    eintraege.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('sichtbar');
+        if (e.intersectionRatio >= 0.5) anzeigen(seiten.indexOf(e.target));
+      }
+    });
+  }, {threshold:[0.2, 0.5]});
+  seiten.forEach(function(s){ beobachter.observe(s); });
+
+  // Mausrad: vertikal → eine Buchseite weiter/zurück
+  buch.addEventListener('wheel', function(ev){
+    if (mobil.matches) return;
+    var d = Math.abs(ev.deltaY) > Math.abs(ev.deltaX) ? ev.deltaY : ev.deltaX;
+    if (Math.abs(d) < 4) return;
+    ev.preventDefault();
+    if (sperre) return;
+    sperre = true;
+    zuSeite(index + (d > 0 ? 1 : -1));
+    setTimeout(function(){ sperre = false; }, 750);
+  }, {passive:false});
+
+  // Tastatur
+  document.addEventListener('keydown', function(ev){
+    if (mobil.matches || document.querySelector('dialog[open]')) return;
+    if (['ArrowRight','PageDown',' '].indexOf(ev.key) > -1) { ev.preventDefault(); zuSeite(index + 1); }
+    if (['ArrowLeft','PageUp'].indexOf(ev.key) > -1) { ev.preventDefault(); zuSeite(index - 1); }
+    if (ev.key === 'Home') zuSeite(0);
+    if (ev.key === 'End') zuSeite(seiten.length - 1);
+  });
+
+  zurueck.addEventListener('click', function(){ zuSeite(index - 1); });
+  weiter.addEventListener('click', function(){ zuSeite(index + 1); });
+
+  // Menü, Logo und "Entdecken" springen sanft zur Seite
+  document.querySelectorAll('[data-ziel]').forEach(function(a){
+    a.addEventListener('click', function(ev){ ev.preventDefault(); zuSeite(+a.dataset.ziel); });
+  });
+
+  // Nach Größenänderung auf der aktuellen Seite bleiben
+  window.addEventListener('resize', function(){
+    if (!mobil.matches) buch.scrollTo({left: index * buch.clientWidth});
+  });
+
+  // Modals
+  document.querySelectorAll('[data-modal]').forEach(function(b){
+    b.addEventListener('click', function(){ document.getElementById(b.dataset.modal).showModal(); });
+  });
+  document.querySelectorAll('dialog').forEach(function(d){
+    d.querySelector('.zu').addEventListener('click', function(){ d.close(); });
+    d.addEventListener('click', function(ev){ if (ev.target === d) d.close(); }); // Klick daneben schließt
+  });
+
+  anzeigen(0);
+  seiten[0].classList.add('sichtbar');
+})();
+</script>
+</body>
+</html>
