@@ -113,7 +113,8 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .reihe label { flex: 1 1 110px; }
 .knoepfe { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .knoepfe button, .knoepfe .paper-btn { margin: 0; }
-button.btn-primary, button.btn-secondary { background: var(--akzent); border-color: var(--akzent); color: #fff; }
+.seite button.btn-primary, .seite button.btn-secondary { background: var(--akzent); border-color: var(--akzent); color: #fff; }
+.seite button.btn-primary:hover, .seite button.btn-secondary:hover { background: #285f9a; }
 
 /* Tagebuch */
 .eintrag { border-top: 2px dashed #c9c4b8; padding: 12px 0; }
@@ -133,9 +134,17 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
 .qz-antworten { display: grid; gap: 10px; margin: 12px 0; }
 .qz-antworten button { text-align: left; font-family: var(--lesbar); font-size: 16px; width: 100%; margin: 0; }
 
-/* Fortschritt */
-.balken-zeile { margin: 8px 0 16px; }
-.balken-zeile p { margin: 0 0 4px; }
+/* Fortschritt (kompakt) */
+.balken-zeile { margin: 6px 0 12px; }
+.balken-zeile p { margin: 0 0 4px; font-size: 15px; }
+.balken-zeile .progress { height: 14px; margin: 0; }
+#fortschritt > p { font-size: 15px; margin: 6px 0 0; }
+
+/* Quiz-Ergebnis */
+.ergebnis .card-title { font-size: 34px; color: var(--akzent); }
+.ergebnis-zahl { font-family: var(--kopf); font-size: 24px; margin: 4px 0 8px; }
+#qz-erg-liste ul { margin: 6px 0 0; padding-left: 20px; }
+#qz-erg-liste li { margin-bottom: 6px; }
 
 /* Lernmodule */
 .module { display: grid; gap: 16px; }
@@ -191,6 +200,7 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
     padding: 16px 0;
     overflow-x: auto; overflow-y: hidden;
     scrollbar-width: none;
+    scroll-padding-inline: var(--pad);
   }
   .spur::-webkit-scrollbar { display: none; }
   .seite {
@@ -223,7 +233,10 @@ button.btn-primary, button.btn-secondary { background: var(--akzent); border-col
   .start .start-rest { flex: 0 0 auto; display: flex; gap: 48px; align-items: center; height: 100%; margin: 0; }
   .start .kacheln { display: grid; grid-template-columns: repeat(2, 300px); gap: 20px; }
   .start .kacheln > * { margin: 0; }
-  .start .fortschritt-karte { width: 420px; margin: 0; }
+  .start .fortschritt-karte { width: 420px; margin: 0; max-height: 100%; }
+  .start .kachel .card-body { padding: 18px 22px; }
+  .start .kachel .card-title { font-size: 24px; margin-bottom: 6px; }
+  .start .kachel p { font-size: 15px; margin: 0; }
   .start-rest > * + * { margin-top: 0; }
   #ln-modul, #ln-liste { display: contents; }
   .module { display: block; }

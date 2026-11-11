@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111704" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111704" rel="stylesheet">
-  <link href="css/style.css?v=202611111704" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111709" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111709" rel="stylesheet">
+  <link href="css/style.css?v=202611111709" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -180,12 +180,23 @@
           <p class="qz-frage lesbar" id="qz-frage"></p>
           <div class="qz-antworten" id="qz-antworten"></div>
           <p class="qz-rueckmeldung lesbar" id="qz-rueckmeldung" aria-live="polite"></p>
-          <button type="button" id="qz-weiter" class="btn-primary" hidden>Weiter</button>
+          <div class="knoepfe">
+            <button type="button" id="qz-weiter" class="btn-primary" hidden>Nächste Frage</button>
+            <button type="button" id="qz-beenden" class="btn-small">Quiz beenden</button>
+          </div>
         </div>
         <button type="button" id="qz-start" class="btn-primary">Los geht's</button>
       </div></div>
 
-      <div class="card"><div class="card-body">
+      <div id="qz-ergebnis" class="card ergebnis neue-spalte" hidden><div class="card-body">
+        <h4 class="card-title" id="qz-erg-titel"></h4>
+        <p class="ergebnis-zahl" id="qz-erg-zahl"></p>
+        <p class="lesbar" id="qz-erg-text"></p>
+        <div id="qz-erg-liste" class="lesbar"></div>
+        <div class="knoepfe"><button type="button" id="qz-erg-ok" class="btn-primary">Alles klar</button></div>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
         <h4 class="card-title">So funktioniert die Lernkartei</h4>
         <p class="lesbar">Jeder Begriff liegt in einem von fünf Fächern. Richtig beantwortet, rutscht er ein Fach weiter und kommt seltener dran (Fach 1: sofort, 2: nach 1 Tag, 3: nach 3 Tagen, 4: nach 7 Tagen, 5: nach 14 Tagen). Falsch beantwortet, geht er zurück in Fach 1. Stufe 2 und 3 werden freigeschaltet, wenn die meisten Begriffe der Stufe davor mindestens in Fach 3 liegen.</p>
       </div></div>
@@ -219,10 +230,10 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111704"></script>
-  <script src="js/module.js?v=202611111704"></script>
-  <script src="js/lernen.js?v=202611111704"></script>
-  <script src="js/app.js?v=202611111704"></script>
-  <script src="js/scroll.js?v=202611111704"></script>
+  <script src="js/daten.js?v=202611111709"></script>
+  <script src="js/module.js?v=202611111709"></script>
+  <script src="js/lernen.js?v=202611111709"></script>
+  <script src="js/app.js?v=202611111709"></script>
+  <script src="js/scroll.js?v=202611111709"></script>
 </body>
 </html>

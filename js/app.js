@@ -230,12 +230,47 @@
   }
 
   let aktuell = null;
-  $('qz-start').addEventListener('click', naechsteFrage);
+  // Runde: zählt, was beim ersten Versuch richtig war
+  let runde = null;
+  function neueRunde() { runde = { gefragt: {}, ersterVersuchRichtig: 0, fehler: {} }; }
+
+  $('qz-start').addEventListener('click', () => { neueRunde(); $('qz-ergebnis').hidden = true; naechsteFrage(); });
   $('qz-weiter').addEventListener('click', naechsteFrage);
+  $('qz-beenden').addEventListener('click', zeigeErgebnis);
+  $('qz-erg-ok').addEventListener('click', () => { $('qz-ergebnis').hidden = true; quizInfo(); if (window.SPUR) window.SPUR.anfang(); });
+
+  function zeigeErgebnis() {
+    quizInfo();
+    if (!runde) return;
+    const anzahl = Object.keys(runde.gefragt).length;
+    if (!anzahl) return;
+    const richtig = runde.ersterVersuchRichtig;
+    const prozent = Math.round(richtig / anzahl * 100);
+    let titel, text;
+    if (prozent >= 90) { titel = 'Super gemacht!'; text = 'Fast alles saß schon beim ersten Versuch. Diese Begriffe hast du richtig gut drauf.'; }
+    else if (prozent >= 70) { titel = 'Gut gemacht!'; text = 'Der Großteil sitzt. Die Begriffe unten kommen bald noch einmal, dann klappt es auch mit denen.'; }
+    else if (prozent >= 50) { titel = 'Ordentlich – da geht noch was.'; text = 'Gut die Hälfte sitzt schon. Schau dir die Begriffe unten noch einmal im Glossar oder im Lerntext an.'; }
+    else { titel = 'Da musst du nochmal ran.'; text = 'Kein Problem, genau dafür ist die Lernkartei da: Die Begriffe unten kommen wieder, bis sie sitzen. Lies vorher am besten noch einmal den Lerntext.'; }
+    $('qz-erg-titel').textContent = titel;
+    $('qz-erg-zahl').textContent = richtig + ' von ' + anzahl + ' beim ersten Versuch richtig (' + prozent + ' %)';
+    $('qz-erg-text').textContent = text;
+    const liste = $('qz-erg-liste');
+    liste.textContent = '';
+    const fehler = Object.values(runde.fehler);
+    if (fehler.length) {
+      liste.appendChild(el('p', 'Noch üben:', 'qz-frage'));
+      const ul = el('ul');
+      fehler.forEach((b) => { const li = el('li'); li.appendChild(el('strong', b.begriff)); li.appendChild(document.createTextNode(' – ' + b.erklaerung)); ul.appendChild(li); });
+      liste.appendChild(ul);
+    }
+    runde = null;
+    $('qz-ergebnis').hidden = false;
+    $('qz-ergebnis').scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  }
 
   function naechsteFrage() {
     const faellig = faelligeBegriffe();
-    if (!faellig.length) { quizInfo(); return; }
+    if (!faellig.length) { zeigeErgebnis(); return; }
     // niedrige Fächer zuerst
     faellig.sort((a, b) => karte(a.id).fach - karte(b.id).fach || Math.random() - 0.5);
     aktuell = faellig[0];
@@ -261,6 +296,11 @@
 
   function antworten(gewaehlt, knopf) {
     const richtig = gewaehlt.id === aktuell.id;
+    if (runde && !runde.gefragt[aktuell.id]) {
+      runde.gefragt[aktuell.id] = true;
+      if (richtig) runde.ersterVersuchRichtig++;
+    }
+    if (runde && !richtig) runde.fehler[aktuell.id] = aktuell;
     const k = karte(aktuell.id);
     const fach = richtig ? Math.min(k.fach + 1, 5) : 1;
     daten.kartei[aktuell.id] = { fach, faellig: Date.now() + FACH_TAGE[fach] * TAG_MS };
