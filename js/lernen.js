@@ -62,7 +62,8 @@
   // ---------- Modul lesen ----------
   // **fett** in <strong> umwandeln und den Text in Sätze teilen
   function satzSpans(text, ziel) {
-    const teile = text.match(/[^.!?]+[.!?]+["“”]?\s*|[^.!?]+$/g) || [text];
+    // Nur an Satzzeichen mit folgendem Leerzeichen trennen – so bleiben Zahlen wie 10.000 ganz
+    const teile = text.split(/(?<=[.!?]["“”]?)\s+/).map((t, i, alle) => (i < alle.length - 1 ? t + ' ' : t));
     teile.forEach((satz) => {
       const span = el('span', null, 'satz');
       satz.split(/(\*\*[^*]+\*\*)/).forEach((stueck) => {
@@ -226,7 +227,7 @@
     f[m.id] = { bestanden: alt.bestanden || bestanden, bestes: Math.max(alt.bestes || 0, richtige), datum: new Date().toISOString().slice(0, 10) };
     window.ATB.speichern();
     $('ln-ergebnis').textContent = richtige + ' von ' + m.quiz.length + ' richtig. ' + (bestanden
-      ? 'Bestanden! Das nächste Modul ist freigeschaltet, sobald es fertig ist.'
+      ? (aktuellesModul === window.MODULE.length - 1 ? 'Bestanden! Du hast alle Module geschafft – richtig stark!' : 'Bestanden! Das nächste Modul ist jetzt freigeschaltet.')
       : 'Noch nicht bestanden. Lies den Text noch einmal oder lass ihn dir vorlesen und versuch es dann wieder.');
     const kn = $('ln-ergebnis-knoepfe');
     kn.textContent = '';
