@@ -10,4 +10,4 @@ Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau 
 
 Alle Einträge bleiben im Browser der jeweiligen Person (localStorage). Es werden keine Daten an einen Server geschickt.
 
-Design: [PaperCSS](https://www.getpapercss.com/) · Schrift für lange Texte: Nunito (Google Fonts)
+Design: [PaperCSS](https://www.getpapercss.com/) (lokal eingebunden) · Schriften: Nunito, Patrick Hand, Patrick Hand SC, Neucha – alle lokal im Ordner `fonts/`, SIL Open Font License. Die Seite lädt nichts von fremden Servern.
