@@ -15,6 +15,7 @@
     <a href="#start" class="logo">Add to Brain</a>
     <nav class="menue" aria-label="Hauptmenü">
       <a href="#start" class="paper-btn btn-small">Start</a>
+      <a href="#lernen" class="paper-btn btn-small">Lernen</a>
       <a href="#tagebuch" class="paper-btn btn-small">Tagebuch</a>
       <a href="#glossar" class="paper-btn btn-small">Glossar</a>
       <a href="#quiz" class="paper-btn btn-small">Quiz</a>
@@ -33,9 +34,13 @@
           <h4 class="card-title">Praktikum</h4>
           <p class="lesbar">Tagebuch führen und Wochenberichte erstellen.</p>
         </div></a>
-        <a href="#quiz" class="card kachel"><div class="card-body">
+        <a href="#lernen" class="card kachel"><div class="card-body">
           <h4 class="card-title">Lernen</h4>
-          <p class="lesbar">Quiz mit Lernkartei: Was sitzt, kommt seltener dran.</p>
+          <p class="lesbar">Lerntexte zum Lesen und Vorlesen, mit Mini-Quiz.</p>
+        </div></a>
+        <a href="#quiz" class="card kachel"><div class="card-body">
+          <h4 class="card-title">Quiz</h4>
+          <p class="lesbar">Lernkartei: Was sitzt, kommt seltener dran.</p>
         </div></a>
         <a href="#glossar" class="card kachel"><div class="card-body">
           <h4 class="card-title">Glossar</h4>
@@ -47,6 +52,45 @@
         <h4 class="card-title">Dein Fortschritt</h4>
         <div id="fortschritt"></div>
       </div></div>
+    </section>
+
+    <!-- LERNEN -->
+    <section id="lernen" class="seite" hidden>
+      <div id="ln-liste">
+        <h2>Lernmodule</h2>
+        <p class="lesbar">Lies die Module der Reihe nach oder lass sie dir vorlesen. Nach jedem Modul kommen 3 Fragen. Mit 2 richtigen Antworten ist es bestanden und das nächste wird freigeschaltet.</p>
+        <div id="ln-module" class="module"></div>
+      </div>
+
+      <div id="ln-modul" hidden>
+        <button type="button" id="ln-zurueck" class="btn-small">← Zur Übersicht</button>
+        <h2 id="ln-titel"></h2>
+        <div class="card vorlesen"><div class="card-body">
+          <div id="ln-steuerung" class="knoepfe">
+            <button type="button" id="ln-play" class="btn-secondary">Vorlesen</button>
+            <button type="button" id="ln-pause" hidden>Pause</button>
+            <button type="button" id="ln-stopp">Stopp</button>
+            <label class="tempo">Tempo
+              <select id="ln-tempo">
+                <option value="0.8">langsam</option>
+                <option value="0.9">etwas langsamer</option>
+                <option value="1" selected>normal</option>
+                <option value="1.15">etwas schneller</option>
+              </select>
+            </label>
+          </div>
+          <p class="hinweis lesbar">Tipp: Auf einen Satz klicken, dann wird ab dort vorgelesen.</p>
+          <p id="ln-vorlesen-hinweis" class="hinweis lesbar" hidden>Dein Browser kann leider nicht vorlesen. Probier es mit Edge, Chrome oder Safari.</p>
+        </div></div>
+        <article id="ln-text" class="lerntext lesbar"></article>
+        <button type="button" id="ln-zum-quiz" class="btn-primary">Weiter zum Mini-Quiz</button>
+        <div id="ln-quiz" class="card" hidden><div class="card-body">
+          <h4 class="card-title">Mini-Quiz</h4>
+          <div id="ln-fragen"></div>
+          <p id="ln-ergebnis" class="qz-frage lesbar" aria-live="polite"></p>
+          <div id="ln-ergebnis-knoepfe" class="knoepfe"></div>
+        </div></div>
+      </div>
     </section>
 
     <!-- TAGEBUCH -->
@@ -144,6 +188,8 @@
   <footer class="fuss lesbar">Add to Brain · Lernseite von Elena Klisch · Design: <a href="https://www.getpapercss.com/">PaperCSS</a></footer>
 
   <script src="js/daten.js"></script>
+  <script src="js/module.js"></script>
+  <script src="js/lernen.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

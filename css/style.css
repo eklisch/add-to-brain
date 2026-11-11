@@ -65,6 +65,22 @@ main.paper.container { max-width: 960px; margin: 0 auto 24px; }
 .balken { margin: 8px 0 16px; }
 .balken p { margin: 0 0 4px; }
 
+/* Lernmodule */
+.module { display: grid; gap: 16px; }
+.modulkarte.gesperrt { opacity: .55; }
+.modulinfo { color: var(--gedimmt); font-size: 15px; }
+.vorlesen .knoepfe { align-items: center; }
+.tempo { display: flex; align-items: center; gap: 8px; }
+.tempo select { margin: 0; }
+.hinweis { color: var(--gedimmt); font-size: 15px; margin: 8px 0 0; }
+.lerntext { max-width: 68ch; font-size: 18px; line-height: 1.7; }
+.lerntext h3 { font-family: inherit; font-weight: 700; font-size: 22px; margin: 28px 0 8px; }
+.lerntext .satz { cursor: pointer; border-radius: 4px; transition: background .2s; }
+.lerntext .satz:hover { background: #f1ecdf; }
+.lerntext .satz.liest { background: #fff1a8; }
+.ln-frage { border-top: 2px dashed #c9c4b8; padding-top: 12px; margin-top: 12px; }
+.ln-frage:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+
 .fuss { text-align: center; color: var(--gedimmt); padding: 8px 16px 32px; font-size: 14px; }
 
 @media (max-width: 480px) {

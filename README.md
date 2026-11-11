@@ -2,6 +2,7 @@
 
 Lernseite für Praktikum, Vorstellungsgespräch und die Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.
 
+- **Lernmodule** zum Lesen und Vorlesen (Sprachausgabe des Browsers) mit Mini-Quiz; das nächste Modul wird nach bestandenem Quiz freigeschaltet
 - **Tagebuch** fürs Praktikum mit Wochenbericht auf Knopfdruck
 - **Glossar** mit „Add to Brain“: eigene Begriffe sammeln
 - **Quiz mit Lernkartei**: Was sitzt, kommt seltener dran; neue Stufen werden mit dem Fortschritt freigeschaltet

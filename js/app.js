@@ -8,7 +8,7 @@
   const TAG_MS = 24 * 60 * 60 * 1000;
 
   // ---------- Speicher ----------
-  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {} }; }
+  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {} }; }
   function laden() {
     try {
       const d = JSON.parse(localStorage.getItem(SCHLUESSEL));
@@ -58,12 +58,13 @@
   }
 
   // ---------- Navigation ----------
-  const SEITEN = ['start', 'tagebuch', 'glossar', 'quiz', 'sichern'];
+  const SEITEN = ['start', 'lernen', 'tagebuch', 'glossar', 'quiz', 'sichern'];
   function zeigeSeite() {
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
     document.querySelectorAll('.menue a').forEach((a) => a.classList.toggle('aktiv', a.getAttribute('href') === '#' + ziel));
     if (ziel === 'start') zeigeFortschritt();
+    if (ziel === 'lernen' && window.LERNEN) window.LERNEN.zeige();
     if (ziel === 'tagebuch') zeigeTagebuch();
     if (ziel === 'glossar') zeigeGlossar();
     if (ziel === 'quiz') quizInfo();
@@ -292,6 +293,8 @@
       zeile.appendChild(p);
       box.appendChild(zeile);
     });
+    const fertig = window.MODULE ? window.MODULE.filter((m) => daten.module[m.id] && daten.module[m.id].bestanden).length : 0;
+    box.appendChild(el('p', 'Lernmodule bestanden: ' + fertig + ' von ' + (window.MODULE ? window.MODULE.length : 0), 'lesbar'));
     box.appendChild(el('p', 'Tagebucheinträge: ' + daten.tagebuch.length + ' · Eigene Begriffe: ' + daten.eigeneBegriffe.length, 'lesbar'));
   }
 
@@ -317,6 +320,9 @@
     }).catch(() => { $('si-meldung').textContent = 'Diese Datei ist keine gültige Add-to-Brain-Sicherung.'; });
     ev.target.value = '';
   });
+
+  // Zugriff für andere Skripte (z. B. lernen.js)
+  window.ATB = { get daten() { return daten; }, speichern };
 
   zeigeSeite();
 })();
