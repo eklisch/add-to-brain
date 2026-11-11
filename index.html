@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111813" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111813" rel="stylesheet">
-  <link href="css/style.css?v=202611111813" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111818" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111818" rel="stylesheet">
+  <link href="css/style.css?v=202611111818" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -119,6 +119,34 @@
           <div id="ln-ergebnis-knoepfe" class="knoepfe"></div>
         </div></div>
       </div>
+    </section>
+
+    <!-- ERFOLGE -->
+    <section id="erfolge" class="seite" hidden>
+      <h2>Deine Erfolge</h2>
+      <p class="lesbar leise">Punkte gibt es für alles, was du lernst. Kein Druck: Pausen sind erlaubt, und nichts geht verloren.</p>
+
+      <div class="card"><div class="card-body">
+        <p class="qz-stufe">Dein Rang</p>
+        <p class="er-rang" id="er-rang"></p>
+        <p id="er-punkte" class="lesbar"></p>
+        <div class="progress"><div class="bar secondary" id="er-balken"></div></div>
+        <p id="er-naechster" class="hinweis"></p>
+        <h4 class="card-title">Lerntage</h4>
+        <p id="er-tage" class="lesbar"></p>
+        <p class="hinweis">Es zählt jeder Tag, an dem du etwas lernst oder einträgst. Eine Pause setzt nichts zurück.</p>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title">So bekommst du Punkte</h4>
+        <ul id="er-punkteliste" class="er-punkteliste"></ul>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title">Abzeichen</h4>
+        <p id="er-anzahl" class="hinweis"></p>
+        <ul id="er-abzeichen" class="abzeichen-liste"></ul>
+      </div></div>
     </section>
 
     <!-- RECHNEN -->
@@ -393,6 +421,7 @@
 
   <div class="leiste" aria-label="Fortschritt und Steuerung">
     <a href="#konto" class="leiste-link" id="leiste-konto">Anmelden</a>
+    <a href="#erfolge" class="leiste-link">Erfolge</a>
     <a href="#sichern" class="leiste-link">Sichern</a>
     <a href="datenschutz.html" class="leiste-link">Datenschutz</a>
     <a href="impressum.html" class="leiste-link">Impressum</a>
@@ -402,13 +431,14 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111813"></script>
-  <script src="js/module.js?v=202611111813"></script>
-  <script src="js/lernen.js?v=202611111813"></script>
-  <script src="js/gespraech.js?v=202611111813"></script>
-  <script src="js/rechnen.js?v=202611111813"></script>
-  <script src="js/app.js?v=202611111813"></script>
-  <script src="js/scroll.js?v=202611111813"></script>
-  <script src="js/konto.js?v=202611111813"></script>
+  <script src="js/daten.js?v=202611111818"></script>
+  <script src="js/module.js?v=202611111818"></script>
+  <script src="js/lernen.js?v=202611111818"></script>
+  <script src="js/gespraech.js?v=202611111818"></script>
+  <script src="js/rechnen.js?v=202611111818"></script>
+  <script src="js/app.js?v=202611111818"></script>
+  <script src="js/erfolge.js?v=202611111818"></script>
+  <script src="js/scroll.js?v=202611111818"></script>
+  <script src="js/konto.js?v=202611111818"></script>
 </body>
 </html>

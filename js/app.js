@@ -9,7 +9,7 @@
   const TAG_MS = 24 * 60 * 60 * 1000;
 
   // ---------- Speicher ----------
-  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {}, gespraech: {}, rechnen: {} }; }
+  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {}, gespraech: {}, rechnen: {}, tage: {}, erreicht: {} }; }
   function laden() {
     try {
       const d = JSON.parse(localStorage.getItem(SCHLUESSEL));
@@ -20,6 +20,9 @@
   let daten = laden();
   function speichern() {
     daten.geaendert = Date.now();
+    if (!daten.tage) daten.tage = {};
+    daten.tage[heuteISO()] = 1;
+    if (window.ERFOLGE) window.ERFOLGE.pruefen();
     if (window.KONTO) window.KONTO.geaendert();
     try { localStorage.setItem(SCHLUESSEL, JSON.stringify(daten)); }
     catch (e) { /* Speichern nicht möglich (z. B. privater Modus) */ }
@@ -61,7 +64,7 @@
   }
 
   // ---------- Navigation ----------
-  const SEITEN = ['start', 'lernen', 'rechnen', 'training', 'tagebuch', 'glossar', 'quiz', 'sichern', 'konto'];
+  const SEITEN = ['start', 'lernen', 'rechnen', 'training', 'tagebuch', 'glossar', 'quiz', 'erfolge', 'sichern', 'konto'];
   function zeigeSeite() {
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
@@ -73,6 +76,7 @@
     if (ziel === 'quiz') quizInfo();
     if (ziel === 'training' && window.TRAINING) window.TRAINING.zeige();
     if (ziel === 'rechnen' && window.RECHNEN) window.RECHNEN.zeige();
+    if (ziel === 'erfolge' && window.ERFOLGE) window.ERFOLGE.zeige();
     if (ziel === 'konto' && window.KONTO) window.KONTO.zeige();
     if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }
@@ -355,6 +359,7 @@
     const fertig = window.MODULE ? window.MODULE.filter((m) => daten.module[m.id] && daten.module[m.id].bestanden).length : 0;
     box.appendChild(el('p', 'Lernmodule bestanden: ' + fertig + ' von ' + (window.MODULE ? window.MODULE.length : 0), 'lesbar'));
     box.appendChild(el('p', 'Tagebucheinträge: ' + daten.tagebuch.length + ' · Eigene Begriffe: ' + daten.eigeneBegriffe.length, 'lesbar'));
+    if (window.ERFOLGE) window.ERFOLGE.kurz(box);
   }
 
   // ---------- Sichern ----------

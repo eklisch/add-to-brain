@@ -155,6 +155,21 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .gs-link:hover { color: var(--akzent); transform: none; box-shadow: none; }
 .gs-zeile.aktiv .gs-link { font-weight: 700; color: var(--akzent); }
 
+/* Erfolge */
+.er-rang { font-family: var(--kopf); font-size: clamp(34px, 3.4vw, 46px); line-height: 1.1; margin: 4px 0 6px; color: var(--akzent); }
+.er-punkteliste, .abzeichen-liste { list-style: none; padding: 0; margin: 0; }
+.er-punkteliste li { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px dashed #d8d2c4; }
+.er-punkteliste li::before, .abzeichen-liste li::before { content: none; }
+.er-wert { color: var(--grau); white-space: nowrap; }
+.abzeichen { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; break-inside: avoid; color: var(--grau); }
+.abzeichen strong { display: block; font-family: var(--kopf); font-weight: 400; font-size: 21px; line-height: 1.2; }
+.abzeichen.hat { color: var(--tinte); }
+.abz-stern { font-size: 24px; line-height: 1; color: #c9c2b2; }
+.abzeichen.hat .abz-stern { color: #d9a400; }
+.abz-text { font-size: 15px; }
+.rang-zeile { margin-top: 6px; }
+.erfolge-link { font-family: var(--kopf); font-size: 19px; }
+
 /* Rechen-Trainer */
 .rc-themen button.aktiv { background: var(--akzent); color: #fff; border-color: var(--akzent); }
 .rc-aufgabe { font-family: var(--kopf); font-size: clamp(22px, 2.1vw, 28px); line-height: 1.25; margin: 6px 0 16px; }
