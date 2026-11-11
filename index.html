@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111804" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111804" rel="stylesheet">
-  <link href="css/style.css?v=202611111804" rel="stylesheet">
+  <link href="css/fonts.css?v=202611111809" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611111809" rel="stylesheet">
+  <link href="css/style.css?v=202611111809" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -16,6 +16,7 @@
       <ul class="menue">
         <li><a href="#lernen">Lernen</a></li>
         <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#training">Gespräch</a></li>
         <li><a href="#tagebuch">Tagebuch</a></li>
         <li><a href="#glossar">Glossar</a></li>
       </ul>
@@ -64,6 +65,14 @@
             <h4 class="card-title">Glossar</h4>
             <p class="lesbar">Alle Begriffe nachschlagen und eigene hinzufügen.</p>
           </div></a>
+          <a href="#training" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Gespräch üben</h4>
+            <p class="lesbar">Fragen aus dem Vorstellungsgespräch laut beantworten.</p>
+          </div></a>
+          <a href="#konto" class="card kachel"><div class="card-body">
+            <h4 class="card-title">Mein Konto</h4>
+            <p class="lesbar">Freiwillig anmelden und auf allen Geräten lernen.</p>
+          </div></a>
         </div>
         <div class="card fortschritt-karte"><div class="card-body">
           <h4 class="card-title">Dein Fortschritt</h4>
@@ -109,6 +118,55 @@
           <div id="ln-ergebnis-knoepfe" class="knoepfe"></div>
         </div></div>
       </div>
+    </section>
+
+    <!-- TRAINING: Vorstellungsgespräch -->
+    <section id="training" class="seite" hidden>
+      <h2>Gespräch üben</h2>
+      <p class="lesbar leise">Lass dir eine typische Frage aus dem Vorstellungsgespräch vorlesen und antworte laut. Die Uhr zeigt, wie lange du sprichst. Wenn du willst, nimm dich auf und hör dir die Antwort an – die Aufnahme wird nicht gespeichert.</p>
+
+      <div class="card" id="gs-uebung"><div class="card-body">
+        <p class="qz-stufe" id="gs-nummer"></p>
+        <p class="gs-frage" id="gs-frage"></p>
+        <div class="knoepfe">
+          <button type="button" id="gs-vorlesen" class="btn-small">Vorlesen</button>
+          <button type="button" id="gs-start" class="btn-primary">Antwort starten</button>
+          <span class="gs-zeit" id="gs-zeit" aria-live="off">0:00</span>
+        </div>
+        <div class="knoepfe gs-aufnahme">
+          <button type="button" id="gs-rec" class="btn-small">Aufnehmen</button>
+          <audio id="gs-audio" controls hidden></audio>
+        </div>
+        <p id="gs-aufnahme-info" class="hinweis"></p>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Wie lief's?</h4>
+        <div class="knoepfe">
+          <button type="button" class="btn-small btn-success" data-bewertung="gut">Gut</button>
+          <button type="button" class="btn-small btn-warning" data-bewertung="geht">Geht so</button>
+          <button type="button" class="btn-small btn-danger" data-bewertung="nochmal">Nochmal üben</button>
+        </div>
+        <p id="gs-bewertet" class="lesbar meldung" aria-live="polite"></p>
+        <div class="knoepfe"><button type="button" id="gs-naechste" class="btn-primary">Nächste Frage</button></div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Tipps zu dieser Frage</h4>
+        <ul id="gs-tipps" class="lesbar gs-tipps"></ul>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">Deine Stichpunkte</h4>
+        <p class="hinweis">Nur Stichpunkte, keinen ganzen Text – sonst klingt es auswendig gelernt. Wird automatisch gespeichert.</p>
+        <textarea id="gs-notiz" rows="5" placeholder="Zum Beispiel: Callcenter – freundlich bleiben, auch bei vielen Anrufen"></textarea>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title">Alle Fragen</h4>
+        <p id="gs-stand" class="hinweis"></p>
+        <ul id="gs-liste" class="gs-liste"></ul>
+      </div></div>
     </section>
 
     <!-- KONTO -->
@@ -304,11 +362,12 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111804"></script>
-  <script src="js/module.js?v=202611111804"></script>
-  <script src="js/lernen.js?v=202611111804"></script>
-  <script src="js/app.js?v=202611111804"></script>
-  <script src="js/scroll.js?v=202611111804"></script>
-  <script src="js/konto.js?v=202611111804"></script>
+  <script src="js/daten.js?v=202611111809"></script>
+  <script src="js/module.js?v=202611111809"></script>
+  <script src="js/lernen.js?v=202611111809"></script>
+  <script src="js/gespraech.js?v=202611111809"></script>
+  <script src="js/app.js?v=202611111809"></script>
+  <script src="js/scroll.js?v=202611111809"></script>
+  <script src="js/konto.js?v=202611111809"></script>
 </body>
 </html>

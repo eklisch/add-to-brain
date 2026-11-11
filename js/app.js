@@ -9,7 +9,7 @@
   const TAG_MS = 24 * 60 * 60 * 1000;
 
   // ---------- Speicher ----------
-  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {} }; }
+  function leer() { return { tagebuch: [], eigeneBegriffe: [], kartei: {}, module: {}, geloescht: {}, gespraech: {} }; }
   function laden() {
     try {
       const d = JSON.parse(localStorage.getItem(SCHLUESSEL));
@@ -61,7 +61,7 @@
   }
 
   // ---------- Navigation ----------
-  const SEITEN = ['start', 'lernen', 'tagebuch', 'glossar', 'quiz', 'sichern', 'konto'];
+  const SEITEN = ['start', 'lernen', 'training', 'tagebuch', 'glossar', 'quiz', 'sichern', 'konto'];
   function zeigeSeite() {
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
@@ -71,6 +71,7 @@
     if (ziel === 'tagebuch') zeigeTagebuch();
     if (ziel === 'glossar') zeigeGlossar();
     if (ziel === 'quiz') quizInfo();
+    if (ziel === 'training' && window.TRAINING) window.TRAINING.zeige();
     if (ziel === 'konto' && window.KONTO) window.KONTO.zeige();
     if (window.SPUR) window.SPUR.anfang(); else window.scrollTo(0, 0);
   }

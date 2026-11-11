@@ -140,6 +140,21 @@ textarea { max-height: 50vh; overflow-y: auto; }
 .balken-zeile .progress { height: 14px; margin: 0; }
 #fortschritt > p { font-size: 15px; margin: 6px 0 0; }
 
+/* Gesprächstrainer */
+.gs-frage { font-family: var(--kopf); font-size: clamp(26px, 2.6vw, 34px); line-height: 1.2; margin: 6px 0 16px; }
+.gs-zeit { font-family: var(--kopf); font-size: 30px; min-width: 70px; color: var(--akzent); }
+.gs-zeit.ueber { color: #a7342d; }
+.gs-aufnahme { margin-top: 12px; }
+.gs-aufnahme audio { height: 36px; max-width: 100%; }
+.gs-tipps { padding-left: 20px; margin: 0; }
+.gs-tipps li { margin-bottom: 8px; }
+.gs-liste { list-style: none; padding: 0; margin: 0; }
+.gs-liste li { padding: 4px 0; break-inside: avoid; }
+.gs-liste li::before { content: none; }
+.gs-link { background: none; border: 0; box-shadow: none; padding: 2px 0; text-align: left; font-family: var(--lesbar); font-size: 15px; color: var(--tinte); cursor: pointer; }
+.gs-link:hover { color: var(--akzent); transform: none; box-shadow: none; }
+.gs-zeile.aktiv .gs-link { font-weight: 700; color: var(--akzent); }
+
 /* Kurze Nachricht oben */
 .toast {
   position: fixed; top: calc(var(--header) + 8px); left: 50%; z-index: 40;
@@ -249,7 +264,7 @@ textarea { max-height: 50vh; overflow-y: auto; }
   .seite.start { columns: auto; display: flex; gap: 96px; align-items: center; padding-left: var(--pad); padding-right: var(--pad); width: max-content; }
   .start .hero { flex: 0 0 calc(100vw - 2 * var(--pad)); height: 100%; grid-template-columns: 1.15fr .85fr; gap: 6vw; margin: 0; }
   .start .start-rest { flex: 0 0 auto; display: flex; gap: 48px; align-items: center; height: 100%; margin: 0; }
-  .start .kacheln { display: grid; grid-template-columns: repeat(2, 300px); gap: 20px; }
+  .start .kacheln { display: grid; grid-template-columns: repeat(3, 260px); gap: 20px; }
   .start .kacheln > * { margin: 0; }
   .start .fortschritt-karte { width: 420px; margin: 0; max-height: 100%; }
   .start .kachel .card-body { padding: 18px 22px; }

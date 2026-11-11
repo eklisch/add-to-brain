@@ -152,7 +152,10 @@
     const geloescht = Object.assign({}, (fernTb && fernTb.geloescht) || {}, a.geloescht || {});
     let tagebuch = fernTb ? vereinen(a.tagebuch, fernTb.tagebuch) : a.tagebuch;
     tagebuch = tagebuch.filter((e) => !geloescht[e.id]);
-    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht });
+    // Gesprächsnotizen (verschlüsselt mit dem Tagebuch): neuere Fassung gewinnt
+    const gespraech = Object.assign({}, (fernTb && fernTb.gespraech) || {});
+    Object.entries(a.gespraech || {}).forEach(([id, e]) => { const f = gespraech[id]; if (!f || (e.geaendert || 0) > (f.geaendert || 0)) gespraech[id] = e; });
+    return Object.assign(L, a, { kartei, module, eigeneBegriffe: vereinen(a.eigeneBegriffe, b.eigeneBegriffe), tagebuch, geloescht, gespraech });
   }
 
   // ---------- Synchronisieren ----------
@@ -166,7 +169,7 @@
     };
     if (tbSchluessel) {
       const salt = unb64((lese(S_TBKEY) || {}).salt || (fernTagebuch && fernTagebuch.salt) || b64(crypto.getRandomValues(new Uint8Array(16))));
-      zeile.tagebuch = await verschluesseln({ tagebuch: d.tagebuch, geloescht: d.geloescht }, salt);
+      zeile.tagebuch = await verschluesseln({ tagebuch: d.tagebuch, geloescht: d.geloescht, gespraech: d.gespraech }, salt);
       fernTagebuch = zeile.tagebuch;
     }
     await api('/rest/v1/nutzerdaten?on_conflict=user_id', {
