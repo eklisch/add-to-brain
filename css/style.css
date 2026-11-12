@@ -10,7 +10,7 @@
   --karton: #ebe5d6;      /* 30 % Flächen */
   --weiss: #fffdf8;
   --tinte: #41403e;
-  --grau: #7a766d;
+  --grau: #68645c;   /* dunkel genug für Kontrast 4,5 : 1 */
   --akzent: #2f6fb3;      /* 10 % Akzent */
   --markierung: #fff1a8;
   --auf-akzent: #fff;     /* Schrift auf Akzentfarbe */
@@ -156,6 +156,10 @@ h2 { font-size: clamp(36px, 4vw, 56px); line-height: 1.1; margin: 0 0 16px; }
 .kacheln { display: grid; gap: 16px; }
 .kachel { display: block; color: inherit; text-decoration: none; background-image: none; transition: transform .3s, background .3s; }
 .kachel:hover { background: var(--hover); transform: translateY(-3px) rotate(-.4deg); }
+
+/* Sichtbarer Fokus für die Bedienung mit der Tastatur */
+:focus-visible { outline: 3px dashed var(--akzent) !important; outline-offset: 3px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline-offset: 1px; }
 
 /* Lernkartei im Quiz */
 .qz-faecher { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
@@ -331,7 +335,7 @@ textarea { max-height: 50vh; overflow-y: auto; }
   padding: 0 var(--pad);
   background: linear-gradient(var(--papier-0), var(--papier) 40%);
 }
-.leiste-link { font-size: 14px; color: var(--grau); background-image: none; white-space: nowrap; }
+.leiste-link { font-size: 15px; color: var(--grau); background-image: none; white-space: nowrap; }
 .leiste-link:hover { color: var(--tinte); }
 .leiste-vorschlag { color: var(--akzent); }
 .balken { flex: 1; height: 2px; background: var(--balken-grund); position: relative; overflow: hidden; border-radius: 2px; }
