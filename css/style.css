@@ -186,7 +186,6 @@ h2 { font-size: clamp(36px, 4vw, 56px); line-height: 1.1; margin: 0 0 16px; }
 .platzhalter { background: var(--markierung); padding: 0 4px; }
 .leiste-link[aria-current="page"] { color: var(--tinte); font-weight: 700; }
 .rs-shopkarte.aktiv { border-color: var(--akzent); box-shadow: 0 0 0 2px var(--akzent), 10px 18px 18px -16px var(--schatten); }
-.rs-shopkarte button[disabled] { opacity: .6; }
 
 /* Formulare */
 .formular { display: grid; gap: 12px; }
@@ -334,6 +333,7 @@ textarea { max-height: 50vh; overflow-y: auto; }
 }
 .leiste-link { font-size: 14px; color: var(--grau); background-image: none; white-space: nowrap; }
 .leiste-link:hover { color: var(--tinte); }
+.leiste-vorschlag { color: var(--akzent); }
 .balken { flex: 1; height: 2px; background: var(--balken-grund); position: relative; overflow: hidden; border-radius: 2px; }
 .balken i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--akzent); transition: width .15s linear; }
 .pfeil {

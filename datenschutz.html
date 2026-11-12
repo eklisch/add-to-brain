@@ -14,9 +14,9 @@
   <meta name="apple-mobile-web-app-title" content="Add to Brain">
   <meta name="application-name" content="Add to Brain">
   <meta name="theme-color" content="#f5f2ea">
-  <link href="css/fonts.css?v=202611121441" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611121441" rel="stylesheet">
-  <link href="css/style.css?v=202611121441" rel="stylesheet">
+  <link href="css/fonts.css?v=202611121459" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611121459" rel="stylesheet">
+  <link href="css/style.css?v=202611121459" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -68,6 +68,10 @@
       <p><strong>Widerruf:</strong> Du kannst deine Einwilligung jederzeit widerrufen, indem du unter „Mein Konto“ auf „Konto löschen“ klickst. Dann werden dein Konto und alle auf dem Server gespeicherten Daten gelöscht.</p>
       <p><strong>Speicherdauer:</strong> bis du dein Konto löschst.</p>
 
+      <h3>Verbesserungsvorschläge</h3>
+      <p>Über „Vorschlag senden“ kannst du freiwillig einen Hinweis schicken. Gespeichert werden dein Text, die Seite, auf der du gerade warst, die Bildschirmgröße und – nur wenn du eines anhängst – ein Bild. Deine E-Mail-Adresse wird nur gespeichert, wenn du eine Antwort möchtest. Die Daten liegen bei Supabase in Frankfurt und können nur von der Betreiberin gelesen werden. Sie werden gelöscht, sobald der Vorschlag bearbeitet ist, spätestens nach 12 Monaten.</p>
+      <p><strong>Rechtsgrundlage</strong> ist deine Einwilligung durch das Absenden (Art. 6 Abs. 1 lit. a DSGVO). Bitte schick auf Bildern keine fremden oder sensiblen Daten mit.</p>
+
       <h3>Dienstleister</h3>
       <p><strong>Anmeldung und Datenbank:</strong> Supabase Inc. Die Daten werden auf Servern in Frankfurt am Main (EU) gespeichert. Supabase versendet auch die Anmelde-E-Mails. Mit Supabase besteht ein Vertrag zur Auftragsverarbeitung (Data Processing Addendum), der Bestandteil der Nutzungsbedingungen von Supabase ist; für Übermittlungen in die USA gelten die Standardvertragsklauseln der EU-Kommission.</p>
       <p><strong>Bereitstellung der Webseite:</strong> GitHub Pages (GitHub Inc.). Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten wie die IP-Adresse.</p>
@@ -81,6 +85,7 @@
 
   <div class="leiste" aria-label="Fortschritt und Steuerung">
     <a href="index.html#konto" class="leiste-link">Mein Konto</a>
+    <a href="#" class="leiste-link leiste-vorschlag" data-feedback>Vorschlag senden</a>
     <a href="index.html#erfolge" class="leiste-link">Erfolge</a>
     <a href="index.html#sichern" class="leiste-link">Sichern</a>
     <a href="datenschutz.html" class="leiste-link" aria-current="page">Datenschutz</a>
@@ -91,7 +96,8 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/modus.js?v=202611121441"></script>
-  <script src="js/scroll.js?v=202611121441"></script>
+  <script src="js/feedback.js?v=202611121459"></script>
+  <script src="js/modus.js?v=202611121459"></script>
+  <script src="js/scroll.js?v=202611121459"></script>
 </body>
 </html>

@@ -160,10 +160,15 @@
       body.appendChild(el('h4', shop.name, 'card-title'));
       body.appendChild(el('p', shop.text, 'lesbar leise'));
       body.appendChild(el('p', liste.length + ' Missionen · ' + fertig + ' geschafft', 'modulinfo'));
-      const k = el('button', gewaehlt === shop.id ? 'Geöffnet' : 'Shop öffnen', gewaehlt === shop.id ? 'btn-small' : 'btn-primary');
+      const offen = gewaehlt === shop.id;
+      const k = el('button', offen ? 'Shop schließen' : 'Shop öffnen', offen ? 'btn-small' : 'btn-primary');
       k.type = 'button';
-      k.disabled = gewaehlt === shop.id;
-      k.addEventListener('click', () => { gewaehlt = shop.id; zeigeListe(); oeffneMissionen(); });
+      k.setAttribute('aria-expanded', String(offen));
+      k.addEventListener('click', () => {
+        gewaehlt = offen ? null : shop.id;
+        zeigeListe();
+        if (gewaehlt) oeffneMissionen(); else if (window.SPUR) window.SPUR.anfang();
+      });
       body.appendChild(k);
       karte.appendChild(body);
       shops.appendChild(karte);
