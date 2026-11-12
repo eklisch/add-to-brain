@@ -340,8 +340,10 @@
 
         <div class="card"><div class="card-body">
           <h4 class="card-title">Konto-Passwort</h4>
-          <p class="lesbar">Damit meldest du dich auf jedem Gerät mit E-Mail und Passwort an. Nimm am besten ein anderes Passwort als für dein Tagebuch.</p>
-          <form id="ko-kontopw-form" class="formular">
+          <p class="lesbar">Mit E-Mail und Konto-Passwort meldest du dich auf jedem Gerät an. Ändern musst du es nur, wenn du möchtest.</p>
+          <div class="knoepfe"><button type="button" id="ko-kontopw-auf" class="btn-small" aria-expanded="false" aria-controls="ko-kontopw-form">Passwort ändern</button></div>
+          <form id="ko-kontopw-form" class="formular" hidden>
+            <p class="hinweis">Nimm am besten ein anderes Passwort als für dein Tagebuch.</p>
             <input type="email" autocomplete="username" hidden aria-hidden="true" tabindex="-1">
             <label>Neues Konto-Passwort (mindestens 8 Zeichen)<input type="password" id="ko-kpw1" autocomplete="new-password" required></label>
             <label>Noch einmal<input type="password" id="ko-kpw2" autocomplete="new-password" required></label>
@@ -536,6 +538,6 @@
   <script src="js/modus.js?v=202611121601"></script>
   <script src="js/scroll.js?v=202611121601"></script>
   <script src="js/katze.js?v=202611121922"></script>
-  <script src="js/konto.js?v=202611121601"></script>
+  <script src="js/konto.js?v=202611121946"></script>
 </body>
 </html>

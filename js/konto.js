@@ -88,6 +88,7 @@
     if (wiederherstellen) {
       // Kommt vom Link „Passwort vergessen“: direkt zum neuen Konto-Passwort
       hinweis('Du bist angemeldet. Leg jetzt dein neues Konto-Passwort fest.');
+      kontoPwZeigen(true);
       meldung('ko-kontopw-meldung', 'Bitte lege jetzt ein neues Konto-Passwort fest.');
       const feld = $('ko-kpw1');
       if (feld) setTimeout(() => { feld.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }); feld.focus({ preventScroll: true }); }, 300);
@@ -315,6 +316,17 @@
     } finally { k.disabled = false; }
   });
 
+  // Formular zum Ändern des Konto-Passworts auf- und zuklappen (nur offen, wenn man es will oder nach „Passwort vergessen“)
+  function kontoPwZeigen(auf) {
+    const f = $('ko-kontopw-form'), k = $('ko-kontopw-auf');
+    if (!f || !k) return;
+    f.hidden = !auf;
+    k.hidden = auf;
+    k.setAttribute('aria-expanded', String(auf));
+    if (auf) setTimeout(() => $('ko-kpw1').focus({ preventScroll: true }), 50);
+  }
+  $('ko-kontopw-auf').addEventListener('click', () => kontoPwZeigen(true));
+
   // Konto-Passwort festlegen oder ändern (für die normale Anmeldung)
   $('ko-kontopw-form').addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -325,6 +337,7 @@
     try {
       await api('/auth/v1/user', { method: 'PUT', token: await token(), body: { password: p1 } });
       $('ko-kontopw-form').reset();
+      kontoPwZeigen(false);
       meldung('ko-kontopw-meldung', 'Gespeichert. Ab jetzt kannst du dich auf jedem Gerät mit E-Mail und diesem Passwort anmelden.');
     } catch (e) {
       meldung('ko-kontopw-meldung', 'Das hat nicht geklappt: ' + e.message, true);
