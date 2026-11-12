@@ -180,6 +180,29 @@
     return liste;
   }
 
+  // Den Zwischenraum neben einer Karte finden: links oder rechts ein Nachbarblock, dazwischen klettert sie hoch.
+  // Ergebnis: { seite: 'links'|'rechts', a, b } – a und b sind die beiden Wandkanten (a < b) auf dem Bildschirm.
+  function findeSpalt(ziel, bevorzugtX) {
+    const r = ziel.getBoundingClientRect();
+    const oben = r.top, unten = bodenY() + hoehe;
+    let links = null, rechts = null;
+    spur.querySelectorAll('.card, .seite > h2, .seite > p, .seite > div:not([hidden])').forEach((k) => {
+      if (k === ziel || k.contains(ziel) || ziel.contains(k) || k.closest('[hidden]')) return;
+      const q = k.getBoundingClientRect();
+      if (!q.width || q.bottom < oben + 20 || q.top > unten) return;            // muss in der Höhe danebenliegen
+      if (q.right <= r.left + 2 && q.right >= r.left - 170) links = Math.max(links == null ? -1e9 : links, q.right);
+      if (q.left >= r.right - 2 && q.left <= r.right + 170) rechts = Math.min(rechts == null ? 1e9 : rechts, q.left);
+    });
+    const spaltL = links != null ? { seite: 'links', a: links, b: r.left } : null;
+    const spaltR = rechts != null ? { seite: 'rechts', a: r.right, b: rechts } : null;
+    const nah = (sp) => Math.abs((sp.a + sp.b) / 2 - bevorzugtX);
+    if (spaltL && spaltR) return nah(spaltL) <= nah(spaltR) ? spaltL : spaltR;
+    if (spaltL || spaltR) return spaltL || spaltR;
+    // kein Nachbar: an der Kante der Karte hochklettern (die freie Seite ist die „zweite Wand“)
+    const kanteLinks = Math.abs(r.left - bevorzugtX) < Math.abs(r.right - bevorzugtX);
+    return kanteLinks ? { seite: 'links', a: r.left - breite * 0.5, b: r.left, offen: true } : { seite: 'rechts', a: r.right, b: r.right + breite * 0.5, offen: true };
+  }
+
   // ---------- Bewegungen ----------
   // Eine freie Stelle am Boden suchen (verdeckt keinen Text), in der Nähe von x
   function freierBoden(x) {
@@ -282,29 +305,33 @@
       return;
     }
 
-    // Parkour: Zwischenstationen abwechselnd an der linken und rechten Kante der Zielkarte
-    const schritte = Math.ceil(hoehenUnterschied / maxSatz) + 1;
+    // Klettern im Zwischenraum: abwechselnd an der linken und rechten Wandkante hoch, wie in einem Kamin
+    const spalt = neuerAnker.spalt || findeSpalt(anker.el, pos.x + breite / 2);
+    const satz = hoehe * 1.5;                                   // kurze Sätze – so klettern Katzen
+    const schritte = Math.max(2, Math.ceil(hoehenUnterschied / satz));
     const startY = pos.y;
+    const versatz = (spalt.b - spalt.a) < breite * 0.7 ? breite * 0.16 : breite * 0.2;
     let i = 1;
-    let rechts = pos.x > (anker.el.getBoundingClientRect().left + anker.el.getBoundingClientRect().right) / 2 - breite / 2;
+    let anRechts = Math.abs(pos.x + breite / 2 - spalt.b) < Math.abs(pos.x + breite / 2 - spalt.a);
     const naechster = () => {
       if (i >= schritte) {
-        // letzter Satz: über die Kante nach oben auf die Karte
+        // oben angekommen: seitlich auf die Karte hüpfen
         blick(zielFn().x >= pos.x);
-        setzePose('springen');
-        sprung({ x: pos.x, y: pos.y }, zielFn, 380, 34, -18, fertig, { ohneAnlauf: true });
+        sprung({ x: pos.x, y: pos.y }, zielFn, 320, 26, -14, fertig, { ohneAnlauf: true });
         return;
       }
       const r = anker.el.getBoundingClientRect();
       if (!r.width) { aktion = null; return fertig(); }
-      rechts = !rechts;
-      const wandX = rechts ? r.right - breite * 0.42 : r.left - breite * 0.58;
-      const wandY = startY - (startY - zielFn().y) * (i / schritte);
+      // Wände wandern beim Blättern mit der Karte mit
+      const verschiebung = (spalt.seite === 'links' ? r.left - spalt.b : r.right - spalt.a);
+      const wa = spalt.a + verschiebung, wb = spalt.b + verschiebung;
+      anRechts = !anRechts;
+      const mitteX = anRechts ? wb - versatz : wa + versatz;     // Mitte der Katze nahe der Wand, die sie berührt
+      const wandY = startY - (startY - zielFn().y - hoehe * 0.35) * (i / schritte);
       const von = { x: pos.x, y: pos.y };
-      blick(wandX >= von.x);
-      setzePose('springen');
+      blick(anRechts);
       i++;
-      sprung(von, () => ({ x: grenzeX(wandX), y: wandY }), 300, 18, -28, () => anDerWand(!rechts, naechster), { ohneAnlauf: i > 2, ohneLandung: true });
+      sprung(von, () => ({ x: grenzeX(mitteX - breite / 2), y: wandY }), 260, 10, -30, () => anDerWand(anRechts, naechster), { ohneAnlauf: i > 2, ohneLandung: true });
     };
     naechster();
   }
@@ -331,13 +358,15 @@
     const neuerAnker = { art: 'ziel', el: ziel, dx };
     const zielX = r.left + dx;
     const hoch = pos.y - (r.top - hoehe) > hoehe * 2.4;
-    if (anker.art === 'ziel' || (!hoch && Math.abs(zielX - pos.x) < 260)) springeZu(neuerAnker);
-    else if (hoch) {
-      // für den Parkour erst an die nächste Kartenkante laufen
-      const links = r.left - breite * 0.9, rechts = r.right - breite * 0.1;
-      const start = Math.abs(pos.x - links) < Math.abs(pos.x - rechts) ? links : rechts;
-      laufeZu(start, () => springeZu(neuerAnker));
-    } else laufeZu(zielX - (zielX > pos.x ? 70 : -70), () => springeZu(neuerAnker));
+    if (hoch) {
+      // erst unter den Zwischenraum neben der Karte laufen, dort hochklettern, oben nahe der Kante sitzen
+      const spalt = findeSpalt(ziel, pos.x + breite / 2);
+      neuerAnker.dx = spalt.seite === 'links' ? Math.min(...stellen) : Math.max(...stellen);
+      neuerAnker.spalt = spalt;
+      if (anker.art === 'ziel') { aufDenBoden(() => zuSitzplatz(ziel)); return; }
+      laufeZu((spalt.a + spalt.b) / 2 - breite / 2, () => springeZu(neuerAnker));
+    } else if (anker.art === 'ziel' || Math.abs(zielX - pos.x) < 260) springeZu(neuerAnker);
+    else laufeZu(zielX - (zielX > pos.x ? 70 : -70), () => springeZu(neuerAnker));
   }
   function aufDenBoden(dann) {
     springeZu({ art: 'boden', x: freierBoden(pos.x + (Math.random() < 0.5 ? -40 : 40)) }, dann);
