@@ -86,7 +86,7 @@
   el.title = 'Miau';
   el.innerHTML = '<div class="katze-figur"><svg viewBox="0 0 120 100" aria-hidden="true" focusable="false"></svg></div>' +
     '<span class="k-rrr" aria-hidden="true">rrr</span><span class="k-rrr k-rrr2" aria-hidden="true">rrr</span>' +
-    '<span class="k-ruf" aria-hidden="true">Pfff!</span>' +
+    '<span class="k-ruf" aria-hidden="true">Pfff!</span><span class="k-hmpf" aria-hidden="true">Hmpf.</span>' +
     '<span class="k-herz" aria-hidden="true">♥</span><span class="k-herz k-herz2" aria-hidden="true">♥</span><span class="k-herz k-herz3" aria-hidden="true">♥</span>'; // außerhalb der Figur, damit die Schrift nie gespiegelt wird
   document.body.appendChild(el);
   const svg = el.querySelector('svg');
@@ -147,7 +147,7 @@
       clearTimeout(ueberblendung);
       ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
     }
-    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt', 'faucht', 'jubelt', 'peitscht', 'schleicht', 'anlaufen');
+    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt', 'faucht', 'jubelt', 'peitscht', 'schleicht', 'anlaufen', 'trotzt');
     el.classList.toggle('laeuft', name === 'laufen');
     (klassen || []).forEach((k) => el.classList.add(k));
   }
@@ -506,7 +506,7 @@
     if (wahl === 'aus' || document.hidden) return plane();
     const still = Date.now() - letzteAktivitaet;
     if (still > 45000) { einschlafen(); return plane(); }
-    if (schlaeft || aktion || blaettern) return plane();
+    if (schlaeft || aktion || blaettern || trotzig) return plane();
     const r = Math.random();
     if (r < 0.04) frech();
     else if (r < 0.30) putzen();
@@ -532,12 +532,28 @@
   // Beim Blättern läuft sie auf der Stelle mit – das sieht aus, als liefe sie neben der Seite her.
   // Hat sie länger gesessen, streckt sie sich zuerst und läuft dann langsam an – wie eine echte Katze.
   let letzteScroll = spur.scrollLeft;
-  let streckBis = 0, zuletztUnterwegs = 0;
+  let streckBis = 0, zuletztUnterwegs = 0, trotzig = false, trotzTimer = null;
+  // Ganz selten: trotzig hinlegen und nicht mitlaufen („Hmpf.“). Blättern geht trotzdem immer – sie steht auf, wenn man sie antippt.
+  function trotzen() {
+    trotzig = true;
+    clearTimeout(besonders);
+    setzePose('schlafen', ['schmollt', 'trotzt']);
+    clearTimeout(trotzTimer);
+    trotzTimer = setTimeout(trotzEnde, zufall(15000, 25000));
+  }
+  function trotzEnde() {
+    if (!trotzig) return;
+    trotzig = false;
+    clearTimeout(trotzTimer);
+    jagdPause = Date.now() + 4000;                 // erst mal in Ruhe aufstehen, nicht gleich die Maus jagen
+    if (!aktion && !schlaeft) eineWeile('strecken', [], 1200);
+  }
   spur.addEventListener('scroll', () => {
     if (wahl === 'aus' || ruhig.matches) return;
     const d = spur.scrollLeft - letzteScroll;
     letzteScroll = spur.scrollLeft;
     aktiv();
+    if (trotzig) { wecken(); return; }               // bleibt liegen – Blättern geht ganz normal weiter
     if (anker.art === 'boden' && !aktion && !schlaeft && Math.abs(d) > 0.5) {
       const jetzt = performance.now();
       if (jetzt < streckBis) { /* streckt sich noch */ }
@@ -546,7 +562,9 @@
         clearTimeout(besonders);
         blick(d > 0);
         const w = Math.random();
-        if (w < 0.3) {                                  // ausgiebig strecken und gähnen
+        if (w < 0.04) {                                 // ganz selten: keine Lust – trotzig hinlegen
+          trotzen();
+        } else if (w < 0.3) {                           // ausgiebig strecken und gähnen
           setzePose('strecken');
           streckBis = jetzt + 850;
           zuletztUnterwegs = streckBis;
@@ -640,6 +658,7 @@
   // Anklicken mag sie nicht: beleidigt wegspringen
   el.addEventListener('click', (ev) => {
     if (ruhig.matches) return;
+    if (trotzig) { trotzEnde(); return; }            // angetippt: na gut, sie steht auf
     aktiv();
     streichelt = false; lauert = false; jagdStart = 0; clearTimeout(streichelTimer);
     folgenEnde();
@@ -782,7 +801,7 @@
     if (dtm > 0) { const v = Math.hypot(maus.x - letzteMaus.x, maus.y - letzteMaus.y) / dtm; mausTempo = mausTempo * 0.5 + Math.min(v, 3000) * 0.5; }
     letzteMaus = { x: maus.x, y: maus.y, t: jetzt };
 
-    if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt) { folgenEnde(); if (lauert) lauernEnde(); return; }
+    if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt || trotzig) { folgenEnde(); if (lauert) lauernEnde(); return; }
     if ((aktion && !aktion.istFolge) || Date.now() < jagdPause) return;
     const cx = pos.x + breite / 2, cy = pos.y + hoehe * 0.65;
     const d = Math.hypot(maus.x - cx, maus.y - cy);
@@ -875,5 +894,5 @@
   setzePose('sitzen');
   zeichne();
   if (!ruhig.matches) plane();
-  window.KATZE = { zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
+  window.KATZE = { trotzen, zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
 })();

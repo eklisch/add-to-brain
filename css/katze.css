@@ -139,6 +139,13 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.peitscht .k-schwanz { animation: k-peitschen .32s ease-in-out infinite; }
 @keyframes k-peitschen { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-16deg); } }
 
+/* Trotz: liegt da, Schwanz klopft, „Hmpf.“ */
+.k-hmpf { position: absolute; top: 18%; left: 64%; font: 400 22px/1 var(--kopf, 'Patrick Hand', cursive); color: var(--tinte); opacity: 0; pointer-events: none; white-space: nowrap; }
+.katze.links .k-hmpf { left: auto; right: 64%; }
+.katze.trotzt .k-hmpf { animation: k-hmpf 4s ease-in-out infinite; }
+@keyframes k-hmpf { 0%, 55%, 100% { opacity: 0; transform: translateY(4px); } 10%, 40% { opacity: .9; transform: translateY(0); } }
+.katze.trotzt .k-schwanzlinie { animation: k-zucken .9s ease-in-out infinite; }
+
 /* Jubel (richtige Antwort): Herzchen steigen auf */
 .k-herz { position: absolute; top: 10%; left: 50%; font: 18px/1 var(--lesbar, sans-serif); color: var(--katze-nase, #e9a3b2); opacity: 0; pointer-events: none; }
 .katze.jubelt .k-herz { animation: k-herz 1.6s ease-out forwards; }
@@ -173,6 +180,6 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 /* Weniger Bewegung gewünscht: Katze sitzt still */
 @media (prefers-reduced-motion: reduce) {
   .katze *, .katze svg { animation: none !important; }
-  .k-zu-blinzeln, .k-zzz, .k-rrr, .k-ruf, .k-herz { opacity: 0 !important; }
+  .k-zu-blinzeln, .k-zzz, .k-rrr, .k-ruf, .k-herz, .k-hmpf { opacity: 0 !important; }
   .katze .k-augen { opacity: 1 !important; }
 }
