@@ -1,0 +1,106 @@
+/* Add to Brain – die schwarze Katze (Maskottchen)
+   Die Figur selbst ist ein SVG, das js/katze.js zeichnet. Hier stehen nur Aussehen und kleine Bewegungen. */
+
+:root {
+  --katze: #2a2927;        /* Fell */
+  --katze-auge: #e8d77a;   /* helle, bernsteinfarbene Augen */
+  --katze-nase: #e9a3b2;   /* zartrosa Nase */
+  --katze-umriss: none;    /* im Dunkelmodus ein heller Rand, damit sie sichtbar bleibt */
+}
+html.dark {
+  --katze: #121110;
+  --katze-umriss: drop-shadow(0 0 .7px #d8d3c6) drop-shadow(0 0 .7px #d8d3c6);
+}
+/* Weiße Katze (wählbar über den Schalter unten in der Leiste) */
+html.katze-weiss {
+  --katze: #fffdf8;
+  --katze-auge: #5f93c9;
+  --katze-umriss: drop-shadow(0 0 1px #41403e) drop-shadow(0 0 .8px #41403e) drop-shadow(0 0 .5px #41403e);
+}
+html.dark.katze-weiss {
+  --katze: #ebe7dc;
+  --katze-auge: #6f9fd0;
+  --katze-umriss: drop-shadow(0 0 .5px #0e0d0c);
+}
+html.katze-weiss .k-pupille { stroke: #2a2927; }
+html.katze-weiss .k-bart { stroke: #41403e; }
+html.katze-weiss .k-zu { stroke: #41403e; }
+html.katze-weiss .k-putzpfote .k-fell { stroke: #41403e; }
+
+.katze {
+  position: fixed; left: 0; top: 0; z-index: 25;  /* darf über den Kopfbereich gucken, verdeckt aber keine Menüpunkte */
+  width: 116px; height: 96px;
+  pointer-events: none;            /* blockiert nichts auf der Seite … */
+  will-change: transform;
+}
+.katze-figur { width: 100%; height: 100%; transition: transform .18s ease; }
+.katze.links .katze-figur { transform: scaleX(-1); }
+.katze svg { width: 100%; height: 100%; overflow: visible; display: block; filter: var(--katze-umriss); }
+.katze svg .k-fell, .katze svg .k-bein, .katze svg .k-schwanzlinie { pointer-events: visiblePainted; cursor: pointer; } /* … nur die Katze selbst ist anklickbar */
+
+.k-fell { fill: var(--katze); stroke: var(--katze); stroke-width: 1.6; stroke-linejoin: round; }
+.k-bein { fill: none; stroke: var(--katze); stroke-width: 6; stroke-linecap: round; }
+.k-schwanzlinie { fill: none; stroke: var(--katze); stroke-width: 5; stroke-linecap: round; }
+.k-auge { fill: var(--katze-auge); }
+.k-pupille { stroke: var(--katze); stroke-width: 1.4; stroke-linecap: round; }
+.k-zu { fill: none; stroke: var(--katze-auge); stroke-width: 1.4; stroke-linecap: round; }
+.k-nase, .k-maul { fill: var(--katze-nase); }
+.k-bart { fill: none; stroke: var(--katze); stroke-width: .9; stroke-linecap: round; }
+html.dark .k-bart { stroke: #d8d3c6; }
+.k-zzz { font: 600 11px var(--lesbar, sans-serif); fill: var(--tinte); }
+.k-putzpfote .k-fell { stroke: var(--papier); stroke-width: 1.2; }
+html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
+
+/* Blinzeln: alle paar Sekunden kurz die Augen zu */
+.k-zu-blinzeln { opacity: 0; }
+.katze .k-augen { animation: k-blinzeln-auf 5.3s infinite; }
+.katze .k-zu-blinzeln { animation: k-blinzeln-zu 5.3s infinite; }
+@keyframes k-blinzeln-auf { 0%, 92%, 100% { opacity: 1; } 94%, 97% { opacity: 0; } }
+@keyframes k-blinzeln-zu  { 0%, 92%, 100% { opacity: 0; } 94%, 97% { opacity: 1; } }
+
+/* Schwanz: langsam hin und her – schneller, wenn sie sich freut */
+.k-schwanz { animation: k-wedeln 3.2s ease-in-out infinite; }
+.katze.freut .k-schwanz { animation-duration: .45s; }
+@keyframes k-wedeln { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-9deg); } }
+
+/* Laufen: Beine abwechselnd */
+.k-bein-a { animation: k-schritt .42s ease-in-out infinite; }
+.k-bein-b { animation: k-schritt .42s ease-in-out infinite reverse; }
+@keyframes k-schritt { 0%, 100% { transform: rotate(16deg); } 50% { transform: rotate(-16deg); } }
+
+/* Putzen: Pfote auf und ab, Kopf leicht geneigt */
+.k-putzpfote { animation: k-putzen .7s ease-in-out infinite; }
+@keyframes k-putzen { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-14deg) translateY(1px); } }
+.katze.putzt .k-kopf { animation: k-kopf-putzen .7s ease-in-out infinite; }
+@keyframes k-kopf-putzen { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-6deg); } }
+
+/* Umschauen: Kopf neigen */
+.katze.schaut .k-kopf { animation: k-schauen 2.4s ease-in-out 1; }
+@keyframes k-schauen { 0%, 100% { transform: rotate(0deg); } 30%, 55% { transform: rotate(13deg); } 75% { transform: rotate(-7deg); } }
+
+/* Antippen (freche Pfote) */
+.katze.tippt .k-putzpfote { animation: k-tippen .9s ease-in-out infinite; }
+@keyframes k-tippen { 0%, 60%, 100% { transform: rotate(0deg); } 30% { transform: rotate(48deg) translate(3px, 3px); } }
+
+/* Schlafen: z z z steigen auf, Körper atmet */
+.k-zzz { animation: k-zzz 3s ease-in infinite; opacity: 0; }
+.k-zzz2 { animation-delay: 1s; }
+.k-zzz3 { animation-delay: 2s; }
+@keyframes k-zzz { 0% { opacity: 0; transform: translateY(6px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(-8px); } }
+.katze.schlaeft svg { animation: k-atmen 3.4s ease-in-out infinite; transform-origin: 50% 96%; }
+@keyframes k-atmen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.035); } }
+
+/* Schalter in der Leiste */
+.leiste-katze { white-space: nowrap; }
+
+/* Handy: kleiner */
+@media (max-width: 767px) {
+  .katze { width: 84px; height: 70px; }
+}
+
+/* Weniger Bewegung gewünscht: Katze sitzt still */
+@media (prefers-reduced-motion: reduce) {
+  .katze *, .katze svg { animation: none !important; }
+  .k-zu-blinzeln, .k-zzz { opacity: 0 !important; }
+  .katze .k-augen { opacity: 1 !important; }
+}
