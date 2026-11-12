@@ -35,7 +35,7 @@ html.katze-weiss .k-putzpfote .k-fell { stroke: #41403e; }
 }
 .katze-figur { width: 100%; height: 100%; transition: transform .18s ease; }
 .katze.links .katze-figur { transform: scaleX(-1); }
-.katze svg { width: 100%; height: 100%; overflow: visible; display: block; filter: var(--katze-umriss); }
+.katze svg { width: 100%; height: 100%; overflow: visible; display: block; filter: var(--katze-umriss); transform-origin: 50% 70%; }
 .katze svg .k-fell, .katze svg .k-bein, .katze svg .k-schwanzlinie { pointer-events: visiblePainted; cursor: pointer; } /* … nur die Katze selbst ist anklickbar */
 
 .k-fell { fill: var(--katze); stroke: var(--katze); stroke-width: 1.6; stroke-linejoin: round; }

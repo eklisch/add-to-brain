@@ -197,23 +197,73 @@
     wecken();
   }
 
-  function springeZu(neuerAnker, dann) {
-    const start = { x: pos.x, y: pos.y };
+  // Ein einzelner Sprung von A nach B (Ziel darf sich beim Blättern mitbewegen)
+  function sprung(start, zielFn, dauer, bogen, drehung, dann) {
     const t0 = performance.now();
-    const dauer = 560;
-    anker = neuerAnker;
-    const ziel0 = ankerPos() || { x: pos.x, y: bodenY() };
-    blick(ziel0.x >= start.x);
-    setzePose('springen');
     aktion = (jetzt) => {
-      const ziel = ankerPos() || { x: grenzeX(pos.x), y: bodenY() };
+      const ziel = zielFn();
       const t = Math.min(1, (jetzt - t0) / dauer);
-      const bogen = Math.max(50, Math.abs(ziel.y - start.y) * 0.5 + 40);
       pos.x = start.x + (ziel.x - start.x) * t;
       pos.y = start.y + (ziel.y - start.y) * t - Math.sin(Math.PI * t) * bogen;
-      if (t >= 1) { aktion = null; setzePose('sitzen'); if (dann) dann(); }
+      svg.style.transform = drehung ? `rotate(${drehung * Math.sin(Math.PI * t)}deg)` : '';
+      if (t >= 1) { aktion = null; svg.style.transform = ''; dann(); }
     };
     wecken();
+  }
+
+  // Kurz an der Wand abstoßen: Pfoten an die Kartenkante, dann weiter
+  function anDerWand(wandRechts, dann) {
+    blick(wandRechts);
+    setzePose('springen');
+    svg.style.transform = 'rotate(-62deg)';
+    const t0 = performance.now();
+    aktion = (jetzt) => { if (jetzt - t0 > 110) { aktion = null; svg.style.transform = ''; dann(); } };
+    wecken();
+  }
+
+  // Springen – kleine Höhen mit einem Satz, große Höhen wie beim Parkour:
+  // im Zickzack zwischen den Kanten der Karte hoch, wie eine Katze zwischen zwei Wänden.
+  function springeZu(neuerAnker, dann) {
+    anker = neuerAnker;
+    const zielFn = () => ankerPos() || { x: grenzeX(pos.x), y: bodenY() };
+    const ziel0 = zielFn();
+    const fertig = () => { setzePose('sitzen'); if (dann) dann(); };
+    const hoehenUnterschied = pos.y - ziel0.y;           // positiv = nach oben
+    const maxSatz = hoehe * 2.4;                          // so hoch schafft sie es mit einem Satz
+    setzePose('springen');
+
+    if (hoehenUnterschied <= maxSatz || neuerAnker.art !== 'ziel') {
+      blick(ziel0.x >= pos.x);
+      const bogen = hoehenUnterschied > 0 ? Math.min(60, hoehenUnterschied * 0.3) + 30 : 26;
+      sprung({ x: pos.x, y: pos.y }, zielFn, hoehenUnterschied < -hoehe ? 520 : 480, bogen, 0, fertig);
+      return;
+    }
+
+    // Parkour: Zwischenstationen abwechselnd an der linken und rechten Kante der Zielkarte
+    const schritte = Math.ceil(hoehenUnterschied / maxSatz) + 1;
+    const startY = pos.y;
+    let i = 1;
+    let rechts = pos.x > (anker.el.getBoundingClientRect().left + anker.el.getBoundingClientRect().right) / 2 - breite / 2;
+    const naechster = () => {
+      if (i >= schritte) {
+        // letzter Satz: über die Kante nach oben auf die Karte
+        blick(zielFn().x >= pos.x);
+        setzePose('springen');
+        sprung({ x: pos.x, y: pos.y }, zielFn, 380, 34, -18, fertig);
+        return;
+      }
+      const r = anker.el.getBoundingClientRect();
+      if (!r.width) { aktion = null; return fertig(); }
+      rechts = !rechts;
+      const wandX = rechts ? r.right - breite * 0.42 : r.left - breite * 0.58;
+      const wandY = startY - (startY - zielFn().y) * (i / schritte);
+      const von = { x: pos.x, y: pos.y };
+      blick(wandX >= von.x);
+      setzePose('springen');
+      i++;
+      sprung(von, () => ({ x: grenzeX(wandX), y: wandY }), 300, 18, -28, () => anDerWand(!rechts, naechster));
+    };
+    naechster();
   }
 
   function huepfen() {
@@ -234,8 +284,14 @@
     const dx = stellen[Math.floor(Math.random() * stellen.length)];
     const neuerAnker = { art: 'ziel', el: ziel, dx };
     const zielX = r.left + dx;
-    if (anker.art === 'ziel' || Math.abs(zielX - pos.x) < 260) springeZu(neuerAnker);
-    else laufeZu(zielX - (zielX > pos.x ? 70 : -70), () => springeZu(neuerAnker));
+    const hoch = pos.y - (r.top - hoehe) > hoehe * 2.4;
+    if (anker.art === 'ziel' || (!hoch && Math.abs(zielX - pos.x) < 260)) springeZu(neuerAnker);
+    else if (hoch) {
+      // für den Parkour erst an die nächste Kartenkante laufen
+      const links = r.left - breite * 0.9, rechts = r.right - breite * 0.1;
+      const start = Math.abs(pos.x - links) < Math.abs(pos.x - rechts) ? links : rechts;
+      laufeZu(start, () => springeZu(neuerAnker));
+    } else laufeZu(zielX - (zielX > pos.x ? 70 : -70), () => springeZu(neuerAnker));
   }
   function aufDenBoden(dann) {
     springeZu({ art: 'boden', x: freierBoden(pos.x + (Math.random() < 0.5 ? -40 : 40)) }, dann);
