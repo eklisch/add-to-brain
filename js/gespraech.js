@@ -161,17 +161,22 @@
         stream.getTracks().forEach((t) => t.stop());
         audioUrl = URL.createObjectURL(new Blob(stueckchen, { type: recorder.mimeType }));
         $('gs-audio').src = audioUrl; $('gs-audio').hidden = false;
-        $('gs-rec').textContent = 'Neu aufnehmen'; $('gs-rec').classList.remove('btn-danger');
         $('gs-aufnahme-info').textContent = 'Hör dir deine Antwort an. Die Aufnahme wird nicht gespeichert.';
-        if (uhr) stoppeUhr();
       };
       recorder.start();
-      if (!uhr) starteUhr();
-      $('gs-rec').textContent = 'Aufnahme beenden'; $('gs-rec').classList.add('btn-danger');
-      $('gs-aufnahme-info').textContent = 'Aufnahme läuft …';
+      $('gs-aufnahme-info').textContent = '● Aufnahme läuft …';
     } catch (e) {
-      $('gs-aufnahme-info').textContent = 'Kein Zugriff auf das Mikrofon. Erlaube den Zugriff in deinem Browser, wenn du aufnehmen möchtest.';
+      $('gs-aufnahme-info').textContent = 'Kein Zugriff auf das Mikrofon – die Uhr läuft trotzdem. Erlaube den Mikrofon-Zugriff im Browser, wenn du dich anhören möchtest.';
     }
+  }
+  // „Antwort starten“: Uhr und Aufnahme zusammen. „Antwort beenden“: beides stoppen, dann anhören.
+  function antwortStarten() {
+    starteUhr();
+    aufnahme();
+  }
+  function antwortBeenden() {
+    stoppeUhr();
+    if (recorder && recorder.state === 'recording') recorder.stop();
   }
   function verwerfeAufnahme() {
     if (recorder && recorder.state === 'recording') { recorder.onstop = null; recorder.stop(); }
@@ -179,7 +184,6 @@
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     recorder = null; audioUrl = null; stream = null;
     if ($('gs-audio')) { $('gs-audio').hidden = true; $('gs-audio').removeAttribute('src'); }
-    if ($('gs-rec')) { $('gs-rec').textContent = 'Aufnehmen'; $('gs-rec').classList.remove('btn-danger'); }
     if ($('gs-aufnahme-info')) $('gs-aufnahme-info').textContent = '';
   }
 
@@ -220,8 +224,7 @@
 
   // ---------- Verknüpfen ----------
   $('gs-vorlesen').addEventListener('click', vorlesen);
-  $('gs-start').addEventListener('click', () => (uhr ? stoppeUhr() : starteUhr()));
-  $('gs-rec').addEventListener('click', aufnahme);
+  $('gs-start').addEventListener('click', () => (uhr ? antwortBeenden() : antwortStarten()));
   $('gs-naechste').addEventListener('click', () => { zeigeFrage(zufaellig()); if (window.SPUR) window.SPUR.zeige($('gs-uebung')); });
   $('gs-notiz').addEventListener('input', notizSpeichern);
   document.querySelectorAll('[data-bewertung]').forEach((b) => b.addEventListener('click', () => bewerten(b.dataset.bewertung)));
