@@ -167,6 +167,7 @@ h2 { font-size: clamp(36px, 4vw, 56px); line-height: 1.1; margin: 0 0 16px; }
 .qz-fach-zahl { grid-area: zahl; text-align: right; font-family: var(--kopf); font-size: 20px; }
 .qz-fach-name { grid-area: name; font-size: 13px; color: var(--grau); line-height: 1.2; }
 .gs-weiter { margin-left: auto; }
+.ko-vergessen { text-decoration: underline; text-underline-offset: 3px; align-self: center; }
 .reihe.tb-zeit { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; align-items: end; }
 .reihe.tb-zeit input { width: 100%; min-width: 0; padding-left: 6px; padding-right: 4px; }
 .formular textarea { min-height: 0; }

@@ -75,16 +75,24 @@
       refresh_token: p.get('refresh_token'),
       expires_at: Math.floor(Date.now() / 1000) + parseInt(p.get('expires_in') || '3600', 10),
       user: { id: user.id, email: user.email }
-    });
+    }, p.get('type') === 'recovery');
     return true;
   }
 
   // Gemeinsamer Ablauf nach jeder Anmeldung (Link oder Passwort)
-  async function angemeldet(neu) {
+  async function angemeldet(neu, wiederherstellen) {
     sitzung = neu;
     schreibe(S_SITZUNG, sitzung);
     window.dispatchEvent(new HashChangeEvent('hashchange'));
     await synchronisieren();
+    if (wiederherstellen) {
+      // Kommt vom Link „Passwort vergessen“: direkt zum neuen Konto-Passwort
+      hinweis('Du bist angemeldet. Leg jetzt dein neues Konto-Passwort fest.');
+      meldung('ko-kontopw-meldung', 'Bitte lege jetzt ein neues Konto-Passwort fest.');
+      const feld = $('ko-kpw1');
+      if (feld) setTimeout(() => { feld.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }); feld.focus({ preventScroll: true }); }, 300);
+      return;
+    }
     if (tbSchluessel) {
       fertig('Willkommen, du bist angemeldet! Dein Lernstand und dein Tagebuch sind synchronisiert.');
     } else {
@@ -290,6 +298,20 @@
       meldung('ko-link-meldung', 'Fertig! Öffne die E-Mail auf diesem Gerät und in diesem Browser und klick dort auf den Link – nur dann bist du hier angemeldet. Die E-Mail kommt von Supabase, schau notfalls im Spam-Ordner nach.');
     } catch (e) {
       meldung('ko-link-meldung', 'Das hat nicht geklappt: ' + e.message, true);
+    } finally { k.disabled = false; }
+  });
+
+  // Passwort vergessen: Link zum Zurücksetzen per E-Mail
+  $('ko-vergessen').addEventListener('click', async () => {
+    const email = $('ko-mail').value.trim();
+    if (!email) { meldung('ko-meldung', 'Trag oben deine E-Mail-Adresse ein und klick dann noch einmal auf „Passwort vergessen?“.', true); $('ko-mail').focus(); return; }
+    const k = $('ko-vergessen'); k.disabled = true;
+    meldung('ko-meldung', 'Einen Moment …');
+    try {
+      await api('/auth/v1/recover?redirect_to=' + encodeURIComponent(weiterleitungsAdresse()), { method: 'POST', body: { email } });
+      meldung('ko-meldung', 'Wir haben dir eine E-Mail geschickt (' + email + '). Öffne den Link darin auf diesem Gerät und in diesem Browser. Danach kannst du sofort ein neues Konto-Passwort festlegen. Schau notfalls im Spam-Ordner nach.');
+    } catch (e) {
+      meldung('ko-meldung', 'Das hat nicht geklappt: ' + e.message, true);
     } finally { k.disabled = false; }
   });
 
