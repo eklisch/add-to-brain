@@ -9,13 +9,13 @@
 }
 html.dark {
   --katze: #121110;
-  --katze-umriss: drop-shadow(0 0 .7px #d8d3c6) drop-shadow(0 0 .7px #d8d3c6);
+  --katze-umriss: drop-shadow(0 0 .45px rgba(216, 211, 198, .75));   /* feiner Rand statt Leuchten */
 }
 /* Weiße Katze (wählbar über den Schalter unten in der Leiste) */
 html.katze-weiss {
   --katze: #fffdf8;
   --katze-auge: #5f93c9;
-  --katze-umriss: drop-shadow(0 0 1px #41403e) drop-shadow(0 0 .8px #41403e) drop-shadow(0 0 .5px #41403e);
+  --katze-umriss: drop-shadow(0 0 .5px #41403e) drop-shadow(0 0 .4px #41403e);
 }
 html.dark.katze-weiss {
   --katze: #ebe7dc;
@@ -64,8 +64,8 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 @keyframes k-wedeln { 0%, 100% { transform: rotate(0deg); } 35% { transform: rotate(-10deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(2deg); } }
 
 /* Weiche Übergänge zwischen den Posen */
-.k-alt { animation: k-aus .16s ease-out forwards; }
-.k-neu { animation: k-ein .16s ease-out; }
+.k-alt { animation: k-aus .12s ease-out forwards; }
+.k-neu { animation: k-ein .12s ease-out; }
 @keyframes k-aus { to { opacity: 0; } }
 @keyframes k-ein { from { opacity: .2; } to { opacity: 1; } }
 

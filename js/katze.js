@@ -141,11 +141,13 @@
   function setzePose(name, klassen) {
     if (pose !== name) {
       // alte Pose kurz ausblenden, neue einblenden – so springt die Figur nicht hart um
-      const alt = pose ? `<g class="k-alt">${POSEN[pose]}</g>` : '';
+      // nur zwischen ruhigen Posen überblenden – bei schnellen Bewegungen sähe man sie sonst doppelt
+      const bewegt = ['laufen', 'springen', 'lauern'];
+      const alt = pose && !bewegt.includes(pose) && !bewegt.includes(name) ? `<g class="k-alt">${POSEN[pose]}</g>` : '';
       svg.innerHTML = alt + `<g class="k-neu">${POSEN[name]}</g>`;
       pose = name;
       clearTimeout(ueberblendung);
-      ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
+      ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 130);
     }
     el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt', 'faucht', 'jubelt', 'peitscht', 'schleicht', 'anlaufen', 'trotzt');
     el.classList.toggle('laeuft', name === 'laufen');
@@ -505,22 +507,23 @@
   function naechstes() {
     if (wahl === 'aus' || document.hidden) return plane();
     const still = Date.now() - letzteAktivitaet;
-    if (still > 45000) { einschlafen(); return plane(); }
+    if (still > 60000) { einschlafen(); return plane(); }
     if (schlaeft || aktion || blaettern || trotzig) return plane();
     const r = Math.random();
-    if (r < 0.04) frech();
-    else if (r < 0.30) putzen();
-    else if (r < 0.50) umschauen();
-    else if (r < 0.78) {
-      const plaetze = sitzplaetze().filter((k) => !(anker.art === 'ziel' && anker.el === k));
-      if (plaetze.length && Math.random() < 0.7) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
-      else if (anker.art === 'ziel') runterklettern();
+    const plaetze = sitzplaetze().filter((k) => !(anker.art === 'ziel' && anker.el === k));
+    if (r < 0.03) frech();
+    else if (r < 0.18) putzen();
+    else if (r < 0.30) umschauen();
+    else if (r < 0.80) {
+      // Katzen lieben erhöhte Plätze: wenn einer frei ist, geht sie meistens hinauf
+      if (anker.art === 'boden' && plaetze.length && Math.random() < 0.8) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
+      else if (anker.art === 'ziel') { if (Math.random() < 0.55) runterklettern(); else if (plaetze.length) zuSitzplatz(plaetze[0]); else putzen(); }
       else laufeZu(freierBoden(zufall(40, window.innerWidth - breite - 40)));
-    }
+    } else laufeZu(freierBoden(zufall(40, window.innerWidth - breite - 40)));
     plane();
   }
   let planer = null;
-  function plane() { clearTimeout(planer); planer = setTimeout(naechstes, zufall(7000, 15000)); }
+  function plane() { clearTimeout(planer); planer = setTimeout(naechstes, zufall(5000, 11000)); }
 
   // ---------- Reaktionen ----------
   function aktiv() {
@@ -528,6 +531,13 @@
     if (schlaeft) aufwachen();
   }
   ['pointerdown', 'keydown', 'touchstart'].forEach((ev) => window.addEventListener(ev, aktiv, { passive: true }));
+  // Lesen mit Mausbewegung zählt auch als „da sein“ – sonst schläft sie ein, während man liest.
+  // Schlafende Katzen weckt eine bloße Mausbewegung aber nicht.
+  let mausAktiv = 0;
+  window.addEventListener('mousemove', () => {
+    const t = Date.now();
+    if (t - mausAktiv > 1000) { mausAktiv = t; if (!schlaeft) letzteAktivitaet = t; }
+  }, { passive: true });
 
   // Beim Blättern läuft sie auf der Stelle mit – das sieht aus, als liefe sie neben der Seite her.
   // Hat sie länger gesessen, streckt sie sich zuerst und läuft dann langsam an – wie eine echte Katze.
