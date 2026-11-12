@@ -102,6 +102,17 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.schlaeft svg { animation: k-atmen 3.4s ease-in-out infinite; transform-origin: 50% 96%; }
 @keyframes k-atmen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.035); } }
 
+/* Kratzspuren an der Kartenkante – verblassen nach ein paar Sekunden */
+.kratzspur { position: absolute; width: 16px; display: flex; gap: 3px; pointer-events: none; z-index: 2; transition: opacity 3.5s ease; }
+.kratzspur.links { left: 3px; }
+.kratzspur.rechts { right: 3px; }
+.kratzspur i { flex: 0 0 2.4px; height: 100%; background: var(--tinte); opacity: .6; border-radius: 2px;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 85%, transparent);
+  mask-image: linear-gradient(transparent, #000 12%, #000 85%, transparent); }
+.kratzspur i:nth-child(2) { transform: translateY(5px); opacity: .7; }
+.kratzspur i:nth-child(3) { transform: translateY(2px); }
+.kratzspur.verblasst { opacity: 0; }
+
 /* Schalter in der Leiste */
 .leiste-katze { white-space: nowrap; }
 

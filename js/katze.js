@@ -289,7 +289,8 @@
 
   // Springen – kleine Höhen mit einem Satz, große Höhen wie beim Parkour:
   // im Zickzack zwischen den Kanten der Karte hoch, wie eine Katze zwischen zwei Wänden.
-  function springeZu(neuerAnker, dann) {
+  function springeZu(neuerAnker, dann, opt) {
+    opt = opt || {};
     anker = neuerAnker;
     const zielFn = () => ankerPos() || { x: grenzeX(pos.x), y: bodenY() };
     const ziel0 = zielFn();
@@ -301,7 +302,7 @@
     if (hoehenUnterschied <= maxSatz || neuerAnker.art !== 'ziel') {
       blick(ziel0.x >= pos.x);
       const bogen = hoehenUnterschied > 0 ? Math.min(60, hoehenUnterschied * 0.3) + 30 : 26;
-      sprung({ x: pos.x, y: pos.y }, zielFn, hoehenUnterschied < -hoehe ? 520 : 480, bogen, 0, fertig);
+      sprung({ x: pos.x, y: pos.y }, zielFn, opt.schreck ? 400 : (hoehenUnterschied < -hoehe ? 520 : 480), opt.schreck ? bogen + 30 : bogen, 0, fertig, { ohneAnlauf: !!opt.schreck });
       return;
     }
 
@@ -363,13 +364,75 @@
       const spalt = findeSpalt(ziel, pos.x + breite / 2);
       neuerAnker.dx = spalt.seite === 'links' ? Math.min(...stellen) : Math.max(...stellen);
       neuerAnker.spalt = spalt;
-      if (anker.art === 'ziel') { aufDenBoden(() => zuSitzplatz(ziel)); return; }
+      if (anker.art === 'ziel') { runterklettern(() => zuSitzplatz(ziel)); return; }
       laufeZu((spalt.a + spalt.b) / 2 - breite / 2, () => springeZu(neuerAnker));
     } else if (anker.art === 'ziel' || Math.abs(zielX - pos.x) < 260) springeZu(neuerAnker);
     else laufeZu(zielX - (zielX > pos.x ? 70 : -70), () => springeZu(neuerAnker));
   }
   function aufDenBoden(dann) {
     springeZu({ art: 'boden', x: freierBoden(pos.x + (Math.random() < 0.5 ? -40 : 40)) }, dann);
+  }
+
+  // Kratzspuren: drei Krallenlinien an der Kante der Karte. Sie hängen an der Karte (wandern beim Blättern mit)
+  // und verblassen nach ein paar Sekunden wieder.
+  function kratzspur(karte, seite, oben) {
+    const sp = document.createElement('span');
+    sp.className = 'kratzspur ' + seite;
+    sp.setAttribute('aria-hidden', 'true');
+    sp.innerHTML = '<i></i><i></i><i></i>';
+    sp.style.top = oben + 'px';
+    sp.style.height = '0px';
+    karte.appendChild(sp);
+    return {
+      laenge(h) { sp.style.height = Math.max(0, h) + 'px'; },
+      fertig() {
+        setTimeout(() => sp.classList.add('verblasst'), 5000);
+        setTimeout(() => sp.remove(), 9000);
+      }
+    };
+  }
+
+  // Runter wie eine echte Katze: an die Kante im Zwischenraum, Krallen ins Papier und ruckelnd hinunterrutschen
+  function runterklettern(dann) {
+    if (anker.art !== 'ziel') return aufDenBoden(dann);
+    const karte = anker.el;
+    const r0 = karte.getBoundingClientRect();
+    if (bodenY() - pos.y < hoehe * 2.4 || !r0.width) return aufDenBoden(dann);   // niedrig: einfach springen
+    const spalt = findeSpalt(karte, pos.x + breite / 2);
+    const seite = spalt.seite;                                    // an welcher Kante der Karte sie runterrutscht
+    const kante = () => { const r = karte.getBoundingClientRect(); return seite === 'links' ? r.left : r.right; };
+    const mitteX = () => kante() + (seite === 'links' ? -breite * 0.14 : breite * 0.14);
+    const relStart = 6;                                           // Abstand zur Oberkante der Karte (Kopf der Katze)
+    const relEnde = Math.min(r0.height - hoehe * 0.55, bodenY() - r0.top);
+    const ziehe = (rel) => { const r = karte.getBoundingClientRect(); return { x: mitteX() - breite / 2, y: r.top + rel }; };
+
+    // 1. von oben an die Kante hüpfen
+    blick(seite === 'links');                                     // Gesicht zur Wand
+    sprung({ x: pos.x, y: pos.y }, () => ziehe(relStart), 280, 16, 0, () => {
+      setzePose('springen');
+      blick(seite === 'links');
+      // 2. rutschen: ruckelnd (festhalten – loslassen – festhalten), Kratzspuren wachsen mit
+      const spur2 = kratzspur(karte, seite, relStart + hoehe * 0.55);
+      const weg = Math.max(0, relEnde - relStart);
+      const dauer = weg / 210 * 1000 + 300;
+      const t0 = performance.now();
+      aktion = (jetzt) => {
+        const t = Math.min(1, (jetzt - t0) / dauer);
+        const ruck = t - Math.sin(2 * Math.PI * 5 * t) / (2 * Math.PI * 5) * 0.85;   // immer nach unten, aber ruckelnd
+        const rel = relStart + weg * ruck;
+        const p = ziehe(rel);
+        pos.x = p.x; pos.y = p.y;
+        form(0.94, 1.04, (seite === 'links' ? -1 : -1) * (68 + Math.sin(jetzt / 45) * 3));
+        spur2.laenge(rel - relStart);
+        if (t >= 1) {
+          aktion = null; form(1, 1, 0); spur2.fertig();
+          // 3. das letzte Stück abspringen und landen
+          const x = freierBoden(pos.x + (seite === 'links' ? -50 : 50));
+          springeZu({ art: 'boden', x }, dann);
+        }
+      };
+      wecken();
+    }, { ohneLandung: true });
   }
 
   // ---------- Kleine Gewohnheiten ----------
@@ -390,7 +453,21 @@
   function aufwachen() {
     if (!schlaeft) return;
     schlaeft = false;
+    if (Math.random() < 0.35 && !ruhig.matches) return erschrecken();
     eineWeile('strecken', [], 1800); // erst einmal ausgiebig strecken und gähnen
+  }
+
+  // Aus dem Schlaf gerissen: ohne Ducken hochschrecken und mit einem Satz weg – vom Block direkt hinunter
+  function erschrecken() {
+    clearTimeout(besonders);
+    const weg = Math.random() < 0.5 ? -1 : 1;
+    if (anker.art === 'ziel') {
+      springeZu({ art: 'boden', x: freierBoden(pos.x + weg * 140) }, () => eineWeile('sitzen', ['schaut'], 2400), { schreck: true });
+    } else {
+      springeZu({ art: 'boden', x: freierBoden(pos.x + weg * 90) }, () => {
+        laufeZu(freierBoden(pos.x + weg * 260), () => eineWeile('sitzen', ['schaut'], 2400));
+      }, { schreck: true });
+    }
   }
 
   // Frech: sich neben einen Knopf setzen und ihn mit der Pfote antippen (ohne ihn auszulösen)
@@ -414,7 +491,7 @@
     else if (r < 0.78) {
       const plaetze = sitzplaetze().filter((k) => !(anker.art === 'ziel' && anker.el === k));
       if (plaetze.length && Math.random() < 0.7) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
-      else if (anker.art === 'ziel') aufDenBoden();
+      else if (anker.art === 'ziel') runterklettern();
       else laufeZu(freierBoden(zufall(40, window.innerWidth - breite - 40)));
     }
     plane();
@@ -516,5 +593,5 @@
   setzePose('sitzen');
   zeichne();
   if (!ruhig.matches) plane();
-  window.KATZE = { putzen, frech, einschlafen, aufwachen, zuSitzplatz, sitzplaetze };
+  window.KATZE = { putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
 })();
