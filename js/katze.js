@@ -542,11 +542,26 @@
       const jetzt = performance.now();
       if (jetzt < streckBis) { /* streckt sich noch */ }
       else if (pose !== 'laufen' && jetzt - zuletztUnterwegs > 3000) {
+        // Wie geht sie heute los? Jedes Mal ein bisschen anders – sonst wirkt es künstlich
         clearTimeout(besonders);
         blick(d > 0);
-        setzePose('strecken');
-        streckBis = jetzt + 850;
-        zuletztUnterwegs = streckBis;          // nach dem Strecken geht es los
+        const w = Math.random();
+        if (w < 0.3) {                                  // ausgiebig strecken und gähnen
+          setzePose('strecken');
+          streckBis = jetzt + 850;
+          zuletztUnterwegs = streckBis;
+        } else if (w < 0.65) {                          // einfach gemütlich loslaufen
+          setzePose('laufen', ['anlaufen']);
+          setTimeout(() => el.classList.remove('anlaufen'), 700);
+          zuletztUnterwegs = jetzt;
+        } else if (w < 0.82) {                          // kleiner Hüpfer, dann los
+          huepfen();
+          zuletztUnterwegs = jetzt + 560;
+          streckBis = jetzt + 560;
+        } else {                                        // die „verrückten fünf Minuten“: hin und her rasen
+          toben(d > 0 ? 1 : -1);
+          zuletztUnterwegs = jetzt + 2000;
+        }
       } else {
         clearTimeout(besonders);
         blick(d > 0);
@@ -732,6 +747,30 @@
       aktion = schritt;
       wecken();
     } else { folge.zielX = zielX; folge.tempo = tempo; }
+  }
+  // Toben: ein paar Mal schnell hin und her rennen, mit kleinen Sprüngen beim Umdrehen
+  function toben(richtung) {
+    const start = pos.x;
+    const punkte = [];
+    let x = start, r = richtung;
+    const n = 2 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < n; i++) { x = grenzeX(start + r * zufall(110, 220)); punkte.push(x); r = -r; }
+    punkte.push(grenzeX(start + richtung * 30));
+    let i = 0, von = pos.x, t0 = performance.now(), dauer = 0;
+    const neu = () => { von = pos.x; t0 = performance.now(); dauer = Math.abs(punkte[i] - von) / 420 * 1000 + 80; blick(punkte[i] > von); setzePose('laufen'); };
+    neu();
+    aktion = (jetzt) => {
+      const t = Math.min(1, (jetzt - t0) / dauer);
+      pos.x = von + (punkte[i] - von) * sanft(t);
+      pos.y = bodenY() - (t > 0.85 ? Math.sin((t - 0.85) / 0.15 * Math.PI) * 14 : 0);   // Hüpfer beim Wenden
+      if (t >= 1) {
+        i++;
+        if (i >= punkte.length) { aktion = null; anker = { art: 'boden', x: pos.x }; setzePose('sitzen'); return; }
+        neu();
+      }
+    };
+    anker = { art: 'boden', x: pos.x };
+    wecken();
   }
   function folgenEnde() { if (folge) { folge = null; aktion = null; form(1, 1, 0); } }
 
