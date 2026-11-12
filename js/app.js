@@ -69,6 +69,12 @@
     const ziel = SEITEN.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
     SEITEN.forEach((s) => { $(s).hidden = s !== ziel; });
     document.querySelectorAll('.menue a').forEach((a) => a.classList.toggle('aktiv', a.getAttribute('href') === '#' + ziel));
+    // Auch unten in der Leiste den aktuellen Bereich fett zeigen (z. B. Erfolge, Mein Konto, Sichern)
+    document.querySelectorAll('.leiste .leiste-link').forEach((a) => {
+      const hier = a.getAttribute('href') === '#' + ziel;
+      if (hier) { a.setAttribute('aria-current', 'page'); a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      else a.removeAttribute('aria-current');
+    });
     if (ziel === 'start') zeigeFortschritt();
     if (ziel === 'lernen' && window.LERNEN) window.LERNEN.zeige();
     if (ziel === 'tagebuch') zeigeTagebuch();
