@@ -121,6 +121,10 @@ mark{background:linear-gradient(transparent 55%, var(--markierung) 55%);color:in
 .fkarte p{color:var(--grau);font-size:17px}
 .bald{font-size:16px;color:var(--grau)}
 .bald strong{color:var(--tinte);font-weight:600}
+.bald a{color:var(--akzent)}
+.fkarte{color:inherit;text-decoration:none;cursor:pointer}
+.fkarte-los{display:inline-block;margin-top:10px;font-family:var(--kopf);font-size:20px;color:var(--akzent)}
+.fkarte:focus-visible{outline:2px dashed var(--akzent);outline-offset:4px}
 
 /* ---------- Seite 4: Über das Projekt ---------- */
 .projekt{grid-template-columns:6fr 5fr;gap:7vw}
@@ -282,20 +286,20 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
       <h2 class="zeig">Drei Dinge, die wirklich helfen.</h2>
     </div>
     <div class="galerie">
-      <article class="fkarte zeig">
+      <a class="fkarte zeig" href="index.html#lernen" aria-label="Lernmodule öffnen">
         <span class="nr">01</span>
-        <div><h3>Lernmodule</h3><p>Von Grundbegriffen bis Kennzahlen: kurze Texte mit Vorlesefunktion und einem Mini-Quiz am Ende.</p></div>
-      </article>
-      <article class="fkarte zeig">
+        <div><h3>Lernmodule</h3><p>Von Grundbegriffen bis Kennzahlen: kurze Texte mit Vorlesefunktion und einem Mini-Quiz am Ende.</p><span class="fkarte-los">Öffnen →</span></div>
+      </a>
+      <a class="fkarte zeig" href="index.html#quiz" aria-label="Quiz mit Lernkartei öffnen">
         <span class="nr">02</span>
-        <div><h3>Quiz mit Lernkartei</h3><p>Fragen, die sich dem eigenen Fortschritt anpassen. Eigene Begriffe kommen mit „Add to Brain“ dazu.</p></div>
-      </article>
-      <article class="fkarte zeig">
+        <div><h3>Quiz mit Lernkartei</h3><p>Fragen, die sich dem eigenen Fortschritt anpassen. Eigene Begriffe kommen mit „Add to Brain“ dazu.</p><span class="fkarte-los">Öffnen →</span></div>
+      </a>
+      <a class="fkarte zeig" href="index.html#tagebuch" aria-label="Praktikumstagebuch öffnen">
         <span class="nr">03</span>
-        <div><h3>Praktikumstagebuch</h3><p>Datum, Arbeitszeit, Tätigkeiten, Gelerntes, offene Fragen – und daraus der Wochenbericht.</p></div>
-      </article>
+        <div><h3>Praktikumstagebuch</h3><p>Datum, Arbeitszeit, Tätigkeiten, Gelerntes, offene Fragen – und daraus der Wochenbericht.</p><span class="fkarte-los">Öffnen →</span></div>
+      </a>
     </div>
-    <p class="bald zeig"><strong>Demnächst:</strong> Trainer fürs Vorstellungsgespräch · Rechen-Trainer · Fehler-Detektiv</p>
+    <p class="bald zeig"><strong>Außerdem:</strong> <a href="index.html#training">Gespräch üben</a> · <a href="index.html#rechnen">Rechnen üben</a> · <a href="index.html#shop">Praxis-Missionen</a> · <strong>Demnächst:</strong> Fehler-Detektiv</p>
   </section>
 
   <!-- 4 · ÜBER DAS PROJEKT -->
