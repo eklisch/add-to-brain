@@ -35,8 +35,7 @@
   const SITZ_KOERPER = `<g class="k-schwanz" style="transform-origin:48px 93px"><path class="k-schwanzlinie" d="M50 94 C36 97 24 93 23 83 C22 74 31 71 33 78"/></g>
     <path class="k-fell" d="M62 42 C48 50 39 64 40 80 C41 91 46 96 54 96 L82 96 C86 96 86 91 82 89 C79 77 80 61 76 47 Z"/>`;
   const POSEN = {
-    sitzen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95 M78 68 L80 95"/>` + kopf(70, 33, 1, 'auf') +
-      `<text class="k-rrr" x="88" y="40">rrr</text><text class="k-rrr k-rrr2" x="94" y="28">rrr</text>`,
+    sitzen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95 M78 68 L80 95"/>` + kopf(70, 33, 1, 'auf'),
     putzen: SITZ_KOERPER + `<path class="k-bein" d="M78 68 L80 95"/>` + kopf(70, 33, 1, 'zu') +
       `<g class="k-putzpfote" style="transform-origin:73px 66px"><path class="k-bein" d="M73 66 C78 58 78 50 73 46"/><circle class="k-fell" cx="72.5" cy="45.5" r="3.4"/></g>`,
     tippen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95"/>` + kopf(70, 33, 1, 'auf') +
@@ -70,7 +69,8 @@
   el.setAttribute('role', 'img');
   el.setAttribute('aria-label', 'Schwarze Katze, das Maskottchen von Add to Brain');
   el.title = 'Miau';
-  el.innerHTML = '<div class="katze-figur"><svg viewBox="0 0 120 100" aria-hidden="true" focusable="false"></svg></div>';
+  el.innerHTML = '<div class="katze-figur"><svg viewBox="0 0 120 100" aria-hidden="true" focusable="false"></svg></div>' +
+    '<span class="k-rrr" aria-hidden="true">rrr</span><span class="k-rrr k-rrr2" aria-hidden="true">rrr</span>'; // außerhalb der Figur, damit die Schrift nie gespiegelt wird
   document.body.appendChild(el);
   const svg = el.querySelector('svg');
 

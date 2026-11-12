@@ -113,7 +113,11 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.schmollt .k-zzz { display: none; }
 
 /* Schnurren beim Streicheln: Augen zu, „rrr“ steigt auf */
-.k-rrr { font: 600 8px var(--lesbar, sans-serif); fill: var(--tinte); opacity: 0; }
+.k-rrr { position: absolute; top: 4%; left: 76%; font: 400 22px/1 var(--kopf, 'Patrick Hand', cursive); color: var(--tinte); opacity: 0; pointer-events: none; white-space: nowrap; }
+.k-rrr2 { top: -14%; left: 84%; }
+.katze.links .k-rrr { left: auto; right: 76%; }
+.katze.links .k-rrr2 { right: 84%; }
+@media (max-width: 767px) { .k-rrr { font-size: 18px; } }
 .katze.schnurrt .k-augen { animation: none; opacity: 0; }
 .katze.schnurrt .k-zu-blinzeln { animation: none; opacity: 1; }
 .katze.schnurrt .k-rrr { animation: k-zzz 1.6s ease-in infinite; }
