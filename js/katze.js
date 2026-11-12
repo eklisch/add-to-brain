@@ -31,6 +31,18 @@
     const augen = `<g class="k-augen"><path class="k-auge" d="M${k(-8,-2)} Q${k(-5,-6)} ${k(-2,-2)} Q${k(-5,1)} ${k(-8,-2)} Z M${k(2,-2)} Q${k(5,-6)} ${k(8,-2)} Q${k(5,1)} ${k(2,-2)} Z"/><path class="k-pupille" d="M${k(-5,-4.2)} L${k(-5,0)} M${k(5,-4.2)} L${k(5,0)}"/></g>`;
     return augen + `<g class="k-zu-blinzeln">${zu}</g>` + nase + bart;
   }
+  // Wütender Kopf: Ohren flach nach hinten, schmale Augen, Maul weit offen mit Zähnchen
+  function kopfWuetend(x, y, s) {
+    const k = (dx, dy) => f(x + dx * s) + ' ' + f(y + dy * s);
+    return `<g class="k-kopf" style="transform-origin:${x}px ${f(y + 10 * s)}px">
+      <path class="k-fell" d="M${k(-13,2)} C${k(-14,-6)} ${k(-12,-11)} ${k(-9,-13)} L${k(-21,-15)} L${k(-4,-15)} C${k(-1,-16)} ${k(1,-16)} ${k(4,-15)} L${k(21,-15)} L${k(9,-13)} C${k(12,-11)} ${k(14,-6)} ${k(13,2)} C${k(12,9)} ${k(6,13)} ${k(0,13)} C${k(-6,13)} ${k(-12,9)} ${k(-13,2)} Z"/>
+      <path class="k-auge" d="M${k(-9,-4)} L${k(-2,-1.5)} Q${k(-5,1)} ${k(-8,-1)} Z M${k(9,-4)} L${k(2,-1.5)} Q${k(5,1)} ${k(8,-1)} Z"/>
+      <path class="k-pupille" d="M${k(-5,-2.6)} L${k(-5,0)} M${k(5,-2.6)} L${k(5,0)}"/>
+      <ellipse class="k-maul" cx="${f(x)}" cy="${f(y + 6 * s)}" rx="${f(4 * s)}" ry="${f(4.4 * s)}"/>
+      <path class="k-zahn" d="M${k(-2.6,2.6)} L${k(-1.4,5)} L${k(-0.4,2.6)} Z M${k(2.6,2.6)} L${k(1.4,5)} L${k(0.4,2.6)} Z"/>
+      <path class="k-bart" d="M${k(-6,5)} L${k(-20,1)} M${k(-6,7)} L${k(-20,7)} M${k(6,5)} L${k(20,1)} M${k(6,7)} L${k(20,7)}"/>
+    </g>`;
+  }
   const kopf = (x, y, s, art) => `<g class="k-kopf" style="transform-origin:${x}px ${f(y + 10 * s)}px">${kopfMitOhren(x, y, s)}${gesicht(x, y, s, art)}</g>`;
   const SITZ_KOERPER = `<g class="k-schwanz" style="transform-origin:48px 93px"><path class="k-schwanzlinie" d="M50 94 C36 97 24 93 23 83 C22 74 31 71 33 78"/></g>
     <path class="k-fell" d="M62 42 C48 50 39 64 40 80 C41 91 46 96 54 96 L82 96 C86 96 86 91 82 89 C79 77 80 61 76 47 Z"/>`;
@@ -53,6 +65,9 @@
       <path class="k-fell" d="M30 60 C36 51 62 50 76 53 C86 55 90 63 86 70 C80 76 46 76 34 72 C28 70 26 65 30 60 Z"/>
       <g class="k-bein-b" style="transform-origin:35px 70px"><path class="k-bein" d="M35 70 L34 95"/></g>
       <g class="k-bein-a" style="transform-origin:72px 72px"><path class="k-bein" d="M72 72 L71 95"/></g>` + kopf(91, 47, 0.95, 'auf'),
+    buckel: `<g class="k-schwanz k-gestraeubt" style="transform-origin:36px 66px"><path class="k-schwanzlinie k-dick" d="M36 66 C26 56 25 38 31 24"/></g>
+      <path class="k-bein" d="M40 70 L38 95 M47 72 L46 95 M73 72 L75 95 M80 70 L82 95"/>
+      <path class="k-fell k-fell-gestraeubt" d="M32 76 C30 52 46 34 60 33 C74 32 89 50 88 76 C80 81 40 81 32 76 Z"/>` + kopfWuetend(91, 64, 0.95),
     lauern: `<g class="k-schwanz k-zucken" style="transform-origin:30px 88px"><path class="k-schwanzlinie" d="M30 88 C20 89 12 87 5 81"/></g>
       <path class="k-bein" d="M36 90 L42 95 M44 91 L50 95"/>
       <path class="k-fell" d="M27 84 C29 71 44 65 60 67 C72 68 82 73 88 79 C91 87 87 94 80 95 L36 95 C30 95 26 90 27 84 Z"/>
@@ -70,7 +85,9 @@
   el.setAttribute('aria-label', 'Schwarze Katze, das Maskottchen von Add to Brain');
   el.title = 'Miau';
   el.innerHTML = '<div class="katze-figur"><svg viewBox="0 0 120 100" aria-hidden="true" focusable="false"></svg></div>' +
-    '<span class="k-rrr" aria-hidden="true">rrr</span><span class="k-rrr k-rrr2" aria-hidden="true">rrr</span>'; // außerhalb der Figur, damit die Schrift nie gespiegelt wird
+    '<span class="k-rrr" aria-hidden="true">rrr</span><span class="k-rrr k-rrr2" aria-hidden="true">rrr</span>' +
+    '<span class="k-ruf" aria-hidden="true">Pfff!</span>' +
+    '<span class="k-herz" aria-hidden="true">♥</span><span class="k-herz k-herz2" aria-hidden="true">♥</span><span class="k-herz k-herz3" aria-hidden="true">♥</span>'; // außerhalb der Figur, damit die Schrift nie gespiegelt wird
   document.body.appendChild(el);
   const svg = el.querySelector('svg');
 
@@ -130,7 +147,7 @@
       clearTimeout(ueberblendung);
       ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
     }
-    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt');
+    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt', 'faucht', 'jubelt', 'peitscht', 'schleicht', 'anlaufen');
     el.classList.toggle('laeuft', name === 'laufen');
     (klassen || []).forEach((k) => el.classList.add(k));
   }
@@ -227,6 +244,7 @@
     if (Math.abs(weg) < 6) { if (dann) dann(); return; }
     blick(weg > 0);
     setzePose('laufen');
+    zuletztUnterwegs = performance.now();
     const tempo = handy.matches ? 110 : 150; // Pixel pro Sekunde (in der Mitte des Weges)
     const dauer = Math.abs(weg) / tempo * 1000 + 350;  // etwas Zeit fürs Anlaufen und Abbremsen
     const t0 = performance.now();
@@ -511,19 +529,35 @@
   }
   ['pointerdown', 'keydown', 'touchstart'].forEach((ev) => window.addEventListener(ev, aktiv, { passive: true }));
 
-  // Beim Blättern läuft sie auf der Stelle mit – das sieht aus, als liefe sie neben der Seite her
+  // Beim Blättern läuft sie auf der Stelle mit – das sieht aus, als liefe sie neben der Seite her.
+  // Hat sie länger gesessen, streckt sie sich zuerst und läuft dann langsam an – wie eine echte Katze.
   let letzteScroll = spur.scrollLeft;
+  let streckBis = 0, zuletztUnterwegs = 0;
   spur.addEventListener('scroll', () => {
     if (wahl === 'aus' || ruhig.matches) return;
     const d = spur.scrollLeft - letzteScroll;
     letzteScroll = spur.scrollLeft;
     aktiv();
     if (anker.art === 'boden' && !aktion && !schlaeft && Math.abs(d) > 0.5) {
-      clearTimeout(besonders);
-      blick(d > 0);
-      setzePose('laufen');
+      const jetzt = performance.now();
+      if (jetzt < streckBis) { /* streckt sich noch */ }
+      else if (pose !== 'laufen' && jetzt - zuletztUnterwegs > 3000) {
+        clearTimeout(besonders);
+        blick(d > 0);
+        setzePose('strecken');
+        streckBis = jetzt + 850;
+        zuletztUnterwegs = streckBis;          // nach dem Strecken geht es los
+      } else {
+        clearTimeout(besonders);
+        blick(d > 0);
+        const neuLos = pose !== 'laufen';
+        setzePose('laufen', neuLos ? ['anlaufen'] : (el.classList.contains('anlaufen') ? ['anlaufen'] : []));
+        if (neuLos) setTimeout(() => el.classList.remove('anlaufen'), 700);
+        zuletztUnterwegs = jetzt;
+      }
     }
     clearTimeout(blaettern);
+    const warten = Math.max(260, streckBis - performance.now() + 120);
     blaettern = setTimeout(() => {
       blaettern = null;
       if (anker.art === 'boden' && !aktion && !schlaeft) {
@@ -532,24 +566,60 @@
         const plaetze = sitzplaetze();
         if (plaetze.length && Math.random() < 0.45) setTimeout(() => { if (!aktion && !schlaeft) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]); }, 500);
       }
-    }, 260);
+    }, warten);
     wecken();
   }, { passive: true });
 
-  // Quiz und Praxis: richtig → Freudensprung und Schwanzwedeln, falsch → beleidigt wegschauen
+  // Quiz und Praxis – große Gefühle, aber zum Schmunzeln:
+  // falsch → Buckel, Fell gesträubt, Ohren flach, „Pfff!“, dann demonstrativ den Rücken zudrehen und mit dem Schwanz peitschen
+  // richtig → Freudensprung mit Drehung, Herzchen, schnelles Wedeln und Schnurren
+  function empoeren() {
+    clearTimeout(besonders);
+    const t0 = performance.now();
+    setzePose('buckel', ['faucht']);
+    aktion = (jetzt) => {
+      const z = jetzt - t0;
+      const a = ankerPos() || { x: pos.x, y: bodenY() };
+      pos.y = a.y; pos.x = a.x + (z < 900 ? Math.sin(z / 18) * 2.2 : 0);       // zittern vor Empörung
+      const p = Math.min(1, z / 160);
+      form(1 + 0.1 * p, 1 + 0.12 * p, 0);                                         // aufplustern
+      if (z > 1300) {
+        aktion = null; form(1, 1, 0);
+        blick(el.classList.contains('links'));                                   // Rücken zudrehen
+        eineWeile('sitzen', ['peitscht'], 2600);
+        setTimeout(() => { if (!schlaeft && !aktion) blick(!el.classList.contains('links')); }, 2600);
+      }
+    };
+    wecken();
+  }
+  function jubeln() {
+    clearTimeout(besonders);
+    const t0 = performance.now();
+    setzePose('sitzen');
+    aktion = (jetzt) => {
+      const z = jetzt - t0;
+      const a = ankerPos() || { x: pos.x, y: bodenY() };
+      pos.x = a.x;
+      if (z < 180) { const d = sanft(z / 180); form(1 + 0.1 * d, 1 - 0.18 * d, 0); pos.y = a.y; return; }   // ducken
+      if (pose !== 'springen') setzePose('springen', ['jubelt']);
+      const t = Math.min(1, (z - 180) / 620);
+      pos.y = a.y - 4 * (hoehe * 0.85) * t * (1 - t);                             // hoher Freudensprung
+      form(1, 1, -360 * sanft(t));                                                // mit einer ganzen Drehung
+      if (t >= 1) {
+        form(1, 1, 0);
+        aktion = null;
+        eineWeile('sitzen', ['freut', 'jubelt', 'schnurrt'], 2400);
+      }
+    };
+    wecken();
+  }
   document.addEventListener('click', (ev) => {
     const b = ev.target.closest && ev.target.closest('#qz-antworten button, #rs-antworten button');
-    if (!b || wahl === 'aus' || ruhig.matches) return;
-    if (aktion) return;
-    if (b.classList.contains('btn-danger')) {
-      const vorher = !el.classList.contains('links');
-      blick(!vorher);
-      eineWeile('sitzen', [], 1600);
-      setTimeout(() => blick(vorher), 1600);
-    } else if (b.classList.contains('btn-success')) {
-      eineWeile('sitzen', ['freut'], 1800);
-      huepfen();
-    }
+    if (!b || wahl === 'aus' || ruhig.matches || schlaeft) return;
+    if (aktion && !aktion.istFolge) return;
+    folge = null;
+    if (b.classList.contains('btn-danger')) empoeren();
+    else if (b.classList.contains('btn-success')) jubeln();
   });
 
   // Anklicken mag sie nicht: beleidigt wegspringen
@@ -557,6 +627,7 @@
     if (ruhig.matches) return;
     aktiv();
     streichelt = false; lauert = false; jagdStart = 0; clearTimeout(streichelTimer);
+    folgenEnde();
     jagdPause = Date.now() + 15000;
     clearTimeout(besonders);
     // weg vom Mauszeiger: kleiner Hüpfer, beleidigt ein Stück weggehen, irgendwo ungestört hinlegen
@@ -597,6 +668,7 @@
   }
   function lauernStart() {
     lauert = true; lauerSeit = performance.now();
+    zuletztUnterwegs = lauerSeit;
     if (!jagdStart) jagdStart = lauerSeit;
     clearTimeout(besonders);
     setzePose('lauern', ['lauert']);
@@ -628,31 +700,79 @@
         form(1, 1, 0);
         aktion = null;
         eineWeile('tippen', ['tippt'], 700);           // Pfotenhieb
-        setTimeout(() => { if (!schlaeft && !aktion) { if (Math.random() < 0.55) lauernStart(); else { jagdPause = Date.now() + 8000; putzen(); } } }, 750);
+        setTimeout(() => { if (!schlaeft && !aktion) lauernStart(); }, 750);
       }
     };
     wecken();
   }
+  // Hinterherschleichen oder -rennen: sanft dem Ziel folgen, das sich ständig ändern darf
+  let folge = null;                        // { zielX, tempo }
+  function folgen(zielX, tempo) {
+    if (!folge) {
+      folge = { zielX, tempo };
+      let zuletzt = performance.now();
+      const schritt = (jetzt) => {
+        if (!folge) { aktion = null; return; }
+        const dt = Math.min(0.05, (jetzt - zuletzt) / 1000); zuletzt = jetzt;
+        const dx = grenzeX(folge.zielX) - pos.x;
+        const v = Math.min(Math.abs(dx), folge.tempo * dt) * Math.sign(dx);
+        pos.y = bodenY();
+        if (Math.abs(dx) > 4) {
+          pos.x += v;
+          blick(dx > 0);
+          setzePose('laufen', folge.tempo < 150 ? ['schleicht'] : []);
+          form(folge.tempo < 150 ? 1.04 : 1, folge.tempo < 150 ? 0.9 : 1, 0);   // beim Schleichen geduckt
+        } else {
+          form(1, 1, 0);
+          if (pose !== 'lauern') { lauerSeit = jetzt; setzePose('lauern', ['lauert']); }
+        }
+        anker = { art: 'boden', x: pos.x };
+      };
+      schritt.istFolge = true;
+      aktion = schritt;
+      wecken();
+    } else { folge.zielX = zielX; folge.tempo = tempo; }
+  }
+  function folgenEnde() { if (folge) { folge = null; aktion = null; form(1, 1, 0); } }
+
+  let letzteMaus = { x: -999, y: -999, t: 0 }, mausTempo = 0, letzterHieb = 0, jagtBis = 0;
   function jagdTakt() {
-    if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt) { if (lauert) lauernEnde(); return; }
-    if (aktion || Date.now() < jagdPause) return;
     const jetzt = performance.now();
+    // Mausgeschwindigkeit (Pixel pro Sekunde), geglättet
+    const dtm = (jetzt - letzteMaus.t) / 1000;
+    if (dtm > 0) { const v = Math.hypot(maus.x - letzteMaus.x, maus.y - letzteMaus.y) / dtm; mausTempo = mausTempo * 0.5 + Math.min(v, 3000) * 0.5; }
+    letzteMaus = { x: maus.x, y: maus.y, t: jetzt };
+
+    if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt) { folgenEnde(); if (lauert) lauernEnde(); return; }
+    if ((aktion && !aktion.istFolge) || Date.now() < jagdPause) return;
     const cx = pos.x + breite / 2, cy = pos.y + hoehe * 0.65;
     const d = Math.hypot(maus.x - cx, maus.y - cy);
-    const frisch = jetzt - maus.t < 2500;
-    if (!frisch || d > 260 || ueberBedienung()) { if (lauert && (d > 420 || !frisch)) lauernEnde(4000); if (!lauert) return; }
-    if (anker.art !== 'boden') { blick(maus.x > cx); return; }   // auf einem Block: nur hinschauen
-    // nach einer Weile verliert sie das Interesse und tut so, als wäre nichts gewesen
-    if (jagdStart && jetzt - jagdStart > 7000) { lauernEnde(15000); putzen(); return; }
-    if (!lauert) { if (d < 230 && !ueberBedienung()) lauernStart(); return; }
-    blick(maus.x > cx);
-    const erreichbar = maus.y > bodenY() - hoehe * 1.2;
-    if (d > 150 && erreichbar && d < 420 && jetzt - lauerSeit > 450) {   // Zeiger flieht: erst kurz fixieren, dann hinterher!
-      laufeZu(freierBoden(maus.x - breite / 2), () => { if (!schlaeft) lauernStart(); });
-      lauert = false;
+    const frisch = jetzt - maus.t < 2000;
+    const erreichbar = maus.y > bodenY() - hoehe * 1.3 && maus.y < window.innerHeight - leisteHoehe() + 10;
+    const spielt = lauert || folge;
+
+    if (anker.art !== 'boden') { if (frisch && d < 300) blick(maus.x > cx); return; }   // auf einem Block: nur hinschauen
+    if (!frisch || ueberBedienung() || (!erreichbar && d > 200) || d > (spielt ? 520 : 360)) {
+      if (spielt && (!frisch || d > 520)) { folgenEnde(); lauernEnde(5000); }
+      else if (folge) { folge.zielX = pos.x; }                                         // kurz innehalten
       return;
     }
-    if (erreichbar && d <= 150 && jetzt - lauerSeit > 750 && jetzt - maus.t > 250 && !ueberBedienung()) zuschnappen();
+    // nach längerem Spielen verliert sie das Interesse und tut so, als wäre nichts gewesen
+    if (jagdStart && jetzt - jagdStart > 25000) { folgenEnde(); lauernEnde(14000); putzen(); return; }
+    if (!spielt) { lauernStart(); return; }
+
+    const nah = Math.abs(maus.x - cx) < breite * 0.75 && erreichbar;
+    // Zuschnappen: wenn die Maus in Reichweite ist – auch in Bewegung, nach kurzem Fixieren
+    if (nah && jetzt - lauerSeit > 450 && jetzt - letzterHieb > 1100) {
+      folgenEnde(); letzterHieb = jetzt; zuschnappen(); return;
+    }
+    // Locken: langsame Maus → hinterherschleichen; schnelle Maus → hinterherrennen
+    const abstand = maus.x > cx ? -breite * 0.55 : breite * 0.55;                      // knapp hinter der „Beute“ bleiben
+    const ziel = maus.x - breite / 2 + abstand;
+    if (mausTempo > 650) jagtBis = jetzt + 1500;                                       // Beute flieht: eine Weile volles Tempo
+    if (jetzt < jagtBis || Math.abs(ziel - pos.x) > 260) folgen(ziel, handy.matches ? 220 : 320);
+    else if (mausTempo > 25 || Math.abs(ziel - pos.x) > 60) folgen(ziel, 95);
+    else if (folge) folge.zielX = pos.x;
   }
   setInterval(jagdTakt, 110);
 
@@ -716,5 +836,5 @@
   setzePose('sitzen');
   zeichne();
   if (!ruhig.matches) plane();
-  window.KATZE = { putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
+  window.KATZE = { zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
 })();

@@ -125,6 +125,32 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.schnurrt svg { animation: k-schnurren .18s linear infinite; }
 @keyframes k-schnurren { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(.5px); } }
 
+/* Empört (falsche Antwort): Fell gesträubt, Schwanz buschig und hoch, „Pfff!“ */
+.k-dick { stroke-width: 9; }
+.k-zahn { fill: #fffdf8; }
+.k-fell-gestraeubt { stroke-dasharray: 1.5 2.2; stroke-width: 3.2; }      /* gesträubtes Fell als zackiger Rand */
+.katze.faucht .k-gestraeubt { animation: k-zucken .16s linear infinite; }
+.k-ruf { position: absolute; top: -18%; left: 70%; font: 400 26px/1 var(--kopf, 'Patrick Hand', cursive); color: var(--fehler, #a7342d);
+  opacity: 0; pointer-events: none; white-space: nowrap; transform: rotate(-8deg); }
+.katze.links .k-ruf { left: auto; right: 70%; transform: rotate(8deg); }
+.katze.faucht .k-ruf { animation: k-ruf 1.3s ease-out forwards; }
+@keyframes k-ruf { 0% { opacity: 0; transform: scale(.6) rotate(-8deg); } 15% { opacity: 1; transform: scale(1.15) rotate(-8deg); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(1) rotate(-8deg) translateY(-6px); } }
+/* danach mit dem Schwanz peitschen – beleidigt */
+.katze.peitscht .k-schwanz { animation: k-peitschen .32s ease-in-out infinite; }
+@keyframes k-peitschen { 0%, 100% { transform: rotate(4deg); } 50% { transform: rotate(-16deg); } }
+
+/* Jubel (richtige Antwort): Herzchen steigen auf */
+.k-herz { position: absolute; top: 10%; left: 50%; font: 18px/1 var(--lesbar, sans-serif); color: var(--katze-nase, #e9a3b2); opacity: 0; pointer-events: none; }
+.katze.jubelt .k-herz { animation: k-herz 1.6s ease-out forwards; }
+.katze.jubelt .k-herz2 { left: 22%; animation-delay: .2s; font-size: 14px; }
+.katze.jubelt .k-herz3 { left: 74%; animation-delay: .4s; font-size: 16px; }
+@keyframes k-herz { 0% { opacity: 0; transform: translateY(10px) scale(.6); } 25% { opacity: 1; transform: translateY(-6px) scale(1.1); } 100% { opacity: 0; transform: translateY(-46px) scale(1); } }
+
+/* Schleichen (Maus lockt langsam): Beine langsamer */
+.katze.schleicht .k-bein-a, .katze.schleicht .k-bein-b { animation-duration: .8s; }
+/* Anlaufen nach dem Strecken: die ersten Schritte gemächlich */
+.katze.anlaufen .k-bein-a, .katze.anlaufen .k-bein-b { animation-duration: .7s; }
+
 /* Kratzspuren an der Kartenkante – verblassen nach ein paar Sekunden */
 .kratzspur { position: absolute; width: 16px; display: flex; gap: 3px; pointer-events: none; z-index: 2; transition: opacity 3.5s ease; }
 .kratzspur.links { left: 3px; }
@@ -147,6 +173,6 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 /* Weniger Bewegung gewünscht: Katze sitzt still */
 @media (prefers-reduced-motion: reduce) {
   .katze *, .katze svg { animation: none !important; }
-  .k-zu-blinzeln, .k-zzz, .k-rrr { opacity: 0 !important; }
+  .k-zu-blinzeln, .k-zzz, .k-rrr, .k-ruf, .k-herz { opacity: 0 !important; }
   .katze .k-augen { opacity: 1 !important; }
 }
