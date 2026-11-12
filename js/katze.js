@@ -183,6 +183,7 @@
   // Position des Ankers auf dem Bildschirm – null, wenn ein Sitzplatz nicht mehr passt
   function ankerPos() {
     if (anker.art === 'boden') return { x: grenzeX(anker.x), y: bodenY() };
+    if (anker.art === 'weg') return { x: pos.x, y: pos.y };
     const r = anker.el.getBoundingClientRect();
     if (!r.width || anker.el.closest('[hidden]') || r.top > window.innerHeight - leisteHoehe() - 10) return null;
     const p = { x: r.left + Math.min(anker.dx, Math.max(0, r.width - breite)), y: r.top - hoehe + 5 };
@@ -327,7 +328,9 @@
     if (hoehenUnterschied <= maxSatz || neuerAnker.art !== 'ziel') {
       blick(ziel0.x >= pos.x);
       const bogen = hoehenUnterschied > 0 ? Math.min(60, hoehenUnterschied * 0.3) + 30 : 26;
-      sprung({ x: pos.x, y: pos.y }, zielFn, opt.schreck ? 400 : (hoehenUnterschied < -hoehe ? 520 : 480), opt.schreck ? bogen + 30 : bogen, 0, fertig, { ohneAnlauf: !!opt.schreck });
+      const weite = Math.hypot(ziel0.x - pos.x, ziel0.y - pos.y);
+      const dauer = Math.max(460, Math.min(950, 380 + weite * 0.6));     // weite Sprünge dauern länger
+      sprung({ x: pos.x, y: pos.y }, zielFn, opt.schreck ? dauer * 0.75 : dauer, opt.schreck ? bogen + 30 : bogen, 0, fertig, { ohneAnlauf: !!opt.schreck });
       return;
     }
 
@@ -460,6 +463,38 @@
     }, { ohneLandung: true });
   }
 
+  // Was passiert, wenn ihr Sitzplatz nicht mehr passt?
+  // – Block fährt beim Blättern aus dem Bild: sie fährt auf ihm mit hinaus und kommt kurz darauf seitlich wieder herein
+  // – Block ist noch zu sehen, stößt aber oben an: sie klettert ordentlich hinunter
+  // – Seite gewechselt (Block verschwunden): sie spaziert nach einer kleinen Pause von der Seite herein
+  let rueckkehr = null;
+  function wegVomPlatz() {
+    const k = anker.el;
+    const r = k && k.getBoundingClientRect();
+    if (r && r.width && !k.closest('[hidden]')) {
+      const px = r.left + Math.min(anker.dx, Math.max(0, r.width - breite)), py = r.top - hoehe + 5;
+      if (px + breite < 0 || px > window.innerWidth) return verschwinden(px < 0 ? 'links' : 'rechts');
+      if (px < 4 || px + breite > window.innerWidth - 4) { pos.x = px; pos.y = py; return; }   // fährt gerade mit hinaus
+      return runterklettern();
+    }
+    verschwinden(Math.random() < 0.5 ? 'links' : 'rechts');
+  }
+  function verschwinden(seite) {
+    aktion = null; schlaeft = false; folge = null; lauert = false;
+    anker = { art: 'weg' };
+    pos.x = seite === 'links' ? -breite - 10 : window.innerWidth + 10;
+    clearTimeout(rueckkehr);
+    rueckkehr = setTimeout(() => hereinlaufen(seite), zufall(1500, 4000));
+  }
+  function hereinlaufen(seite) {
+    if (anker.art !== 'weg') return;
+    pos.x = seite === 'links' ? -breite : window.innerWidth;
+    pos.y = bodenY();
+    anker = { art: 'boden', x: pos.x };
+    setzePose('laufen');
+    laufeZu(freierBoden(seite === 'links' ? zufall(60, 360) : window.innerWidth - breite - zufall(60, 360)));
+  }
+
   // ---------- Kleine Gewohnheiten ----------
   function eineWeile(name, klassen, ms) {
     clearTimeout(besonders);
@@ -475,10 +510,21 @@
     clearTimeout(besonders);
     setzePose('schlafen', ['schlaeft']);
   }
-  function aufwachen() {
+  // Nickerchen: auf einem erhöhten Platz oder am Boden eine Weile dösen, dann von selbst aufwachen
+  let nickerchenTimer = null;
+  function nickerchen(ms) {
+    if (aktion || schlaeft) return;
+    schlaeft = true;
+    clearTimeout(besonders);
+    setzePose('schlafen', ['schlaeft']);
+    clearTimeout(nickerchenTimer);
+    nickerchenTimer = setTimeout(() => aufwachen(true), ms);
+  }
+  function aufwachen(vonSelbst) {
     if (!schlaeft) return;
     schlaeft = false;
-    if (Math.random() < 0.35 && !ruhig.matches) return erschrecken();
+    clearTimeout(nickerchenTimer);
+    if (vonSelbst !== true && Math.random() < 0.3 && !ruhig.matches) return erschrecken();
     eineWeile('strecken', [], 1800); // erst einmal ausgiebig strecken und gähnen
   }
 
@@ -509,21 +555,27 @@
     const still = Date.now() - letzteAktivitaet;
     if (still > 60000) { einschlafen(); return plane(); }
     if (schlaeft || aktion || blaettern || trotzig) return plane();
+    if (anker.art === 'weg') return plane();
     const r = Math.random();
     const plaetze = sitzplaetze().filter((k) => !(anker.art === 'ziel' && anker.el === k));
-    if (r < 0.03) frech();
-    else if (r < 0.18) putzen();
-    else if (r < 0.30) umschauen();
-    else if (r < 0.80) {
-      // Katzen lieben erhöhte Plätze: wenn einer frei ist, geht sie meistens hinauf
-      if (anker.art === 'boden' && plaetze.length && Math.random() < 0.8) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
-      else if (anker.art === 'ziel') { if (Math.random() < 0.55) runterklettern(); else if (plaetze.length) zuSitzplatz(plaetze[0]); else putzen(); }
+    if (anker.art === 'ziel') {
+      // oben ist es gemütlich: oft ein Nickerchen, sonst putzen, schauen – und irgendwann wieder runter
+      if (r < 0.35) nickerchen(zufall(20000, 45000));
+      else if (r < 0.55) putzen();
+      else if (r < 0.70) umschauen();
+      else runterklettern();
+    } else {
+      if (r < 0.03) frech();
+      else if (r < 0.16) putzen();
+      else if (r < 0.26) umschauen();
+      else if (r < 0.34) nickerchen(zufall(12000, 25000));
+      else if (r < 0.80 && plaetze.length) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);   // Katzen lieben erhöhte Plätze
       else laufeZu(freierBoden(zufall(40, window.innerWidth - breite - 40)));
-    } else laufeZu(freierBoden(zufall(40, window.innerWidth - breite - 40)));
+    }
     plane();
   }
   let planer = null;
-  function plane() { clearTimeout(planer); planer = setTimeout(naechstes, zufall(5000, 11000)); }
+  function plane() { clearTimeout(planer); planer = setTimeout(naechstes, zufall(8000, 16000)); }
 
   // ---------- Reaktionen ----------
   function aktiv() {
@@ -803,7 +855,7 @@
   }
   function folgenEnde() { if (folge) { folge = null; aktion = null; form(1, 1, 0); } }
 
-  let letzteMaus = { x: -999, y: -999, t: 0 }, mausTempo = 0, letzterHieb = 0, jagtBis = 0;
+  let letzteMaus = { x: -999, y: -999, t: 0 }, mausTempo = 0, letzterHieb = 0, jagtBis = 0, interesse = 0;
   function jagdTakt() {
     const jetzt = performance.now();
     // Mausgeschwindigkeit (Pixel pro Sekunde), geglättet
@@ -812,7 +864,7 @@
     letzteMaus = { x: maus.x, y: maus.y, t: jetzt };
 
     if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt || trotzig) { folgenEnde(); if (lauert) lauernEnde(); return; }
-    if ((aktion && !aktion.istFolge) || Date.now() < jagdPause) return;
+    if ((aktion && !aktion.istFolge) || Date.now() < jagdPause || anker.art === 'weg') return;
     const cx = pos.x + breite / 2, cy = pos.y + hoehe * 0.65;
     const d = Math.hypot(maus.x - cx, maus.y - cy);
     const frisch = jetzt - maus.t < 2000;
@@ -820,14 +872,20 @@
     const spielt = lauert || folge;
 
     if (anker.art !== 'boden') { if (frisch && d < 300) blick(maus.x > cx); return; }   // auf einem Block: nur hinschauen
-    if (!frisch || ueberBedienung() || (!erreichbar && d > 200) || d > (spielt ? 520 : 360)) {
+    if (!frisch || ueberBedienung() || (!erreichbar && d > 200) || d > (spielt ? 520 : 280)) {
+      interesse = Math.max(0, interesse - 220);
       if (spielt && (!frisch || d > 520)) { folgenEnde(); lauernEnde(5000); }
       else if (folge) { folge.zielX = pos.x; }                                         // kurz innehalten
       return;
     }
     // nach längerem Spielen verliert sie das Interesse und tut so, als wäre nichts gewesen
-    if (jagdStart && jetzt - jagdStart > 25000) { folgenEnde(); lauernEnde(14000); putzen(); return; }
-    if (!spielt) { lauernStart(); return; }
+    if (jagdStart && jetzt - jagdStart > 25000) { folgenEnde(); lauernEnde(20000); putzen(); return; }
+    if (!spielt) {
+      // Interesse wächst erst, wenn die Maus eine Weile in ihrer Nähe bleibt – nicht bei jeder Bewegung beim Lesen
+      interesse += 110;
+      if (interesse > 1300) { interesse = 0; lauernStart(); }
+      return;
+    }
 
     const nah = Math.abs(maus.x - cx) < breite * 0.75 && erreichbar;
     // Zuschnappen: wenn die Maus in Reichweite ist – auch in Bewegung, nach kurzem Fixieren
@@ -876,12 +934,13 @@
     if (aktion) aktion(jetzt);
     else {
       const a = ankerPos();
-      if (!a) { aufDenBoden(); } // Sitzplatz weggescrollt oder Seite gewechselt: runterspringen
+      if (!a) wegVomPlatz();       // Sitzplatz passt nicht mehr: mitfahren, runterklettern oder später wieder hereinspazieren
       else { pos.x = a.x; pos.y = a.y; }
     }
     zeichne();
     // weiterlaufen, solange sich etwas bewegt oder sie auf einer Karte sitzt (die beim Blättern mitwandert)
     if (aktion || anker.art === 'ziel' || blaettern) wecken();
+    el.style.visibility = anker.art === 'weg' ? 'hidden' : '';
   }
   function wecken() { if (!laeuft) { laeuft = true; requestAnimationFrame(takt); } }
 
@@ -904,5 +963,5 @@
   setzePose('sitzen');
   zeichne();
   if (!ruhig.matches) plane();
-  window.KATZE = { trotzen, zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
+  window.KATZE = { nickerchen, verschwinden, trotzen, zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
 })();

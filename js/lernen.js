@@ -111,13 +111,20 @@
   }
   if (stimme) { stimme.getVoices(); stimme.onvoiceschanged = () => stimme.getVoices(); }
 
+  // Merken, wann man selbst geblättert hat (Mausrad, Wischen, Pfeiltasten, Zurück/Weiter)
+  let selbstGeblaettert = 0;
+  const merkeBlaettern = () => { selbstGeblaettert = Date.now(); };
+  ['wheel', 'touchmove', 'keydown'].forEach((e) => document.addEventListener(e, merkeBlaettern, { passive: true }));
+  ['pfeil-links', 'pfeil-rechts'].forEach((id) => { const b = document.getElementById(id); if (b) b.addEventListener('click', merkeBlaettern); });
+
   function markiere(i) {
     saetze.forEach((s) => s.classList.remove('liest'));
     if (saetze[i]) {
       saetze[i].classList.add('liest');
       const r = saetze[i].getBoundingClientRect();
-      const ausserhalb = r.top < 80 || r.bottom > window.innerHeight - 70 || r.left < 0 || r.right > window.innerWidth;
-      if (ausserhalb) saetze[i].scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
+      // Mitführen nur nach vorne und nur, wenn man nicht gerade selbst blättert – sonst springt die Seite zurück
+      const voraus = r.left > window.innerWidth || r.top > window.innerHeight - 70;
+      if (voraus && Date.now() - selbstGeblaettert > 6000) saetze[i].scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
     }
   }
 
