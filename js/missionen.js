@@ -142,21 +142,43 @@
   }
   const sterne = (n) => '★'.repeat(n) + '☆'.repeat(4 - n);
 
-  // ---------- Übersicht ----------
+  // ---------- Übersicht: erst Shop wählen, dann öffnen sich die Missionen rechts daneben ----------
+  let gewaehlt = null; // id des geöffneten Shops
+
   function zeigeListe() {
     aktuell = null;
     $('rs-liste').hidden = false;
     $('rs-mission').hidden = true;
+    const s = stand();
+    const shops = $('rs-shops');
+    shops.textContent = '';
+    SHOPS.forEach((shop) => {
+      const liste = MISSIONEN.filter((m) => m.shop === shop.id);
+      const fertig = liste.filter((m) => s[m.id] && s[m.id].geschafft).length;
+      const karte = el('div', null, 'card modulkarte rs-shopkarte' + (gewaehlt === shop.id ? ' aktiv' : ''));
+      const body = el('div', null, 'card-body');
+      body.appendChild(el('h4', shop.name, 'card-title'));
+      body.appendChild(el('p', shop.text, 'lesbar leise'));
+      body.appendChild(el('p', liste.length + ' Missionen · ' + fertig + ' geschafft', 'modulinfo'));
+      const k = el('button', gewaehlt === shop.id ? 'Geöffnet' : 'Shop öffnen', gewaehlt === shop.id ? 'btn-small' : 'btn-primary');
+      k.type = 'button';
+      k.disabled = gewaehlt === shop.id;
+      k.addEventListener('click', () => { gewaehlt = shop.id; zeigeListe(); oeffneMissionen(); });
+      body.appendChild(k);
+      karte.appendChild(body);
+      shops.appendChild(karte);
+    });
+
     const box = $('rs-missionen');
     box.textContent = '';
-    const s = stand();
-    SHOPS.forEach((shop) => {
+    box.hidden = !gewaehlt;
+    if (gewaehlt) {
+      const shop = SHOPS.find((x) => x.id === gewaehlt);
       const kopf = el('div', null, 'rs-shop');
-      kopf.appendChild(el('h3', shop.name));
-      kopf.appendChild(el('p', shop.text, 'lesbar leise'));
+      kopf.appendChild(el('h3', shop.name + ': Missionen'));
       box.appendChild(kopf);
-      MISSIONEN.forEach((m, i) => { if (m.shop === shop.id) karteFuer(m, i); });
-    });
+      MISSIONEN.forEach((m, i) => { if (m.shop === gewaehlt) karteFuer(m, i); });
+    }
     function karteFuer(m, i) {
       const e = s[m.id];
       const karte = el('div', null, 'card modulkarte');
@@ -174,6 +196,16 @@
     }
     const fertig = MISSIONEN.filter((m) => s[m.id] && s[m.id].geschafft).length;
     $('rs-stand').textContent = fertig + ' von ' + MISSIONEN.length + ' Missionen geschafft';
+  }
+
+  // Die Missionen ins Bild holen, falls sie rechts außerhalb liegen (auf dem Handy immer)
+  function oeffneMissionen() {
+    const ziel = $('rs-missionen').firstElementChild;
+    if (!ziel) return;
+    requestAnimationFrame(() => {
+      const r = ziel.getBoundingClientRect();
+      if (r.right > window.innerWidth - 16 || r.left < 0) ziel.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    });
   }
 
   // ---------- Mission ----------

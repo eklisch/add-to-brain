@@ -246,6 +246,30 @@
       : 'Für heute ist alles gelernt. Komm morgen wieder! (Freigeschaltet bis Stufe ' + s + ' von 3.)';
     $('qz-start').hidden = !n;
     $('qz-karte').hidden = true;
+    zeigeKartei(s);
+  }
+
+  // Lernkartei als fünf Fächer anzeigen: wie viele Begriffe liegen wo?
+  function zeigeKartei(stufe) {
+    const liste = $('qz-faecher');
+    if (!liste) return;
+    const begriffe = alleBegriffe().filter((b) => b.stufe <= stufe);
+    const anzahl = [0, 0, 0, 0, 0];
+    begriffe.forEach((b) => { anzahl[Math.min(5, Math.max(1, karte(b.id).fach)) - 1]++; });
+    const max = Math.max(1, ...anzahl);
+    const namen = ['neu / üben', 'nach 1 Tag', 'nach 3 Tagen', 'nach 7 Tagen', 'sitzt'];
+    liste.textContent = '';
+    anzahl.forEach((n, i) => {
+      const li = document.createElement('li');
+      const fach = document.createElement('span'); fach.className = 'qz-fach-nr'; fach.textContent = 'Fach ' + (i + 1);
+      const spur = document.createElement('span'); spur.className = 'qz-fach-spur';
+      const fuell = document.createElement('i'); fuell.style.width = (n / max * 100) + '%'; spur.appendChild(fuell);
+      const zahl = document.createElement('span'); zahl.className = 'qz-fach-zahl'; zahl.textContent = n;
+      const name = document.createElement('span'); name.className = 'qz-fach-name'; name.textContent = namen[i];
+      li.append(fach, spur, zahl, name);
+      liste.appendChild(li);
+    });
+    $('qz-stufen').textContent = begriffe.length + ' Begriffe in deiner Kartei (Stufe 1' + (stufe > 1 ? ' bis ' + stufe : '') + ').';
   }
 
   let aktuell = null;
@@ -341,7 +365,23 @@
     const b = liste[tag % liste.length];
     $('bdt-wort').textContent = b.begriff;
     $('bdt-erkl').textContent = b.erklaerung;
+    passeWortAn();
   }
+
+  // Lange Begriffe (z. B. „Versanddienstleister“) so weit verkleinern, dass sie aufs Blatt passen
+  function passeWortAn() {
+    const w = $('bdt-wort');
+    w.style.fontSize = '';
+    const blatt = w.closest('.blatt');
+    if (!blatt || !blatt.clientWidth) return;
+    const platz = blatt.clientWidth - 2 * parseFloat(getComputedStyle(blatt).paddingLeft);
+    let groesse = parseFloat(getComputedStyle(w).fontSize);
+    w.style.whiteSpace = 'nowrap';
+    while (w.scrollWidth > platz && groesse > 22) { groesse -= 2; w.style.fontSize = groesse + 'px'; }
+    w.style.whiteSpace = '';
+  }
+  window.addEventListener('resize', passeWortAn);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(passeWortAn);
 
   // ---------- Fortschritt ----------
   function zeigeFortschritt() {

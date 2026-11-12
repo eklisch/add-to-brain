@@ -1,66 +1,89 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Datenschutz – Add to Brain</title>
-<link href="css/fonts.css?v=202611121204" rel="stylesheet">
-<style>
-:root{--papier:#f5f2ea;--weiss:#fffdf8;--tinte:#41403e;--grau:#7a766d;--akzent:#2f6fb3;--markierung:#fff1a8;--rand:255px 15px 225px 15px/15px 225px 15px 255px}
-*{box-sizing:border-box}
-body{margin:0;background:var(--papier);color:var(--tinte);font-family:'Nunito',system-ui,sans-serif;font-size:17px;line-height:1.65;padding:32px 16px 64px}
-main{max-width:760px;margin:0 auto;background:var(--weiss);border:2px solid var(--tinte);border-radius:var(--rand);padding:clamp(24px,5vw,56px)}
-h1,h2{font-family:'Patrick Hand',cursive;font-weight:400;line-height:1.15}
-h1{font-size:clamp(40px,6vw,60px);margin:0 0 8px}
-h2{font-size:30px;margin:36px 0 8px}
-a{color:var(--akzent)}
-.zurueck{display:inline-block;margin-bottom:24px;font-family:'Patrick Hand',cursive;font-size:22px;color:var(--tinte)}
-.hinweis{background:var(--markierung);padding:12px 16px;border-radius:8px}
-.platzhalter{background:var(--markierung);padding:0 4px}
-ul{padding-left:22px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Datenschutzerklärung – Add to Brain</title>
+  <meta name="description" content="Datenschutzerklärung der Lernseite Add to Brain.">
+  <script>try { if (localStorage.getItem('atb-modus') === 'dunkel') document.documentElement.classList.add('dark'); } catch (e) {}</script>
+  <link href="css/fonts.css?v=202611121301" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611121301" rel="stylesheet">
+  <link href="css/style.css?v=202611121301" rel="stylesheet">
 </head>
 <body>
-<main>
-<a class="zurueck" href="index.html">Zurück zu Add to Brain</a>
-<h1>Datenschutzerklärung</h1>
+  <header class="kopf">
+    <a href="index.html#start" class="logo">Add <span>to</span> Brain</a>
+    <nav aria-label="Hauptmenü">
+      <ul class="menue">
+        <li><a href="index.html#lernen">Lernen</a></li>
+        <li><a href="index.html#quiz">Quiz</a></li>
+        <li><a href="index.html#rechnen">Rechnen</a></li>
+        <li><a href="index.html#training">Gespräch</a></li>
+        <li><a href="index.html#shop">Praxis</a></li>
+        <li><a href="index.html#tagebuch">Tagebuch</a></li>
+        <li><a href="index.html#glossar">Glossar</a></li>
+      </ul>
+    </nav>
+    <button type="button" class="modus" id="modus" aria-pressed="false" aria-label="Dunkelmodus einschalten" title="Dunkelmodus einschalten">☾</button>
+    <a href="index.html#quiz" class="cta">Weiterlernen</a>
+  </header>
 
-<h2>Verantwortlich</h2>
-<p>Elena Klisch – Anschrift und Kontakt siehe <a href="impressum.html">Impressum</a>.</p>
+  <main class="spur" id="spur">
+    <section class="seite text-seite">
+      <h2>Datenschutzerklärung</h2>
 
-<h2>Kurz zusammengefasst</h2>
-<ul>
-  <li>Ohne Anmeldung werden deine Einträge nur in deinem Browser gespeichert. Niemand sonst sieht sie.</li>
-  <li>Die Anmeldung ist freiwillig. Mit Anmeldung werden dein Lernstand und – <strong>verschlüsselt</strong> – dein Tagebuch auf einem Server in Frankfurt gespeichert.</li>
-  <li>Dein Tagebuch kann nur mit deinem Tagebuch-Passwort gelesen werden. Die Betreiberin der Seite kann es nicht lesen.</li>
-  <li>Keine Werbung, kein Tracking, keine Cookies zu Werbezwecken, keine Schriften oder Skripte von fremden Servern.</li>
-</ul>
+      <h3>Verantwortlich</h3>
+      <p>Elena Klisch – Anschrift und Kontakt siehe <a href="impressum.html">Impressum</a>.</p>
 
-<h2>Nutzung ohne Anmeldung</h2>
-<p>Tagebuch, eigene Begriffe, Gesprächsnotizen und Lernfortschritt werden im lokalen Speicher deines Browsers (localStorage) abgelegt. Sie werden nicht übertragen. Du kannst sie jederzeit löschen, indem du die Browserdaten für diese Seite löschst.</p>
+      <h3>Kurz zusammengefasst</h3>
+      <ul>
+        <li>Ohne Anmeldung werden deine Einträge nur in deinem Browser gespeichert. Niemand sonst sieht sie.</li>
+        <li>Die Anmeldung ist freiwillig. Mit Anmeldung werden dein Lernstand und – <strong>verschlüsselt</strong> – dein Tagebuch auf einem Server in Frankfurt gespeichert.</li>
+        <li>Dein Tagebuch kann nur mit deinem Tagebuch-Passwort gelesen werden. Die Betreiberin der Seite kann es nicht lesen.</li>
+        <li>Keine Werbung, kein Tracking, keine Cookies zu Werbezwecken, keine Schriften oder Skripte von fremden Servern.</li>
+      </ul>
 
-<p><strong>Aufnahmen in „Gespräch üben“:</strong> Wenn du dich aufnimmst, bleibt die Aufnahme nur im Arbeitsspeicher deines Browsers. Sie wird weder gespeichert noch übertragen und ist weg, sobald du die Seite verlässt.</p>
+      <h3>Nutzung ohne Anmeldung</h3>
+      <p>Tagebuch, eigene Begriffe, Gesprächsnotizen und Lernfortschritt werden im lokalen Speicher deines Browsers (localStorage) abgelegt. Sie werden nicht übertragen. Du kannst sie jederzeit löschen, indem du die Browserdaten für diese Seite löschst.</p>
 
-<h2>Nutzung mit Anmeldung</h2>
-<p>Wenn du dich anmeldest, werden folgende Daten gespeichert:</p>
-<ul>
-  <li>deine E-Mail-Adresse (für die Anmeldung per Link),</li>
-  <li>dein Lernstand: Quiz-Fortschritt, bestandene Lernmodule, eigene Begriffe,</li>
-  <li>dein Tagebuch und deine Stichpunkte aus „Gespräch üben“ – ausschließlich verschlüsselt. Es wird in deinem Browser mit einem Schlüssel aus deinem Tagebuch-Passwort verschlüsselt (AES-GCM), bevor es übertragen wird. Das Passwort selbst wird nicht übertragen.</li>
-  <li>technisch notwendige Daten bei der Anmeldung, zum Beispiel Zeitpunkt und IP-Adresse, die der Anmeldedienst verarbeitet.</li>
-</ul>
-<p><strong>Rechtsgrundlage</strong> ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du bei der Anmeldung erteilst. Weil Tagebucheinträge besonders persönliche Angaben enthalten können, gilt die Einwilligung auch nach Art. 9 Abs. 2 lit. a DSGVO.</p>
-<p><strong>Widerruf:</strong> Du kannst deine Einwilligung jederzeit widerrufen, indem du unter „Mein Konto“ auf „Konto löschen“ klickst. Dann werden dein Konto und alle auf dem Server gespeicherten Daten gelöscht.</p>
-<p><strong>Speicherdauer:</strong> bis du dein Konto löschst.</p>
+      <p><strong>Aufnahmen in „Gespräch üben“:</strong> Wenn du dich aufnimmst, bleibt die Aufnahme nur im Arbeitsspeicher deines Browsers. Sie wird weder gespeichert noch übertragen und ist weg, sobald du die Seite verlässt.</p>
 
-<h2>Dienstleister</h2>
-<p><strong>Anmeldung und Datenbank:</strong> Supabase Inc. Die Daten werden auf Servern in Frankfurt am Main (EU) gespeichert. Supabase versendet auch die Anmelde-E-Mails. Mit Supabase besteht ein Vertrag zur Auftragsverarbeitung (Data Processing Addendum), der Bestandteil der Nutzungsbedingungen von Supabase ist; für Übermittlungen in die USA gelten die Standardvertragsklauseln der EU-Kommission.</p>
-<p><strong>Bereitstellung der Webseite:</strong> GitHub Pages (GitHub Inc.). Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten wie die IP-Adresse.</p>
+      <h3>Nutzung mit Anmeldung</h3>
+      <p>Wenn du dich anmeldest, werden folgende Daten gespeichert:</p>
+      <ul>
+        <li>deine E-Mail-Adresse (für die Anmeldung per Link),</li>
+        <li>dein Lernstand: Quiz-Fortschritt, bestandene Lernmodule, eigene Begriffe,</li>
+        <li>dein Tagebuch und deine Stichpunkte aus „Gespräch üben“ – ausschließlich verschlüsselt. Es wird in deinem Browser mit einem Schlüssel aus deinem Tagebuch-Passwort verschlüsselt (AES-GCM), bevor es übertragen wird. Das Passwort selbst wird nicht übertragen.</li>
+        <li>technisch notwendige Daten bei der Anmeldung, zum Beispiel Zeitpunkt und IP-Adresse, die der Anmeldedienst verarbeitet.</li>
+      </ul>
+      <p><strong>Rechtsgrundlage</strong> ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du bei der Anmeldung erteilst. Weil Tagebucheinträge besonders persönliche Angaben enthalten können, gilt die Einwilligung auch nach Art. 9 Abs. 2 lit. a DSGVO.</p>
+      <p><strong>Widerruf:</strong> Du kannst deine Einwilligung jederzeit widerrufen, indem du unter „Mein Konto“ auf „Konto löschen“ klickst. Dann werden dein Konto und alle auf dem Server gespeicherten Daten gelöscht.</p>
+      <p><strong>Speicherdauer:</strong> bis du dein Konto löschst.</p>
 
-<h2>Deine Rechte</h2>
-<p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (die Funktion „Sichern“ liefert dir alle Daten als Datei). Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, zum Beispiel bei der Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen.</p>
+      <h3>Dienstleister</h3>
+      <p><strong>Anmeldung und Datenbank:</strong> Supabase Inc. Die Daten werden auf Servern in Frankfurt am Main (EU) gespeichert. Supabase versendet auch die Anmelde-E-Mails. Mit Supabase besteht ein Vertrag zur Auftragsverarbeitung (Data Processing Addendum), der Bestandteil der Nutzungsbedingungen von Supabase ist; für Übermittlungen in die USA gelten die Standardvertragsklauseln der EU-Kommission.</p>
+      <p><strong>Bereitstellung der Webseite:</strong> GitHub Pages (GitHub Inc.). Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten wie die IP-Adresse.</p>
 
-<p style="margin-top:36px;color:var(--grau)">Stand: November 2026</p>
-</main>
+      <h3>Deine Rechte</h3>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (die Funktion „Sichern“ liefert dir alle Daten als Datei). Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, zum Beispiel bei der Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen.</p>
+
+      <p style="margin-top:36px;color:var(--grau)">Stand: November 2026</p>
+    </section>
+  </main>
+
+  <div class="leiste" aria-label="Fortschritt und Steuerung">
+    <a href="index.html#konto" class="leiste-link">Mein Konto</a>
+    <a href="index.html#erfolge" class="leiste-link">Erfolge</a>
+    <a href="index.html#sichern" class="leiste-link">Sichern</a>
+    <a href="datenschutz.html" class="leiste-link" aria-current="page">Datenschutz</a>
+    <a href="impressum.html" class="leiste-link">Impressum</a>
+    <a href="vorstellung.html" class="leiste-link">Über Add to Brain</a>
+    <div class="balken" aria-hidden="true"><i id="balken"></i></div>
+    <button class="pfeil" id="pfeil-links" type="button">Zurück</button>
+    <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
+  </div>
+
+  <script src="js/modus.js?v=202611121301"></script>
+  <script src="js/scroll.js?v=202611121301"></script>
 </body>
 </html>

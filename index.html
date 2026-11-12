@@ -6,9 +6,9 @@
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
   <script>try { if (localStorage.getItem('atb-modus') === 'dunkel') document.documentElement.classList.add('dark'); } catch (e) {}</script>
-  <link href="css/fonts.css?v=202611121204" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611121204" rel="stylesheet">
-  <link href="css/style.css?v=202611121204" rel="stylesheet">
+  <link href="css/fonts.css?v=202611121301" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611121301" rel="stylesheet">
+  <link href="css/style.css?v=202611121301" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -123,7 +123,7 @@
         </div></div>
         <article id="ln-text" class="lerntext lesbar"></article>
         <button type="button" id="ln-zum-quiz" class="btn-primary">Weiter zum Mini-Quiz</button>
-        <div id="ln-quiz" class="card" hidden><div class="card-body">
+        <div id="ln-quiz" class="card fliesst" hidden><div class="card-body">
           <h4 class="card-title">Mini-Quiz</h4>
           <div id="ln-fragen"></div>
           <p id="ln-ergebnis" class="qz-frage lesbar" aria-live="polite"></p>
@@ -138,7 +138,9 @@
         <h2>Praxis</h2>
         <p class="lesbar leise">Hier arbeitest du in ausgedachten Onlineshops mit. In jeder Mission erlebst du eine Situation aus dem Arbeitsalltag und entscheidest, was zu tun ist.</p>
         <p id="rs-stand" class="hinweis"></p>
-        <div id="rs-missionen" class="module"></div>
+        <p class="lesbar">Wähle zuerst einen Shop. Die Missionen öffnen sich rechts daneben.</p>
+        <div id="rs-shops" class="module"></div>
+        <div id="rs-missionen" class="module neue-spalte" hidden></div>
       </div>
 
       <div id="rs-mission" hidden>
@@ -183,12 +185,12 @@
         <p class="hinweis">Es zählt jeder Tag, an dem du etwas lernst oder einträgst. Eine Pause setzt nichts zurück.</p>
       </div></div>
 
-      <div class="card neue-spalte"><div class="card-body">
+      <div class="card neue-spalte fliesst"><div class="card-body">
         <h4 class="card-title">So bekommst du Punkte</h4>
         <ul id="er-punkteliste" class="er-punkteliste"></ul>
       </div></div>
 
-      <div class="card neue-spalte"><div class="card-body">
+      <div class="card neue-spalte fliesst"><div class="card-body">
         <h4 class="card-title">Abzeichen</h4>
         <p id="er-anzahl" class="hinweis"></p>
         <ul id="er-abzeichen" class="abzeichen-liste"></ul>
@@ -206,6 +208,13 @@
       </div></div>
 
       <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title" id="rc-formeln-titel">Formeln</h4>
+        <ul id="rc-formeln" class="lesbar rc-formeln"></ul>
+        <p class="hinweis">Tipp: Runde Geldbeträge auf zwei Stellen nach dem Komma. Komma oder Punkt – beides geht.</p>
+      </div></div>
+
+      <div class="card neue-spalte" id="rc-aufgabe-karte"><div class="card-body">
+        <h4 class="card-title">Jetzt du</h4>
         <p class="qz-stufe" id="rc-titel"></p>
         <p class="rc-aufgabe" id="rc-aufgabe"></p>
         <form id="rc-form" class="rc-form" autocomplete="off">
@@ -223,12 +232,6 @@
       </div></div>
 
       <div class="card"><div class="card-body">
-        <h4 class="card-title" id="rc-formeln-titel">Formeln</h4>
-        <ul id="rc-formeln" class="lesbar rc-formeln"></ul>
-        <p class="hinweis">Tipp: Runde Geldbeträge auf zwei Stellen nach dem Komma. Komma oder Punkt – beides geht.</p>
-      </div></div>
-
-      <div class="card"><div class="card-body">
         <h4 class="card-title">Dein Stand</h4>
         <ul id="rc-stand" class="lesbar rc-formeln"></ul>
       </div></div>
@@ -237,7 +240,7 @@
     <!-- TRAINING: Vorstellungsgespräch -->
     <section id="training" class="seite" hidden>
       <h2>Gespräch üben</h2>
-      <p class="lesbar leise">Lass dir eine typische Frage aus dem Vorstellungsgespräch vorlesen und antworte laut. Die Uhr zeigt, wie lange du sprichst. Wenn du willst, nimm dich auf und hör dir die Antwort an – die Aufnahme wird nicht gespeichert.</p>
+      <p class="lesbar leise">Lass dir eine typische Frage aus dem Vorstellungsgespräch vorlesen und antworte laut. Die Uhr misst, wie lange du sprichst. Aufnahmen werden nicht gespeichert.</p>
 
       <div class="card" id="gs-uebung"><div class="card-body">
         <p class="qz-stufe" id="gs-nummer"></p>
@@ -249,9 +252,15 @@
         </div>
         <div class="knoepfe gs-aufnahme">
           <button type="button" id="gs-rec" class="btn-small">Aufnehmen</button>
+          <button type="button" id="gs-naechste" class="btn-primary gs-weiter">Nächste Frage</button>
           <audio id="gs-audio" controls hidden></audio>
         </div>
         <p id="gs-aufnahme-info" class="hinweis"></p>
+      </div></div>
+
+      <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title">Tipps zu dieser Frage</h4>
+        <ul id="gs-tipps" class="lesbar gs-tipps"></ul>
       </div></div>
 
       <div class="card"><div class="card-body">
@@ -262,21 +271,15 @@
           <button type="button" class="btn-small btn-danger" data-bewertung="nochmal">Nochmal üben</button>
         </div>
         <p id="gs-bewertet" class="lesbar meldung" aria-live="polite"></p>
-        <div class="knoepfe"><button type="button" id="gs-naechste" class="btn-primary">Nächste Frage</button></div>
-      </div></div>
-
-      <div class="card"><div class="card-body">
-        <h4 class="card-title">Tipps zu dieser Frage</h4>
-        <ul id="gs-tipps" class="lesbar gs-tipps"></ul>
-      </div></div>
-
-      <div class="card"><div class="card-body">
-        <h4 class="card-title">Deine Stichpunkte</h4>
-        <p class="hinweis">Nur Stichpunkte, keinen ganzen Text – sonst klingt es auswendig gelernt. Wird automatisch gespeichert.</p>
-        <textarea id="gs-notiz" rows="5" placeholder="Zum Beispiel: Callcenter – freundlich bleiben, auch bei vielen Anrufen"></textarea>
       </div></div>
 
       <div class="card neue-spalte"><div class="card-body">
+        <h4 class="card-title">Deine Stichpunkte</h4>
+        <p class="hinweis">Nur Stichpunkte, keinen ganzen Text – sonst klingt es auswendig gelernt. Wird automatisch gespeichert.</p>
+        <textarea id="gs-notiz" rows="8" placeholder="Zum Beispiel: Callcenter – freundlich bleiben, auch bei vielen Anrufen"></textarea>
+      </div></div>
+
+      <div class="card neue-spalte fliesst"><div class="card-body">
         <h4 class="card-title">Alle Fragen</h4>
         <p id="gs-stand" class="hinweis"></p>
         <ul id="gs-liste" class="gs-liste"></ul>
@@ -290,6 +293,10 @@
       <div id="ko-aus">
         <p class="lesbar leise">Die Anmeldung ist freiwillig. Ohne Anmeldung bleibt alles nur in diesem Browser. Mit Anmeldung hast du deinen Lernstand und dein Tagebuch auf jedem Gerät – zum Beispiel zu Hause und im BTZ.</p>
         <div class="card"><div class="card-body">
+          <h4 class="card-title">So funktioniert es</h4>
+          <p class="lesbar">Du bekommst eine E-Mail mit einem Link. Ein Klick darauf, und du bist angemeldet – ganz ohne Passwort. Dein Tagebuch schützt du zusätzlich mit einem eigenen Tagebuch-Passwort: Es wird verschlüsselt, bevor es deinen Browser verlässt. Niemand außer dir kann es lesen – auch nicht die Betreiberin der Seite.</p>
+        </div></div>
+        <div class="card neue-spalte"><div class="card-body">
           <h4 class="card-title">Anmelden</h4>
           <form id="ko-form" class="formular">
             <label>Deine E-Mail-Adresse<input type="email" id="ko-mail" required autocomplete="email"></label>
@@ -297,10 +304,6 @@
             <div class="knoepfe"><button type="submit" id="ko-senden" class="btn-primary">Anmeldelink schicken</button></div>
           </form>
           <p id="ko-meldung" class="lesbar meldung" aria-live="polite"></p>
-        </div></div>
-        <div class="card"><div class="card-body">
-          <h4 class="card-title">So funktioniert es</h4>
-          <p class="lesbar">Du bekommst eine E-Mail mit einem Link. Ein Klick darauf, und du bist angemeldet – ganz ohne Passwort. Dein Tagebuch schützt du zusätzlich mit einem eigenen Tagebuch-Passwort: Es wird verschlüsselt, bevor es deinen Browser verlässt. Niemand außer dir kann es lesen – auch nicht die Betreiberin der Seite.</p>
         </div></div>
       </div>
 
@@ -312,7 +315,7 @@
           <div class="knoepfe"><button type="button" id="ko-jetzt" class="btn-small">Jetzt synchronisieren</button></div>
         </div></div>
 
-        <div class="card"><div class="card-body">
+        <div class="card neue-spalte"><div class="card-body">
           <h4 class="card-title">Tagebuch-Schutz</h4>
           <div id="ko-tb-aktiv" hidden>
             <p class="lesbar">Dein Tagebuch wird verschlüsselt gespeichert und auf deinen Geräten abgeglichen.</p>
@@ -337,7 +340,7 @@
           </div>
         </div></div>
 
-        <div class="card"><div class="card-body">
+        <div class="card neue-spalte"><div class="card-body">
           <h4 class="card-title">Abmelden</h4>
           <p class="lesbar">Auf einem fremden oder gemeinsam genutzten Computer, zum Beispiel im BTZ: am besten „Abmelden und Daten entfernen“ wählen. Deine Daten bleiben in deinem Konto.</p>
           <div class="knoepfe">
@@ -372,12 +375,12 @@
       <div class="card neue-spalte"><div class="card-body">
         <h4 class="card-title">Neuer Eintrag</h4>
         <form id="tb-form" class="formular">
-          <div class="reihe">
+          <div class="reihe tb-zeit">
             <label>Datum<input type="date" id="tb-datum" required></label>
             <label>Von<input type="time" id="tb-von"></label>
             <label>Bis<input type="time" id="tb-bis"></label>
           </div>
-          <label>Tätigkeiten<textarea id="tb-taetigkeiten" rows="3" placeholder="Was habe ich heute gemacht?"></textarea></label>
+          <label>Tätigkeiten<textarea id="tb-taetigkeiten" rows="2" placeholder="Was habe ich heute gemacht?"></textarea></label>
           <label>Gelerntes<textarea id="tb-gelernt" rows="2" placeholder="Was habe ich Neues gelernt?"></textarea></label>
           <label>Offene Fragen<textarea id="tb-fragen" rows="2" placeholder="Was will ich noch klären?"></textarea></label>
           <div class="knoepfe">
@@ -387,7 +390,7 @@
         </form>
       </div></div>
 
-      <div class="card"><div class="card-body">
+      <div class="card neue-spalte fliesst"><div class="card-body">
         <h4 class="card-title">Meine Einträge</h4>
         <div id="tb-liste"></div>
       </div></div>
@@ -406,7 +409,7 @@
         </form>
       </div></div>
 
-      <div class="card neue-spalte"><div class="card-body">
+      <div class="card neue-spalte fliesst"><div class="card-body">
         <h4 class="card-title">Alle Begriffe</h4>
         <input type="search" id="gl-suche" placeholder="Suchen …" aria-label="Glossar durchsuchen">
         <dl id="gl-liste" class="glossar lesbar"></dl>
@@ -416,6 +419,7 @@
     <!-- QUIZ -->
     <section id="quiz" class="seite" hidden>
       <h2>Quiz</h2>
+      <p class="lesbar leise">Hier übst du die Begriffe aus dem Glossar. Die Lernkartei merkt sich, was schon sitzt, und fragt es seltener ab.</p>
       <div class="card"><div class="card-body">
         <p id="qz-info" class="lesbar"></p>
         <div id="qz-karte" hidden>
@@ -431,7 +435,12 @@
         <button type="button" id="qz-start" class="btn-primary">Los geht's</button>
       </div></div>
 
-      <div id="qz-ergebnis" class="card ergebnis neue-spalte" hidden><div class="card-body">
+      <div class="card"><div class="card-body">
+        <h4 class="card-title">So funktioniert die Lernkartei</h4>
+        <p class="lesbar">Jeder Begriff liegt in einem von fünf Fächern. Richtig beantwortet, rutscht er ein Fach weiter und kommt seltener dran (Fach 1: sofort, 2: nach 1 Tag, 3: nach 3 Tagen, 4: nach 7 Tagen, 5: nach 14 Tagen). Falsch beantwortet, geht er zurück in Fach 1. Stufe 2 und 3 werden freigeschaltet, wenn die meisten Begriffe der Stufe davor mindestens in Fach 3 liegen.</p>
+      </div></div>
+
+      <div id="qz-ergebnis" class="card ergebnis neue-spalte fliesst" hidden><div class="card-body">
         <h4 class="card-title" id="qz-erg-titel"></h4>
         <p class="ergebnis-zahl" id="qz-erg-zahl"></p>
         <p class="lesbar" id="qz-erg-text"></p>
@@ -439,10 +448,12 @@
         <div class="knoepfe"><button type="button" id="qz-erg-ok" class="btn-primary">Alles klar</button></div>
       </div></div>
 
-      <div class="card neue-spalte"><div class="card-body">
-        <h4 class="card-title">So funktioniert die Lernkartei</h4>
-        <p class="lesbar">Jeder Begriff liegt in einem von fünf Fächern. Richtig beantwortet, rutscht er ein Fach weiter und kommt seltener dran (Fach 1: sofort, 2: nach 1 Tag, 3: nach 3 Tagen, 4: nach 7 Tagen, 5: nach 14 Tagen). Falsch beantwortet, geht er zurück in Fach 1. Stufe 2 und 3 werden freigeschaltet, wenn die meisten Begriffe der Stufe davor mindestens in Fach 3 liegen.</p>
+      <div class="card neue-spalte" id="qz-kartei-karte"><div class="card-body">
+        <h4 class="card-title">Deine Lernkartei</h4>
+        <ol id="qz-faecher" class="qz-faecher" aria-label="Begriffe je Fach"></ol>
+        <p id="qz-stufen" class="hinweis"></p>
       </div></div>
+
     </section>
 
     <!-- SICHERN -->
@@ -477,16 +488,16 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611121204"></script>
-  <script src="js/module.js?v=202611121204"></script>
-  <script src="js/lernen.js?v=202611121204"></script>
-  <script src="js/gespraech.js?v=202611121204"></script>
-  <script src="js/rechnen.js?v=202611121204"></script>
-  <script src="js/missionen.js?v=202611121204"></script>
-  <script src="js/app.js?v=202611121204"></script>
-  <script src="js/erfolge.js?v=202611121204"></script>
-  <script src="js/modus.js?v=202611121204"></script>
-  <script src="js/scroll.js?v=202611121204"></script>
-  <script src="js/konto.js?v=202611121204"></script>
+  <script src="js/daten.js?v=202611121301"></script>
+  <script src="js/module.js?v=202611121301"></script>
+  <script src="js/lernen.js?v=202611121301"></script>
+  <script src="js/gespraech.js?v=202611121301"></script>
+  <script src="js/rechnen.js?v=202611121301"></script>
+  <script src="js/missionen.js?v=202611121301"></script>
+  <script src="js/app.js?v=202611121301"></script>
+  <script src="js/erfolge.js?v=202611121301"></script>
+  <script src="js/modus.js?v=202611121301"></script>
+  <script src="js/scroll.js?v=202611121301"></script>
+  <script src="js/konto.js?v=202611121301"></script>
 </body>
 </html>
