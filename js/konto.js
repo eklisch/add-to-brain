@@ -52,7 +52,8 @@
   }
 
   // ---------- Anmeldung ----------
-  function weiterleitungsAdresse() { return location.origin + location.pathname; }
+  // Immer auf den Ordner zurückleiten (ohne index.html) – genau diese Adresse ist bei Supabase freigegeben
+  function weiterleitungsAdresse() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
 
   async function sendeLink(email) {
     await api('/auth/v1/otp?redirect_to=' + encodeURIComponent(weiterleitungsAdresse()), {
@@ -69,12 +70,18 @@
     if (p.get('error_description')) { zeige(); meldung('ko-meldung', 'Anmeldung nicht möglich: ' + p.get('error_description').replace(/\+/g, ' ') + '. Bitte fordere einen neuen Link an.', true); return true; }
     const token = p.get('access_token');
     const user = await api('/auth/v1/user', { token });
-    sitzung = {
+    await angemeldet({
       access_token: token,
       refresh_token: p.get('refresh_token'),
       expires_at: Math.floor(Date.now() / 1000) + parseInt(p.get('expires_in') || '3600', 10),
       user: { id: user.id, email: user.email }
-    };
+    });
+    return true;
+  }
+
+  // Gemeinsamer Ablauf nach jeder Anmeldung (Link oder Passwort)
+  async function angemeldet(neu) {
+    sitzung = neu;
     schreibe(S_SITZUNG, sitzung);
     window.dispatchEvent(new HashChangeEvent('hashchange'));
     await synchronisieren();
@@ -85,7 +92,17 @@
       const ziel = fernTagebuch ? $('ko-tb-entsperren') : $('ko-tb-neu');
       if (ziel) setTimeout(() => ziel.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }), 300);
     }
-    return true;
+  }
+
+  // Anmelden mit E-Mail und Konto-Passwort
+  async function mitPasswort(email, passwort) {
+    const d = await api('/auth/v1/token?grant_type=password', { method: 'POST', body: { email, password: passwort } });
+    await angemeldet({
+      access_token: d.access_token,
+      refresh_token: d.refresh_token,
+      expires_at: d.expires_at || Math.floor(Date.now() / 1000) + (d.expires_in || 3600),
+      user: { id: d.user.id, email: d.user.email }
+    });
   }
 
   async function token() {
@@ -241,19 +258,55 @@
     status();
   }
 
-  // Anmelden
+  // Anmelden mit Passwort
   $('ko-form').addEventListener('submit', async (ev) => {
     ev.preventDefault();
     const email = $('ko-mail').value.trim();
-    if (!$('ko-einwilligung').checked) { meldung('ko-meldung', 'Bitte setze zuerst das Häkchen bei der Einwilligung.', true); return; }
-    const k = $('ko-senden'); k.disabled = true;
+    const pw = $('ko-passwort').value;
+    if (!email) { meldung('ko-meldung', 'Bitte gib deine E-Mail-Adresse ein.', true); return; }
+    if (!pw) { meldung('ko-meldung', 'Bitte gib dein Konto-Passwort ein – oder lass dir unten einen Anmeldelink schicken.', true); return; }
+    const k = $('ko-anmelden'); k.disabled = true;
     meldung('ko-meldung', 'Einen Moment …');
     try {
-      await sendeLink(email);
-      meldung('ko-meldung', 'Fertig! Schau in dein Postfach (' + email + ') und klick auf den Link in der E-Mail. Danach bist du hier angemeldet. Die E-Mail kommt von Supabase – schau notfalls im Spam-Ordner nach.');
+      await mitPasswort(email, pw);
+      $('ko-passwort').value = '';
+      meldung('ko-meldung', '');
     } catch (e) {
-      meldung('ko-meldung', 'Das hat nicht geklappt: ' + e.message, true);
+      meldung('ko-meldung', /invalid/i.test(e.message)
+        ? 'E-Mail oder Passwort stimmen nicht. Noch kein Konto-Passwort festgelegt? Dann lass dir unten einen Anmeldelink schicken und lege es danach unter „Mein Konto“ fest.'
+        : 'Das hat nicht geklappt: ' + e.message, true);
     } finally { k.disabled = false; }
+  });
+
+  // Anmeldelink per E-Mail (erste Anmeldung oder Passwort vergessen)
+  $('ko-senden').addEventListener('click', async () => {
+    const email = $('ko-mail').value.trim();
+    if (!email) { meldung('ko-link-meldung', 'Bitte trag links zuerst deine E-Mail-Adresse ein.', true); return; }
+    if (!$('ko-einwilligung').checked) { meldung('ko-link-meldung', 'Bitte setze zuerst das Häkchen bei der Einwilligung.', true); return; }
+    const k = $('ko-senden'); k.disabled = true;
+    meldung('ko-link-meldung', 'Einen Moment …');
+    try {
+      await sendeLink(email);
+      meldung('ko-link-meldung', 'Fertig! Öffne die E-Mail auf diesem Gerät und in diesem Browser und klick dort auf den Link – nur dann bist du hier angemeldet. Die E-Mail kommt von Supabase, schau notfalls im Spam-Ordner nach.');
+    } catch (e) {
+      meldung('ko-link-meldung', 'Das hat nicht geklappt: ' + e.message, true);
+    } finally { k.disabled = false; }
+  });
+
+  // Konto-Passwort festlegen oder ändern (für die normale Anmeldung)
+  $('ko-kontopw-form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const p1 = $('ko-kpw1').value, p2 = $('ko-kpw2').value;
+    if (p1.length < 8) { meldung('ko-kontopw-meldung', 'Bitte mindestens 8 Zeichen.', true); return; }
+    if (p1 !== p2) { meldung('ko-kontopw-meldung', 'Die beiden Passwörter stimmen nicht überein.', true); return; }
+    meldung('ko-kontopw-meldung', 'Speichere …');
+    try {
+      await api('/auth/v1/user', { method: 'PUT', token: await token(), body: { password: p1 } });
+      $('ko-kontopw-form').reset();
+      meldung('ko-kontopw-meldung', 'Gespeichert. Ab jetzt kannst du dich auf jedem Gerät mit E-Mail und diesem Passwort anmelden.');
+    } catch (e) {
+      meldung('ko-kontopw-meldung', 'Das hat nicht geklappt: ' + e.message, true);
+    }
   });
 
   // Tagebuch-Passwort festlegen

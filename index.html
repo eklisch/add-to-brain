@@ -6,9 +6,17 @@
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
   <script>try { if (localStorage.getItem('atb-modus') === 'dunkel') document.documentElement.classList.add('dark'); } catch (e) {}</script>
-  <link href="css/fonts.css?v=202611121301" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611121301" rel="stylesheet">
-  <link href="css/style.css?v=202611121301" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=202611121345">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png?v=202611121345">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=202611121345">
+  <link rel="manifest" href="manifest.webmanifest?v=202611121345">
+  <meta name="apple-mobile-web-app-title" content="Add to Brain">
+  <meta name="application-name" content="Add to Brain">
+  <meta name="theme-color" content="#f5f2ea">
+  <link href="css/fonts.css?v=202611121335" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611121335" rel="stylesheet">
+  <link href="css/style.css?v=202611121335" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -293,17 +301,29 @@
       <div id="ko-aus">
         <p class="lesbar leise">Die Anmeldung ist freiwillig. Ohne Anmeldung bleibt alles nur in diesem Browser. Mit Anmeldung hast du deinen Lernstand und dein Tagebuch auf jedem Gerät – zum Beispiel zu Hause und im BTZ.</p>
         <div class="card"><div class="card-body">
-          <h4 class="card-title">So funktioniert es</h4>
-          <p class="lesbar">Du bekommst eine E-Mail mit einem Link. Ein Klick darauf, und du bist angemeldet – ganz ohne Passwort. Dein Tagebuch schützt du zusätzlich mit einem eigenen Tagebuch-Passwort: Es wird verschlüsselt, bevor es deinen Browser verlässt. Niemand außer dir kann es lesen – auch nicht die Betreiberin der Seite.</p>
-        </div></div>
-        <div class="card neue-spalte"><div class="card-body">
           <h4 class="card-title">Anmelden</h4>
           <form id="ko-form" class="formular">
-            <label>Deine E-Mail-Adresse<input type="email" id="ko-mail" required autocomplete="email"></label>
-            <label class="haken"><input type="checkbox" id="ko-einwilligung"> <span>Ich willige ein, dass mein Lernstand und – verschlüsselt – mein Tagebuch gespeichert werden, damit ich sie auf mehreren Geräten nutzen kann. Ich kann die Einwilligung jederzeit widerrufen, indem ich mein Konto lösche. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
-            <div class="knoepfe"><button type="submit" id="ko-senden" class="btn-primary">Anmeldelink schicken</button></div>
+            <label>E-Mail-Adresse<input type="email" id="ko-mail" required autocomplete="username email"></label>
+            <label>Konto-Passwort<input type="password" id="ko-passwort" autocomplete="current-password"></label>
+            <div class="knoepfe"><button type="submit" id="ko-anmelden" class="btn-primary">Anmelden</button></div>
           </form>
           <p id="ko-meldung" class="lesbar meldung" aria-live="polite"></p>
+        </div></div>
+
+        <div class="card neue-spalte"><div class="card-body">
+          <h4 class="card-title">Neu hier oder Passwort vergessen?</h4>
+          <p class="lesbar">Dann schicken wir dir einen Anmeldelink an die E-Mail-Adresse links. Öffne ihn auf diesem Gerät.</p>
+          <div class="formular">
+            <label class="haken"><input type="checkbox" id="ko-einwilligung"> <span>Ich willige ein, dass mein Lernstand und – verschlüsselt – mein Tagebuch gespeichert werden, damit ich sie auf mehreren Geräten nutzen kann. Ich kann die Einwilligung jederzeit widerrufen, indem ich mein Konto lösche. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
+            <div class="knoepfe"><button type="button" id="ko-senden" class="btn-secondary">Anmeldelink schicken</button></div>
+          </div>
+          <p id="ko-link-meldung" class="lesbar meldung" aria-live="polite"></p>
+        </div></div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">So funktioniert es</h4>
+          <p class="lesbar">Beim ersten Mal bekommst du einen Anmeldelink per E-Mail. Öffne ihn auf dem Gerät, auf dem du dich anmelden willst. Danach legst du unter „Mein Konto“ ein Konto-Passwort fest und meldest dich ab dann überall mit E-Mail und Passwort an.</p>
+          <p class="lesbar">Dein Tagebuch schützt du zusätzlich mit einem eigenen Tagebuch-Passwort. Es wird verschlüsselt, bevor es deinen Browser verlässt. Niemand außer dir kann es lesen – auch nicht die Betreiberin der Seite.</p>
         </div></div>
       </div>
 
@@ -313,6 +333,18 @@
           <p class="lesbar">Als <strong id="ko-email"></strong></p>
           <p id="ko-sync" class="lesbar leise meldung" aria-live="polite"></p>
           <div class="knoepfe"><button type="button" id="ko-jetzt" class="btn-small">Jetzt synchronisieren</button></div>
+        </div></div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="card-title">Konto-Passwort</h4>
+          <p class="lesbar">Damit meldest du dich auf jedem Gerät mit E-Mail und Passwort an. Nimm am besten ein anderes Passwort als für dein Tagebuch.</p>
+          <form id="ko-kontopw-form" class="formular">
+            <input type="email" autocomplete="username" hidden aria-hidden="true" tabindex="-1">
+            <label>Neues Konto-Passwort (mindestens 8 Zeichen)<input type="password" id="ko-kpw1" autocomplete="new-password" required></label>
+            <label>Noch einmal<input type="password" id="ko-kpw2" autocomplete="new-password" required></label>
+            <div class="knoepfe"><button type="submit" class="btn-primary">Passwort speichern</button></div>
+          </form>
+          <p id="ko-kontopw-meldung" class="lesbar meldung" aria-live="polite"></p>
         </div></div>
 
         <div class="card neue-spalte"><div class="card-body">
@@ -488,16 +520,16 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611121301"></script>
-  <script src="js/module.js?v=202611121301"></script>
-  <script src="js/lernen.js?v=202611121301"></script>
-  <script src="js/gespraech.js?v=202611121301"></script>
-  <script src="js/rechnen.js?v=202611121301"></script>
-  <script src="js/missionen.js?v=202611121301"></script>
-  <script src="js/app.js?v=202611121301"></script>
-  <script src="js/erfolge.js?v=202611121301"></script>
-  <script src="js/modus.js?v=202611121301"></script>
-  <script src="js/scroll.js?v=202611121301"></script>
-  <script src="js/konto.js?v=202611121301"></script>
+  <script src="js/daten.js?v=202611121335"></script>
+  <script src="js/module.js?v=202611121335"></script>
+  <script src="js/lernen.js?v=202611121335"></script>
+  <script src="js/gespraech.js?v=202611121335"></script>
+  <script src="js/rechnen.js?v=202611121335"></script>
+  <script src="js/missionen.js?v=202611121335"></script>
+  <script src="js/app.js?v=202611121335"></script>
+  <script src="js/erfolge.js?v=202611121335"></script>
+  <script src="js/modus.js?v=202611121335"></script>
+  <script src="js/scroll.js?v=202611121335"></script>
+  <script src="js/konto.js?v=202611121335"></script>
 </body>
 </html>

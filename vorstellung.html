@@ -6,7 +6,15 @@
 <title>Add to Brain – Lernen, das hängen bleibt</title>
 <meta name="description" content="Add to Brain: die ruhige Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung im E-Commerce.">
 <script>try { if (localStorage.getItem('atb-modus') === 'dunkel') document.documentElement.classList.add('dark'); } catch (e) {}</script>
-<link href="css/fonts.css?v=202611121301" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=202611121345">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png?v=202611121345">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=202611121345">
+  <link rel="manifest" href="manifest.webmanifest?v=202611121345">
+  <meta name="apple-mobile-web-app-title" content="Add to Brain">
+  <meta name="application-name" content="Add to Brain">
+  <meta name="theme-color" content="#f5f2ea">
+  <link href="css/fonts.css?v=202611121335" rel="stylesheet">
 <style>
 /* =========================================================
    Farben nach der 60-30-10-Regel
@@ -156,15 +164,42 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
   .fuss{gap:18px;overflow-x:auto;scrollbar-width:none}
   .fuss .zahl,.fuss .balken{display:none}
   .modus{font-size:18px;padding:0 10px}
-  .buch{position:static;display:block;overflow:visible;scroll-snap-type:none}
-  .seite{width:100%;height:auto;min-height:auto;padding:calc(var(--header) + 40px) 20px 64px;display:block}
-  .seite + .seite{border-left:0;border-top:1px solid rgba(65,64,62,.08)}
-  .cover,.idee,.projekt{display:grid;grid-template-columns:1fr;gap:48px}
-  .stapel{height:380px;max-width:320px}
-  .galerie{grid-template-columns:1fr}
-  .fkarte{min-height:auto;gap:24px}
-  .funktionen{display:grid;gap:32px}
-  .backcover{display:grid;gap:56px;padding-bottom:120px}
+  /* Handy: wie auf der Lernseite seitlich blättern – jeder Teil einer Buchseite ist ein Bildschirm */
+  .buch{scroll-snap-type:x mandatory;touch-action:pinch-zoom}
+  .seite{flex:0 0 auto;width:auto;height:100%;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:100vw;grid-template-rows:100%;gap:0;overflow:visible}
+  .seite + .seite{border-left:0}
+  .cover,.idee,.projekt,.funktionen,.backcover{grid-template-columns:none;gap:0;align-items:stretch}
+  .seite > *{box-sizing:border-box;height:100%;padding:calc(var(--header) + 16px) 20px calc(var(--footer) + 16px);scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;scrollbar-width:none;min-width:0}
+  .seite > *::-webkit-scrollbar{display:none}
+  h1{font-size:clamp(48px, 14vw, 64px)}
+  h2{font-size:clamp(36px, 10vw, 46px);margin-bottom:16px}
+  .cover p.lead{margin:20px 0 28px}
+  .cover .stapel{max-width:none;width:100vw;justify-self:auto}
+  .cover .stapel .blatt{inset:calc(var(--header) + 70px) 40px calc(var(--footer) + 70px)}
+  .blatt .wort{font-size:clamp(36px, 11vw, 48px)}
+  .karten{gap:14px}
+  .karte{padding:16px 18px;grid-template-columns:44px 1fr;gap:14px}
+  .icon{width:44px;height:44px}
+  .icon svg{width:22px;height:22px}
+  .karte h3{font-size:24px}
+  .karte p{font-size:15px}
+  /* Funktionen: Überschrift und drei Karten auf einem Bildschirm, der Ausblick auf dem nächsten */
+  .funktionen{grid-template-rows:auto 1fr}
+  .funktionen > div:first-child{grid-column:1;grid-row:1;height:auto;padding-bottom:0;justify-content:flex-end}
+  .funktionen > .galerie{grid-column:1;grid-row:2;height:auto;padding-top:0;display:flex;flex-direction:column;gap:12px;justify-content:flex-start}
+  .funktionen > .bald{grid-column:2;grid-row:1 / 3}
+  .fkarte{min-height:auto;padding:16px 20px;gap:6px;flex-direction:row;align-items:flex-start;justify-content:flex-start}
+  .fkarte .nr{font-size:34px;min-width:34px}
+  .fkarte h3{font-size:24px;margin-bottom:2px}
+  .fkarte p{font-size:15px}
+  .zitat{font-size:28px;padding-left:20px}
+  .versprechen{padding:24px 22px;border-radius:var(--rand)}
+  .projekt > .versprechen{height:auto;align-self:center;margin:0 20px;width:calc(100vw - 40px);padding:24px 22px}
+  .backcover{grid-template-rows:1fr auto;text-align:center}
+  .backcover > .mitte{grid-column:1;grid-row:1;height:auto;padding-bottom:0}
+  .backcover > .rechtliches{grid-column:1;grid-row:2;height:auto;padding-top:16px;flex-direction:row;justify-content:center}
+  .funktionen > .bald{font-size:20px;text-align:center;align-items:center}
+  .backcover .mitte{align-self:stretch}
   .pfeil{display:none}
 }
 @media (prefers-reduced-motion:reduce){
@@ -274,7 +309,7 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
     <div class="versprechen zeig">
       <h3>Versprochen</h3>
       <ul>
-        <li>Kostenlos. Anmeldung freiwillig, ganz ohne Passwort per E-Mail-Link.</li>
+        <li>Kostenlos. Anmeldung freiwillig – mit E-Mail und Passwort, auf jedem Gerät.</li>
         <li>Dein Tagebuch wird verschlüsselt – nur du kannst es lesen.</li>
         <li>Ruhiges Design, das man auch lange ansehen kann.</li>
         <li>Sichern und Wiederherstellen per Datei.</li>
@@ -337,8 +372,7 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
 
   function zuSeite(i){
     i = Math.max(0, Math.min(seiten.length - 1, i));
-    if (mobil.matches) { seiten[i].scrollIntoView({behavior:'smooth', block:'start'}); return; }
-    buch.scrollTo({left: i * buch.clientWidth, behavior:'smooth'});
+    buch.scrollTo({left: seiten[i].offsetLeft, behavior:'smooth'});
   }
 
   function anzeigen(i){
@@ -392,7 +426,7 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
 
   // Nach Größenänderung auf der aktuellen Seite bleiben
   window.addEventListener('resize', function(){
-    if (!mobil.matches) buch.scrollTo({left: index * buch.clientWidth});
+    buch.scrollTo({left: seiten[index].offsetLeft});
   });
 
   // Modals
@@ -404,10 +438,51 @@ dialog .zu{position:absolute;top:16px;right:20px;font-size:28px;line-height:1}
     d.addEventListener('click', function(ev){ if (ev.target === d) d.close(); }); // Klick daneben schließt
   });
 
+  // Handy: nach oben wischen = einen Bildschirm weiter nach rechts (wie auf der Lernseite)
+  var wisch = null;
+  function scrolltSelbst(el, dy){
+    while (el && el !== buch) {
+      if (el.scrollHeight > el.clientHeight + 1 && /(auto|scroll)/.test(getComputedStyle(el).overflowY)) {
+        if ((dy > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) || (dy < 0 && el.scrollTop > 0)) return true;
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+  buch.addEventListener('touchstart', function(ev){
+    if (!mobil.matches || ev.touches.length !== 1) { wisch = null; return; }
+    wisch = {x: ev.touches[0].clientX, y: ev.touches[0].clientY, ziel: ev.target, achse: null, start: buch.scrollLeft};
+  }, {passive:true});
+  buch.addEventListener('touchmove', function(ev){
+    if (!wisch) return;
+    var dx = ev.touches[0].clientX - wisch.x, dy = ev.touches[0].clientY - wisch.y;
+    if (!wisch.achse) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      wisch.achse = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
+      if (wisch.achse === 'y' && scrolltSelbst(wisch.ziel, -dy)) wisch.achse = 'eigen';
+    }
+    if (wisch.achse === 'eigen') return;
+    ev.preventDefault();
+    buch.style.scrollSnapType = 'none';
+    buch.scrollLeft = wisch.start - (wisch.achse === 'y' ? dy : dx);
+    wisch.weg = wisch.achse === 'y' ? dy : dx;
+  }, {passive:false});
+  function wischEnde(){
+    if (!wisch || !wisch.achse || wisch.achse === 'eigen') { wisch = null; return; }
+    var b = buch.clientWidth, start = Math.round(wisch.start / b), ziel = Math.round(buch.scrollLeft / b);
+    if (ziel === start && Math.abs(wisch.weg || 0) > 40) ziel += wisch.weg < 0 ? 1 : -1;
+    ziel = Math.max(0, Math.min(ziel, Math.round((buch.scrollWidth - b) / b)));
+    wisch = null;
+    buch.scrollTo({left: ziel * b, behavior: 'smooth'});
+    setTimeout(function(){ buch.style.scrollSnapType = ''; }, 450);
+  }
+  buch.addEventListener('touchend', wischEnde);
+  buch.addEventListener('touchcancel', wischEnde);
+
   anzeigen(0);
   seiten[0].classList.add('sichtbar');
 })();
 </script>
-<script src="js/modus.js?v=202611121301"></script>
+<script src="js/modus.js?v=202611121335"></script>
 </body>
 </html>
