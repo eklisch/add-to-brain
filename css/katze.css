@@ -102,6 +102,22 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.schlaeft svg { animation: k-atmen 3.4s ease-in-out infinite; transform-origin: 50% 96%; }
 @keyframes k-atmen { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.035); } }
 
+/* Lauern: geduckt, große Pupillen, Hinterteil wackelt, Schwanzspitze zuckt */
+.katze.lauert .k-pupille { stroke-width: 3.4; }
+.katze.lauert .k-neu { animation: k-ein .16s ease-out, k-po .28s ease-in-out infinite; }
+@keyframes k-po { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(1.4px); } }
+.katze.lauert .k-zucken { animation: k-zucken .5s ease-in-out infinite; }
+@keyframes k-zucken { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-12deg); } }
+
+/* Schnurren beim Streicheln: Augen zu, „rrr“ steigt auf */
+.k-rrr { font: 600 8px var(--lesbar, sans-serif); fill: var(--tinte); opacity: 0; }
+.katze.schnurrt .k-augen { animation: none; opacity: 0; }
+.katze.schnurrt .k-zu-blinzeln { animation: none; opacity: 1; }
+.katze.schnurrt .k-rrr { animation: k-zzz 1.6s ease-in infinite; }
+.katze.schnurrt .k-rrr2 { animation-delay: .8s; }
+.katze.schnurrt svg { animation: k-schnurren .18s linear infinite; }
+@keyframes k-schnurren { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(.5px); } }
+
 /* Kratzspuren an der Kartenkante – verblassen nach ein paar Sekunden */
 .kratzspur { position: absolute; width: 16px; display: flex; gap: 3px; pointer-events: none; z-index: 2; transition: opacity 3.5s ease; }
 .kratzspur.links { left: 3px; }
@@ -124,6 +140,6 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 /* Weniger Bewegung gewünscht: Katze sitzt still */
 @media (prefers-reduced-motion: reduce) {
   .katze *, .katze svg { animation: none !important; }
-  .k-zu-blinzeln, .k-zzz { opacity: 0 !important; }
+  .k-zu-blinzeln, .k-zzz, .k-rrr { opacity: 0 !important; }
   .katze .k-augen { opacity: 1 !important; }
 }

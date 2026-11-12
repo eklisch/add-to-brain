@@ -35,7 +35,8 @@
   const SITZ_KOERPER = `<g class="k-schwanz" style="transform-origin:48px 93px"><path class="k-schwanzlinie" d="M50 94 C36 97 24 93 23 83 C22 74 31 71 33 78"/></g>
     <path class="k-fell" d="M62 42 C48 50 39 64 40 80 C41 91 46 96 54 96 L82 96 C86 96 86 91 82 89 C79 77 80 61 76 47 Z"/>`;
   const POSEN = {
-    sitzen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95 M78 68 L80 95"/>` + kopf(70, 33, 1, 'auf'),
+    sitzen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95 M78 68 L80 95"/>` + kopf(70, 33, 1, 'auf') +
+      `<text class="k-rrr" x="88" y="40">rrr</text><text class="k-rrr k-rrr2" x="94" y="28">rrr</text>`,
     putzen: SITZ_KOERPER + `<path class="k-bein" d="M78 68 L80 95"/>` + kopf(70, 33, 1, 'zu') +
       `<g class="k-putzpfote" style="transform-origin:73px 66px"><path class="k-bein" d="M73 66 C78 58 78 50 73 46"/><circle class="k-fell" cx="72.5" cy="45.5" r="3.4"/></g>`,
     tippen: SITZ_KOERPER + `<path class="k-bein" d="M73 70 L73 95"/>` + kopf(70, 33, 1, 'auf') +
@@ -53,6 +54,10 @@
       <path class="k-fell" d="M30 60 C36 51 62 50 76 53 C86 55 90 63 86 70 C80 76 46 76 34 72 C28 70 26 65 30 60 Z"/>
       <g class="k-bein-b" style="transform-origin:35px 70px"><path class="k-bein" d="M35 70 L34 95"/></g>
       <g class="k-bein-a" style="transform-origin:72px 72px"><path class="k-bein" d="M72 72 L71 95"/></g>` + kopf(91, 47, 0.95, 'auf'),
+    lauern: `<g class="k-schwanz k-zucken" style="transform-origin:30px 88px"><path class="k-schwanzlinie" d="M30 88 C20 89 12 87 5 81"/></g>
+      <path class="k-bein" d="M36 90 L42 95 M44 91 L50 95"/>
+      <path class="k-fell" d="M27 84 C29 71 44 65 60 67 C72 68 82 73 88 79 C91 87 87 94 80 95 L36 95 C30 95 26 90 27 84 Z"/>
+      <path class="k-bein" d="M80 92 L97 95 M76 90 L93 94"/>` + kopf(93, 76, 0.95, 'auf'),
     springen: `<g class="k-schwanz" style="transform-origin:28px 66px"><path class="k-schwanzlinie" d="M28 66 C18 64 10 56 8 48"/></g>
       <path class="k-bein" d="M34 70 L18 86 M40 72 L26 90"/>
       <path class="k-fell" d="M26 66 C30 56 54 48 72 46 C82 45 88 52 84 60 C78 68 50 76 36 76 C29 76 24 72 26 66 Z"/>
@@ -125,7 +130,7 @@
       clearTimeout(ueberblendung);
       ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
     }
-    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft');
+    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt');
     el.classList.toggle('laeuft', name === 'laufen');
     (klassen || []).forEach((k) => el.classList.add(k));
   }
@@ -551,10 +556,108 @@
   el.addEventListener('click', () => {
     if (ruhig.matches) return;
     aktiv();
+    streichelt = false; lauert = false; jagdStart = 0; clearTimeout(streichelTimer);
+    jagdPause = Date.now() + 10000;
     clearTimeout(besonders);
     const plaetze = sitzplaetze().filter((k) => Math.abs(k.getBoundingClientRect().left - pos.x) > 200);
     if (plaetze.length && Math.random() < 0.6) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
     else springeZu({ art: 'boden', x: freierBoden(pos.x < window.innerWidth / 2 ? window.innerWidth - breite - 30 : 30) });
+  });
+
+  // ---------- Spielen mit der Maus (nur am Computer) ----------
+  const fein = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const maus = { x: -999, y: -999, t: 0 };
+  let lauert = false, lauerSeit = 0, jagdStart = 0, jagdPause = 0, streichelt = false, streichelTimer = null, letzterSatz = 0;
+  window.addEventListener('mousemove', (ev) => { maus.x = ev.clientX; maus.y = ev.clientY; maus.t = performance.now(); }, { passive: true });
+
+  // Ist unter dem Mauszeiger etwas, das man bedienen will? Dann lässt sie einen in Ruhe.
+  function ueberBedienung() {
+    const e = document.elementFromPoint(maus.x, maus.y);
+    return !!(e && !e.closest('.katze') && e.closest('a, button, input, textarea, select, label, summary, [role="button"], [contenteditable], .qz-antworten, .leiste, .kopf'));
+  }
+  function lauernStart() {
+    lauert = true; lauerSeit = performance.now();
+    if (!jagdStart) jagdStart = lauerSeit;
+    clearTimeout(besonders);
+    setzePose('lauern', ['lauert']);
+  }
+  function lauernEnde(pause) {
+    if (!lauert) return;
+    lauert = false; jagdStart = 0;
+    if (pause) jagdPause = Date.now() + pause;
+    if (!aktion && !schlaeft) setzePose('sitzen');
+  }
+  // Satz auf den Mauszeiger, Pfotenhieb, dann wieder lauern oder aufgeben
+  function zuschnappen() {
+    lauert = false;
+    letzterSatz = performance.now();
+    const zielX = freierBoden(maus.x - breite * (el.classList.contains('links') ? 0.25 : 0.75));
+    const hoch = bodenY() + hoehe * 0.5 - maus.y;     // wie weit oben ist der Zeiger?
+    const t0 = performance.now();
+    const start = { x: pos.x, y: pos.y };
+    blick(maus.x > pos.x + breite / 2);
+    setzePose('springen');
+    const sprungHoehe = Math.max(24, Math.min(hoehe * 1.4, hoch));
+    anker = { art: 'boden', x: zielX };
+    aktion = (jetzt) => {
+      const t = Math.min(1, (jetzt - t0) / 380);
+      pos.x = start.x + (zielX - start.x) * t;
+      pos.y = bodenY() - 4 * sprungHoehe * t * (1 - t);
+      form(1.08, 0.94, -12 * Math.sin(Math.PI * t));
+      if (t >= 1) {
+        form(1, 1, 0);
+        aktion = null;
+        eineWeile('tippen', ['tippt'], 700);           // Pfotenhieb
+        setTimeout(() => { if (!schlaeft && !aktion) { if (Math.random() < 0.55) lauernStart(); else { jagdPause = Date.now() + 8000; putzen(); } } }, 750);
+      }
+    };
+    wecken();
+  }
+  function jagdTakt() {
+    if (!fein.matches || wahl === 'aus' || ruhig.matches || schlaeft || document.hidden || streichelt) { if (lauert) lauernEnde(); return; }
+    if (aktion || Date.now() < jagdPause) return;
+    const jetzt = performance.now();
+    const cx = pos.x + breite / 2, cy = pos.y + hoehe * 0.65;
+    const d = Math.hypot(maus.x - cx, maus.y - cy);
+    const frisch = jetzt - maus.t < 2500;
+    if (!frisch || d > 260 || ueberBedienung()) { if (lauert && (d > 420 || !frisch)) lauernEnde(4000); if (!lauert) return; }
+    if (anker.art !== 'boden') { blick(maus.x > cx); return; }   // auf einem Block: nur hinschauen
+    // nach einer Weile verliert sie das Interesse und tut so, als wäre nichts gewesen
+    if (jagdStart && jetzt - jagdStart > 7000) { lauernEnde(15000); putzen(); return; }
+    if (!lauert) { if (d < 230 && !ueberBedienung()) lauernStart(); return; }
+    blick(maus.x > cx);
+    const erreichbar = maus.y > bodenY() - hoehe * 1.2;
+    if (d > 150 && erreichbar && d < 420 && jetzt - lauerSeit > 450) {   // Zeiger flieht: erst kurz fixieren, dann hinterher!
+      laufeZu(freierBoden(maus.x - breite / 2), () => { if (!schlaeft) lauernStart(); });
+      lauert = false;
+      return;
+    }
+    if (erreichbar && d <= 150 && jetzt - lauerSeit > 750 && jetzt - maus.t > 250 && !ueberBedienung()) zuschnappen();
+  }
+  setInterval(jagdTakt, 110);
+
+  // Streicheln: langsam über die Katze fahren (ohne Klick) – sie schließt die Augen und schnurrt
+  // Gestreichelt wird nur, wenn sich die Maus wirklich über sie bewegt – nicht, wenn sie gerade unter dem Zeiger gelandet ist
+  let strich = 0, letzterPunkt = null;
+  el.addEventListener('pointermove', (ev) => {
+    if (ev.pointerType !== 'mouse' || schlaeft || aktion || streichelt) return;
+    if (performance.now() - letzterSatz < 1800) return;
+    if (letzterPunkt) strich += Math.hypot(ev.clientX - letzterPunkt.x, ev.clientY - letzterPunkt.y);
+    letzterPunkt = { x: ev.clientX, y: ev.clientY };
+    clearTimeout(streichelTimer);
+    if (strich > 30) {
+      streichelt = true; lauert = false; jagdStart = 0;
+      clearTimeout(besonders);
+      setzePose('sitzen', ['schnurrt']);
+    }
+  });
+  el.addEventListener('pointerout', (ev) => {
+    if (ev.pointerType !== 'mouse') return;
+    strich = 0; letzterPunkt = null;
+    clearTimeout(streichelTimer);
+    if (streichelt) {
+      streichelTimer = setTimeout(() => { streichelt = false; jagdPause = Date.now() + 5000; if (!aktion && !schlaeft) setzePose('sitzen'); }, 900);
+    }
   });
 
   // ---------- Takt ----------
