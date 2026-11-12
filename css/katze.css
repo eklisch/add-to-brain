@@ -61,12 +61,24 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 /* Schwanz: langsam hin und her – schneller, wenn sie sich freut */
 .k-schwanz { animation: k-wedeln 3.2s ease-in-out infinite; }
 .katze.freut .k-schwanz { animation-duration: .45s; }
-@keyframes k-wedeln { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-9deg); } }
+@keyframes k-wedeln { 0%, 100% { transform: rotate(0deg); } 35% { transform: rotate(-10deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(2deg); } }
+
+/* Weiche Übergänge zwischen den Posen */
+.k-alt { animation: k-aus .16s ease-out forwards; }
+.k-neu { animation: k-ein .16s ease-out; }
+@keyframes k-aus { to { opacity: 0; } }
+@keyframes k-ein { from { opacity: .2; } to { opacity: 1; } }
+
+/* Laufen: Körper wippt, Kopf nickt leicht – wie bei einer echten Katze */
+.katze.laeuft .k-neu { animation: k-ein .16s ease-out, k-wippen .42s ease-in-out infinite; }
+@keyframes k-wippen { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.2px); } }
+.katze.laeuft .k-kopf { animation: k-nicken .42s ease-in-out infinite; }
+@keyframes k-nicken { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
 
 /* Laufen: Beine abwechselnd */
 .k-bein-a { animation: k-schritt .42s ease-in-out infinite; }
 .k-bein-b { animation: k-schritt .42s ease-in-out infinite reverse; }
-@keyframes k-schritt { 0%, 100% { transform: rotate(16deg); } 50% { transform: rotate(-16deg); } }
+@keyframes k-schritt { 0%, 100% { transform: rotate(18deg); } 45% { transform: rotate(-16deg); } 70% { transform: rotate(-6deg); } }
 
 /* Putzen: Pfote auf und ab, Kopf leicht geneigt */
 .k-putzpfote { animation: k-putzen .7s ease-in-out infinite; }

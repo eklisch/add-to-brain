@@ -115,11 +115,26 @@
   const bodenY = () => window.innerHeight - leisteHoehe() - hoehe + 4;
   const grenzeX = (x) => Math.max(8, Math.min(window.innerWidth - breite - 8, x));
 
+  let ueberblendung = null;
   function setzePose(name, klassen) {
-    if (pose !== name) { svg.innerHTML = POSEN[name]; pose = name; }
+    if (pose !== name) {
+      // alte Pose kurz ausblenden, neue einblenden – so springt die Figur nicht hart um
+      const alt = pose ? `<g class="k-alt">${POSEN[pose]}</g>` : '';
+      svg.innerHTML = alt + `<g class="k-neu">${POSEN[name]}</g>`;
+      pose = name;
+      clearTimeout(ueberblendung);
+      ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
+    }
     el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft');
+    el.classList.toggle('laeuft', name === 'laufen');
     (klassen || []).forEach((k) => el.classList.add(k));
   }
+  // Form der Figur: stauchen, strecken, drehen (für Absprung, Flug und Landung)
+  function form(sx, sy, dreh) {
+    svg.style.transform = (dreh ? `rotate(${dreh}deg) ` : '') + (sx !== 1 || sy !== 1 ? `scale(${sx}, ${sy})` : '');
+  }
+  const sanft = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;   // langsam – schnell – langsam
+  const federn = (t) => 1 - Math.sin(t * Math.PI) * (1 - t) * 0.9;              // abfedernde Rückkehr
   function blick(nachRechts) { el.classList.toggle('links', !nachRechts); }
   function zeichne() { el.style.transform = `translate(${Math.round(pos.x)}px, ${Math.round(pos.y)}px)`; }
 
@@ -184,13 +199,13 @@
     if (Math.abs(weg) < 6) { if (dann) dann(); return; }
     blick(weg > 0);
     setzePose('laufen');
-    const tempo = handy.matches ? 110 : 150; // Pixel pro Sekunde
-    const dauer = Math.abs(weg) / tempo * 1000;
+    const tempo = handy.matches ? 110 : 150; // Pixel pro Sekunde (in der Mitte des Weges)
+    const dauer = Math.abs(weg) / tempo * 1000 + 350;  // etwas Zeit fürs Anlaufen und Abbremsen
     const t0 = performance.now();
     anker = { art: 'boden', x: zielX };
     aktion = (jetzt) => {
       const t = Math.min(1, (jetzt - t0) / dauer);
-      pos.x = start + weg * t;
+      pos.x = start + weg * sanft(t);
       pos.y = bodenY();
       if (t >= 1) { aktion = null; setzePose('sitzen'); if (dann) dann(); }
     };
@@ -198,15 +213,40 @@
   }
 
   // Ein einzelner Sprung von A nach B (Ziel darf sich beim Blättern mitbewegen)
-  function sprung(start, zielFn, dauer, bogen, drehung, dann) {
+  // Ablauf wie bei einer echten Katze: ducken und Kraft sammeln → lang strecken im Flug → abfedern bei der Landung
+  function sprung(start, zielFn, dauer, bogen, drehung, dann, opt) {
+    opt = opt || {};
+    const ducken = opt.ohneAnlauf ? 0 : 170, landen = opt.ohneLandung ? 0 : 190;
     const t0 = performance.now();
+    if (ducken) setzePose('sitzen');
     aktion = (jetzt) => {
+      const z = jetzt - t0;
+      if (z < ducken) {                               // ducken
+        const d = sanft(z / ducken);
+        form(1 + 0.1 * d, 1 - 0.16 * d, 0);
+        pos.x = start.x; pos.y = start.y;
+        return;
+      }
+      if (pose !== 'springen') setzePose('springen');
+      const t = Math.min(1, (z - ducken) / dauer);
       const ziel = zielFn();
-      const t = Math.min(1, (jetzt - t0) / dauer);
-      pos.x = start.x + (ziel.x - start.x) * t;
-      pos.y = start.y + (ziel.y - start.y) * t - Math.sin(Math.PI * t) * bogen;
-      svg.style.transform = drehung ? `rotate(${drehung * Math.sin(Math.PI * t)}deg)` : '';
-      if (t >= 1) { aktion = null; svg.style.transform = ''; dann(); }
+      const tx = sanft(t) * 0.35 + t * 0.65;          // fast gleichmäßig, minimal weich
+      pos.x = start.x + (ziel.x - start.x) * tx;
+      pos.y = start.y + (ziel.y - start.y) * t - 4 * bogen * t * (1 - t);   // Wurfparabel
+      const streck = Math.sin(Math.PI * Math.min(1, t * 1.6)) * (1 - t);     // am Anfang lang gestreckt
+      form(1 + 0.12 * streck, 1 - 0.08 * streck, (drehung || 0) * Math.sin(Math.PI * t) + (ziel.y < start.y ? -8 : 8) * (1 - 2 * t) * 0.6);
+      if (t >= 1) {
+        if (!landen) { form(1, 1, 0); aktion = null; dann(); return; }
+        const tl = performance.now();
+        setzePose('sitzen');
+        aktion = (j) => {                             // abfedern
+          const u = Math.min(1, (j - tl) / landen);
+          const a = zielFn(); pos.x = a.x; pos.y = a.y;
+          const q = 1 - federn(u);
+          form(1 + 0.14 * q, 1 - 0.2 * q, 0);
+          if (u >= 1) { form(1, 1, 0); aktion = null; dann(); }
+        };
+      }
     };
     wecken();
   }
@@ -215,9 +255,12 @@
   function anDerWand(wandRechts, dann) {
     blick(wandRechts);
     setzePose('springen');
-    svg.style.transform = 'rotate(-62deg)';
     const t0 = performance.now();
-    aktion = (jetzt) => { if (jetzt - t0 > 110) { aktion = null; svg.style.transform = ''; dann(); } };
+    aktion = (jetzt) => {
+      const u = Math.min(1, (jetzt - t0) / 150);
+      form(1 - 0.12 * Math.sin(Math.PI * u), 1, -62);   // Pfoten an die Wand, kurz zusammendrücken, abstoßen
+      if (u >= 1) { aktion = null; form(1, 1, 0); dann(); }
+    };
     wecken();
   }
 
@@ -249,7 +292,7 @@
         // letzter Satz: über die Kante nach oben auf die Karte
         blick(zielFn().x >= pos.x);
         setzePose('springen');
-        sprung({ x: pos.x, y: pos.y }, zielFn, 380, 34, -18, fertig);
+        sprung({ x: pos.x, y: pos.y }, zielFn, 380, 34, -18, fertig, { ohneAnlauf: true });
         return;
       }
       const r = anker.el.getBoundingClientRect();
@@ -261,7 +304,7 @@
       blick(wandX >= von.x);
       setzePose('springen');
       i++;
-      sprung(von, () => ({ x: grenzeX(wandX), y: wandY }), 300, 18, -28, () => anDerWand(!rechts, naechster));
+      sprung(von, () => ({ x: grenzeX(wandX), y: wandY }), 300, 18, -28, () => anDerWand(!rechts, naechster), { ohneAnlauf: i > 2, ohneLandung: true });
     };
     naechster();
   }
@@ -269,10 +312,13 @@
   function huepfen() {
     const t0 = performance.now();
     aktion = (jetzt) => {
-      const t = Math.min(1, (jetzt - t0) / 420);
+      const t = Math.min(1, (jetzt - t0) / 560);
       const a = ankerPos() || { x: pos.x, y: bodenY() };
-      pos.x = a.x; pos.y = a.y - Math.sin(Math.PI * t) * 22;
-      if (t >= 1) aktion = null;
+      pos.x = a.x;
+      if (t < 0.2) { const d = sanft(t / 0.2); form(1 + 0.08 * d, 1 - 0.14 * d, 0); pos.y = a.y; }
+      else if (t < 0.8) { const u = (t - 0.2) / 0.6; pos.y = a.y - 4 * 24 * u * (1 - u); form(0.95, 1.07, 0); }
+      else { const u = (t - 0.8) / 0.2; const q = 1 - federn(u); pos.y = a.y; form(1 + 0.1 * q, 1 - 0.14 * q, 0); }
+      if (t >= 1) { form(1, 1, 0); aktion = null; }
     };
     wecken();
   }
