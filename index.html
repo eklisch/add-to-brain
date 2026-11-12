@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add to Brain – Lernen für E-Commerce</title>
   <meta name="description" content="Lernseite für Praktikum, Vorstellungsgespräch und Ausbildung zur Kauffrau / zum Kaufmann im E-Commerce.">
-  <link href="css/fonts.css?v=202611111839" rel="stylesheet">
-  <link href="css/paper.min.css?v=202611111839" rel="stylesheet">
-  <link href="css/style.css?v=202611111839" rel="stylesheet">
+  <script>try { if (localStorage.getItem('atb-modus') === 'dunkel') document.documentElement.classList.add('dark'); } catch (e) {}</script>
+  <link href="css/fonts.css?v=202611121204" rel="stylesheet">
+  <link href="css/paper.min.css?v=202611121204" rel="stylesheet">
+  <link href="css/style.css?v=202611121204" rel="stylesheet">
 </head>
 <body>
   <header class="kopf">
@@ -23,6 +24,7 @@
         <li><a href="#glossar">Glossar</a></li>
       </ul>
     </nav>
+    <button type="button" class="modus" id="modus" aria-pressed="false" aria-label="Dunkelmodus einschalten" title="Dunkelmodus einschalten">☾</button>
     <a href="#quiz" class="cta">Weiterlernen</a>
   </header>
 
@@ -475,15 +477,16 @@
     <button class="pfeil" id="pfeil-rechts" type="button">Weiter</button>
   </div>
 
-  <script src="js/daten.js?v=202611111839"></script>
-  <script src="js/module.js?v=202611111839"></script>
-  <script src="js/lernen.js?v=202611111839"></script>
-  <script src="js/gespraech.js?v=202611111839"></script>
-  <script src="js/rechnen.js?v=202611111839"></script>
-  <script src="js/missionen.js?v=202611111839"></script>
-  <script src="js/app.js?v=202611111839"></script>
-  <script src="js/erfolge.js?v=202611111839"></script>
-  <script src="js/scroll.js?v=202611111839"></script>
-  <script src="js/konto.js?v=202611111839"></script>
+  <script src="js/daten.js?v=202611121204"></script>
+  <script src="js/module.js?v=202611121204"></script>
+  <script src="js/lernen.js?v=202611121204"></script>
+  <script src="js/gespraech.js?v=202611121204"></script>
+  <script src="js/rechnen.js?v=202611121204"></script>
+  <script src="js/missionen.js?v=202611121204"></script>
+  <script src="js/app.js?v=202611121204"></script>
+  <script src="js/erfolge.js?v=202611121204"></script>
+  <script src="js/modus.js?v=202611121204"></script>
+  <script src="js/scroll.js?v=202611121204"></script>
+  <script src="js/konto.js?v=202611121204"></script>
 </body>
 </html>
