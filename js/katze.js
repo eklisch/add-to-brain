@@ -130,7 +130,7 @@
       clearTimeout(ueberblendung);
       ueberblendung = setTimeout(() => { const a = svg.querySelector('.k-alt'); if (a) a.remove(); }, 170);
     }
-    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt');
+    el.classList.remove('freut', 'putzt', 'schaut', 'tippt', 'schlaeft', 'lauert', 'schnurrt', 'schmollt');
     el.classList.toggle('laeuft', name === 'laufen');
     (klassen || []).forEach((k) => el.classList.add(k));
   }
@@ -553,15 +553,35 @@
   });
 
   // Anklicken mag sie nicht: beleidigt wegspringen
-  el.addEventListener('click', () => {
+  el.addEventListener('click', (ev) => {
     if (ruhig.matches) return;
     aktiv();
     streichelt = false; lauert = false; jagdStart = 0; clearTimeout(streichelTimer);
-    jagdPause = Date.now() + 10000;
+    jagdPause = Date.now() + 15000;
     clearTimeout(besonders);
-    const plaetze = sitzplaetze().filter((k) => Math.abs(k.getBoundingClientRect().left - pos.x) > 200);
-    if (plaetze.length && Math.random() < 0.6) zuSitzplatz(plaetze[Math.floor(Math.random() * plaetze.length)]);
-    else springeZu({ art: 'boden', x: freierBoden(pos.x < window.innerWidth / 2 ? window.innerWidth - breite - 30 : 30) });
+    // weg vom Mauszeiger: kleiner Hüpfer, beleidigt ein Stück weggehen, irgendwo ungestört hinlegen
+    const weg = (ev.clientX > pos.x + breite / 2) ? -1 : 1;
+    const schmollen = () => {
+      laufeZu(freierBoden(pos.x + weg * zufall(160, 320)), () => {
+        blick(weg < 0);                                      // Rücken zum Mauszeiger
+        eineWeile('schlafen', ['schmollt'], zufall(7000, 11000));
+      });
+    };
+    if (anker.art === 'ziel') { springeZu({ art: 'boden', x: freierBoden(pos.x + weg * 70) }, schmollen); return; }
+    // kleiner Hüpfer zur Seite
+    const start = { x: pos.x, y: pos.y };
+    const zielX = grenzeX(pos.x + weg * 60);
+    const t0 = performance.now();
+    blick(weg > 0);
+    setzePose('springen');
+    anker = { art: 'boden', x: zielX };
+    aktion = (jetzt) => {
+      const t = Math.min(1, (jetzt - t0) / 300);
+      pos.x = start.x + (zielX - start.x) * t;
+      pos.y = bodenY() - 4 * 26 * t * (1 - t);
+      if (t >= 1) { aktion = null; setzePose('sitzen'); setTimeout(schmollen, 250); }
+    };
+    wecken();
   });
 
   // ---------- Spielen mit der Maus (nur am Computer) ----------

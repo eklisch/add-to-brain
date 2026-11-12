@@ -109,6 +109,9 @@ html.dark .k-putzpfote .k-fell { stroke: #d8d3c6; }
 .katze.lauert .k-zucken { animation: k-zucken .5s ease-in-out infinite; }
 @keyframes k-zucken { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-12deg); } }
 
+/* Schmollen nach dem Anklicken: hingelegt, Augen zu, aber kein z z z */
+.katze.schmollt .k-zzz { display: none; }
+
 /* Schnurren beim Streicheln: Augen zu, „rrr“ steigt auf */
 .k-rrr { font: 600 8px var(--lesbar, sans-serif); fill: var(--tinte); opacity: 0; }
 .katze.schnurrt .k-augen { animation: none; opacity: 0; }
