@@ -246,6 +246,8 @@
       : 'Für heute ist alles gelernt. Komm morgen wieder! (Freigeschaltet bis Stufe ' + s + ' von 3.)';
     $('qz-start').hidden = !n;
     $('qz-karte').hidden = true;
+    $('qz-info').hidden = false;
+    $('quiz').classList.remove('laeuft');
     zeigeKartei(s);
   }
 
@@ -323,6 +325,7 @@
     const umgekehrt = Math.random() < 0.5; // mal Begriff → Erklärung, mal Erklärung → Begriff
 
     $('qz-start').hidden = true;
+    $('qz-info').hidden = true;
     $('qz-karte').hidden = false;
     $('qz-stufe').textContent = 'Stufe ' + aktuell.stufe + ' · Fach ' + karte(aktuell.id).fach + ' von 5 · noch ' + faellig.length + ' fällig';
     $('qz-frage').textContent = umgekehrt ? 'Was bedeutet „' + aktuell.begriff + '“?' : 'Welcher Begriff passt? ' + aktuell.erklaerung;
@@ -331,10 +334,12 @@
     const box = $('qz-antworten');
     box.textContent = '';
     optionen.forEach((o) => {
-      const b = el('button', umgekehrt ? o.erklaerung : o.begriff); b.type = 'button';
+      const b = el('button', umgekehrt ? o.erklaerung : o.begriff); b.type = 'button'; b.dataset.id = o.id;
       b.addEventListener('click', () => antworten(o, b));
       box.appendChild(b);
     });
+    $('quiz').classList.add('laeuft');
+    if (window.SPUR) window.SPUR.zeige($('qz-karte').closest('.card'));
   }
 
   function antworten(gewaehlt, knopf) {
@@ -351,11 +356,13 @@
     document.querySelectorAll('#qz-antworten button').forEach((b) => { if (b !== knopf) b.disabled = true; });
     knopf.classList.add(richtig ? 'btn-success' : 'btn-danger');
     knopf.style.pointerEvents = 'none';
+    // Bei falscher Antwort die richtige grün markieren – kurz und auf einen Blick
+    if (!richtig) document.querySelectorAll('#qz-antworten button').forEach((b) => { if (b.dataset.id === aktuell.id) b.classList.add('btn-success'); });
     $('qz-rueckmeldung').textContent = richtig
       ? 'Richtig! „' + aktuell.begriff + '“ rutscht in Fach ' + fach + '.'
-      : 'Leider falsch. Richtig ist: ' + aktuell.begriff + ' – ' + aktuell.erklaerung + ' Der Begriff kommt gleich noch einmal.';
+      : 'Leider falsch – die richtige Antwort ist grün markiert. „' + aktuell.begriff + '“ kommt gleich noch einmal.';
     $('qz-weiter').hidden = false;
-    $('qz-weiter').focus();
+    $('qz-weiter').focus({ preventScroll: true });
   }
 
   // ---------- Begriff des Tages (jeden Tag ein anderer) ----------

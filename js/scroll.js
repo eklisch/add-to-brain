@@ -119,7 +119,26 @@
     if (ev.key === 'ArrowLeft') { ev.preventDefault(); spur.scrollBy({ left: -120, behavior: 'smooth' }); }
   });
 
+  // Ein Element an den Anfang des sichtbaren Bereichs holen (z. B. die nächste Quizfrage).
+  // Auf dem Handy rastet es auf die Bildschirmseite ein, auf der das Element beginnt.
+  function zeige(el) {
+    if (!el) return;
+    stoppeSchwung();
+    requestAnimationFrame(() => {
+      const links = el.getBoundingClientRect().left - spur.getBoundingClientRect().left + spur.scrollLeft;
+      if (handy.matches) {
+        const b = spur.clientWidth;
+        spur.scrollTo({ left: Math.floor((links + 2) / b) * b, behavior: 'smooth' });
+      } else {
+        const sichtbar = el.getBoundingClientRect();
+        // nur scrollen, wenn der Anfang nicht schon gut sichtbar ist
+        if (sichtbar.left < 0 || sichtbar.left > spur.clientWidth * 0.6) el.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      }
+    });
+  }
+
   window.SPUR = {
+    zeige,
     anfang() { stoppeSchwung(); spur.scrollLeft = 0; window.scrollTo(0, 0); aktualisiere(); }
   };
   aktualisiere();

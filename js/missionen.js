@@ -253,7 +253,7 @@
 
   function weiter() {
     const m = MISSIONEN[aktuell];
-    if (schritt < m.schritte.length - 1) { schritt++; zeigeSchritt(); return; }
+    if (schritt < m.schritte.length - 1) { schritt++; zeigeSchritt(); if (window.SPUR) window.SPUR.zeige($('rs-aufgabe')); return; }
     // Mission geschafft
     const s = stand();
     const alt = s[m.id] || {};

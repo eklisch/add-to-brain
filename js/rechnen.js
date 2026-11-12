@@ -234,7 +234,11 @@
     box.appendChild(b);
   });
   $('rc-form').addEventListener('submit', pruefen);
-  $('rc-naechste').addEventListener('click', () => { neueAufgabe(); $('rc-eingabe').focus({ preventScroll: true }); });
+  $('rc-naechste').addEventListener('click', () => {
+    neueAufgabe();
+    $('rc-eingabe').focus({ preventScroll: true });
+    if (window.SPUR) window.SPUR.zeige($('rc-aufgabe-karte'));
+  });
 
   window.RECHNEN = {
     zeige() { if (!aktuell) waehleThema(thema); zeigeStand(); },

@@ -222,7 +222,7 @@
   $('gs-vorlesen').addEventListener('click', vorlesen);
   $('gs-start').addEventListener('click', () => (uhr ? stoppeUhr() : starteUhr()));
   $('gs-rec').addEventListener('click', aufnahme);
-  $('gs-naechste').addEventListener('click', () => zeigeFrage(zufaellig()));
+  $('gs-naechste').addEventListener('click', () => { zeigeFrage(zufaellig()); if (window.SPUR) window.SPUR.zeige($('gs-uebung')); });
   $('gs-notiz').addEventListener('input', notizSpeichern);
   document.querySelectorAll('[data-bewertung]').forEach((b) => b.addEventListener('click', () => bewerten(b.dataset.bewertung)));
   if (!stimme) $('gs-vorlesen').hidden = true;
