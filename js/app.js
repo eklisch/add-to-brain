@@ -236,6 +236,9 @@
       const sitzen = begriffe.filter((b) => karte(b.id).fach >= 3).length;
       if (begriffe.length && sitzen / begriffe.length >= 0.8) stufe = s + 1; else break;
     }
+    // Einmal freigeschaltet bleibt freigeschaltet, auch wenn später neue Begriffe dazukommen
+    if ((daten.stufeErreicht || 1) > stufe) stufe = daten.stufeErreicht;
+    else if (stufe > (daten.stufeErreicht || 1)) daten.stufeErreicht = stufe;
     return stufe;
   }
   function faelligeBegriffe() {

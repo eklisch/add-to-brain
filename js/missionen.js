@@ -12,7 +12,8 @@
 
   // Die Shops – weitere Shops einfach hier ergänzen und bei den Missionen mit shop: '…' zuordnen
   const SHOPS = [
-    { id: 'retro', name: 'Retro-Shop', text: 'Ein kleiner Onlineshop für Plattenspieler, Kameras, Spielkonsolen und Vintage-Mode.' }
+    { id: 'retro', name: 'Retro-Shop', text: 'Ein kleiner Onlineshop für Plattenspieler, Kameras, Spielkonsolen und Vintage-Mode.' },
+    { id: 'kaffee', name: 'Kaffeerösterei Morgenrot', text: 'Eine kleine Rösterei mit Onlineshop. Sie wächst gerade und braucht dich im Einkauf, in der Buchhaltung und bei neuen Projekten.' }
   ];
 
   // Jede Mission: kurze Geschichte und vier Entscheidungen mit Erklärung
@@ -128,8 +129,123 @@
         { frage: 'Woran merkst du, ob die Änderungen wirken?', antworten: ['An mehr Besuchen über Suchmaschinen in den nächsten Wochen', 'Am nächsten Morgen ist alles anders', 'Gar nicht'], richtig: 0,
           erklaerung: 'SEO braucht Zeit. In der Webanalyse sieht man nach einigen Wochen, ob mehr Besucher über die Suche kommen.' }
       ]
+    },
+    {
+      id: 'k1', shop: 'kaffee', titel: 'Neue Bohnen für den Winter', thema: 'Beschaffung',
+      geschichte: 'Die Rösterei will eine neue Wintersorte anbieten. Chefin Selin bittet dich, einen Lieferanten für Rohkaffee zu finden und die erste Bestellung vorzubereiten.',
+      schritte: [
+        { frage: 'Zwei Lieferanten haben geantwortet. A: 8,00 Euro pro Kilo, 10 Prozent Rabatt, Fracht frei. B: 7,50 Euro pro Kilo, kein Rabatt, Fracht 0,40 Euro pro Kilo. Wer ist günstiger?', antworten: ['B, weil der Listenpreis niedriger ist', 'A, denn nach Rabatt kostet das Kilo 7,20 Euro, bei B mit Fracht 7,90 Euro', 'Beide sind gleich teuer'], richtig: 1,
+          erklaerung: 'Vergleichen muss man die Bezugspreise: Listenpreis minus Rabatt plus Bezugskosten. Der niedrigere Listenpreis allein sagt wenig.' },
+        { frage: 'Lieferant A ist günstiger, liefert aber laut Bewertungen oft verspätet. Was tust du?', antworten: ['Egal, Hauptsache billig', 'Auch Qualität und Zuverlässigkeit bewerten, zum Beispiel mit einer Entscheidungsbewertungstabelle', 'Einfach beide nehmen, ohne nachzudenken'], richtig: 1,
+          erklaerung: 'Neben dem Preis zählen Lieferzeit, Zuverlässigkeit, Qualität und Service. Eine gewichtete Tabelle macht die Entscheidung nachvollziehbar.' },
+        { frage: 'Pro Tag werden 6 Kilo der Sorte geröstet, die Lieferzeit beträgt 10 Tage, als Reserve sollen 20 Kilo bleiben. Wann bestellst du nach?', antworten: ['Bei 60 Kilo', 'Bei 80 Kilo', 'Erst wenn das Lager leer ist'], richtig: 1,
+          erklaerung: 'Meldebestand: 6 mal 10 ergibt 60, plus 20 Kilo Mindestbestand ergibt 80 Kilo.' },
+        { frage: 'Die Lieferung kommt. Ein Sack ist aufgerissen. Was machst du zuerst?', antworten: ['Den Sack einfach wegwerfen', 'Den Schaden vom Fahrer bestätigen lassen, fotografieren und dem Lieferanten sofort melden', 'Nichts sagen, das fällt schon nicht auf'], richtig: 1,
+          erklaerung: 'Sichtbare Schäden werden direkt bei der Annahme dokumentiert. Zwischen Firmen müssen Mängel unverzüglich gemeldet werden.' }
+      ]
+    },
+    {
+      id: 'k2', shop: 'kaffee', titel: 'Die Bohnen kommen nicht', thema: 'Lieferverzug',
+      geschichte: 'Mit dem Lieferanten war fest vereinbart: Lieferung am 1. Oktober. Heute ist der 8. Oktober, und die Bohnen sind immer noch nicht da. Die ersten Kunden haben die Wintersorte schon vorbestellt.',
+      schritte: [
+        { frage: 'Ist der Lieferant schon in Verzug, obwohl du ihn nicht gemahnt hast?', antworten: ['Nein, ohne Mahnung nie', 'Ja, bei einem fest vereinbarten Liefertermin ist keine Mahnung nötig', 'Nur, wenn er es selbst zugibt'], richtig: 1,
+          erklaerung: 'Ist der Liefertermin nach dem Kalender genau bestimmt, kommt der Lieferant mit Ablauf dieses Tages in Verzug.' },
+        { frage: 'Was schreibst du dem Lieferanten?', antworten: ['Eine wütende Nachricht ohne konkrete Angaben', 'Eine sachliche E-Mail mit Bestellnummer, vereinbartem Termin und einer Nachfrist', 'Gar nichts, irgendwann kommt es schon'], richtig: 1,
+          erklaerung: 'Sachlich, konkret und mit Frist. Die Nachfrist ist wichtig, falls du später vom Vertrag zurücktreten möchtest.' },
+        { frage: 'Wie informierst du die Kunden, die vorbestellt haben?', antworten: ['Gar nicht, sonst stornieren sie', 'Ehrlich per E-Mail: Verzögerung, neuer voraussichtlicher Termin und die Möglichkeit zu stornieren', 'Ihnen einfach eine andere Sorte schicken'], richtig: 1,
+          erklaerung: 'Offene Kommunikation erhält das Vertrauen. Eine andere Ware ohne Absprache zu schicken wäre eine Falschlieferung.' },
+        { frage: 'Auch nach der Nachfrist liefert der Lieferant nicht. Was ist jetzt möglich?', antworten: ['Nichts, man muss weiter warten', 'Vom Vertrag zurücktreten und bei einem anderen Lieferanten kaufen', 'Dem Lieferanten eine Mahnung über die eigene Rechnung schicken'], richtig: 1,
+          erklaerung: 'Nach Ablauf einer angemessenen Nachfrist darf der Käufer zurücktreten. Unter Umständen kann er auch Schadensersatz verlangen. Im Zweifel fragt man im Betrieb oder bei einer Rechtsberatung nach.' }
+      ]
+    },
+    {
+      id: 'k3', shop: 'kaffee', titel: 'Das Café zahlt nicht', thema: 'Zahlungsverzug und Mahnwesen',
+      geschichte: 'Ein Café aus Köln bezieht jeden Monat Kaffee auf Rechnung. Die Rechnung über 640 Euro vom August ist seit sechs Wochen überfällig.',
+      schritte: [
+        { frage: 'Womit fängst du an?', antworten: ['Sofort einen Mahnbescheid beim Gericht beantragen', 'Eine freundliche Zahlungserinnerung mit Rechnungsnummer und neuer Frist', 'Die Lieferungen ohne Nachricht einstellen'], richtig: 1,
+          erklaerung: 'Oft wurde eine Rechnung einfach übersehen. Eine freundliche Erinnerung erhält die Kundenbeziehung.' },
+        { frage: 'Auch nach der Erinnerung kommt kein Geld. Was folgt als Nächstes?', antworten: ['Eine Mahnung mit klarer Zahlungsfrist', 'Eine öffentliche Beschwerde in den sozialen Medien', 'Die Forderung vergessen'], richtig: 0,
+          erklaerung: 'Das Mahnwesen wird Schritt für Schritt deutlicher: Erinnerung, Mahnung, letzte Mahnung. Öffentliche Bloßstellung ist unprofessionell und kann rechtlich Ärger bringen.' },
+        { frage: 'Der Inhaber ruft an: Das Café hat gerade Geldprobleme, er möchte in zwei Raten zahlen. Was tust du?', antworten: ['Sofort ablehnen', 'Mit der Chefin sprechen und eine Ratenzahlung mit festen Terminen schriftlich vereinbaren', 'Am Telefon zusagen und nichts aufschreiben'], richtig: 1,
+          erklaerung: 'Eine Ratenzahlung kann sinnvoll sein, damit das Geld überhaupt kommt. Wichtig ist eine schriftliche Vereinbarung und die Freigabe durch die Chefin.' },
+        { frage: 'Warum sollte man offene Rechnungen nicht jahrelang liegen lassen?', antworten: ['Weil Forderungen verjähren, in der Regel nach drei Jahren ab Jahresende', 'Weil das Finanzamt es verbietet', 'Das ist egal, Geld verfällt nie'], richtig: 0,
+          erklaerung: 'Nach Ablauf der Verjährung kann die Forderung nicht mehr durchgesetzt werden, wenn der Kunde sich darauf beruft.' }
+      ]
+    },
+    {
+      id: 'k4', shop: 'kaffee', titel: 'Eine Hotelkette fragt an', thema: 'Verträge im B2B',
+      geschichte: 'Eine kleine Hotelkette möchte für ihre fünf Häuser Kaffee kaufen. Sie fragt per E-Mail, zu welchen Bedingungen ihr 50 Kilo im Monat liefern könnt.',
+      schritte: [
+        { frage: 'Ist die Hotelkette durch ihre Anfrage schon zum Kauf verpflichtet?', antworten: ['Ja, Anfrage ist Anfrage', 'Nein, eine Anfrage ist immer unverbindlich', 'Nur, wenn sie per Post kommt'], richtig: 1,
+          erklaerung: 'Mit einer Anfrage erkundigt sich jemand nur nach den Bedingungen. Verpflichtet ist dadurch niemand.' },
+        { frage: 'Was gehört in dein Angebot?', antworten: ['Nur der Preis', 'Preis, Menge, Lieferzeit, Lieferbedingungen, Zahlungsbedingungen und wie lange das Angebot gilt', 'Ein schönes Foto, sonst nichts'], richtig: 1,
+          erklaerung: 'Ein gutes Angebot ist vollständig. Unklarheiten führen später zu Streit.' },
+        { frage: 'Die Kaffeepreise schwanken stark. Wie schützt du die Rösterei?', antworten: ['Gar nicht', 'Das Angebot befristen, zum Beispiel „gültig bis 30. November“', 'Den Preis im Angebot weglassen'], richtig: 1,
+          erklaerung: 'Ein Angebot bindet den Verkäufer. Mit einer Befristung oder einer Klausel wie „freibleibend“ begrenzt man das Risiko.' },
+        { frage: 'Das Hotel bestellt, möchte aber 3 Prozent Skonto statt der angebotenen 2 Prozent. Ist der Vertrag damit geschlossen?', antworten: ['Ja, die Bestellung zählt immer', 'Nein, die Bestellung weicht ab und gilt als neues Angebot. Erst eure Auftragsbestätigung schließt den Vertrag', 'Ja, aber nur zu den alten Bedingungen'], richtig: 1,
+          erklaerung: 'Eine Bestellung mit geänderten Bedingungen ist ein neues Angebot. Der Vertrag kommt erst zustande, wenn ihr es annehmt, zum Beispiel mit einer Auftragsbestätigung.' }
+      ]
+    },
+    {
+      id: 'k5', shop: 'kaffee', titel: 'Shop oder Marktplatz?', thema: 'Vertriebskanäle',
+      geschichte: 'Bisher verkauft die Rösterei nur im eigenen Shop. Selin überlegt, zusätzlich auf einem großen Marktplatz zu verkaufen. Du sollst die Entscheidung vorbereiten.',
+      schritte: [
+        { frage: 'Was spricht für den Marktplatz?', antworten: ['Er kostet nichts', 'Große Reichweite und viele Kunden, die dort ohnehin suchen', 'Man bekommt alle Kundendaten für den Newsletter'], richtig: 1,
+          erklaerung: 'Marktplätze bringen Reichweite und Vertrauen. Dafür fallen Gebühren an und Kundendaten bleiben weitgehend bei der Plattform.' },
+        { frage: 'Ein Kilo Kaffee kostet 28 Euro netto, die variablen Kosten liegen bei 19 Euro. Der Marktplatz nimmt 15 Prozent Provision vom Verkaufspreis. Wie viel bleibt pro Kilo als Deckungsbeitrag?', antworten: ['9 Euro', '4,80 Euro', '13,20 Euro'], richtig: 1,
+          erklaerung: '15 Prozent von 28 Euro sind 4,20 Euro. 28 minus 19 minus 4,20 ergibt 4,80 Euro. Im eigenen Shop wären es 9 Euro.' },
+        { frage: 'Welche Sorten würdest du zuerst auf den Marktplatz stellen?', antworten: ['Alle Sorten gleichzeitig', 'Ein paar beliebte Sorten mit gutem Deckungsbeitrag, um den Kanal zu testen', 'Nur die Sorten, die sonst keiner kauft'], richtig: 1,
+          erklaerung: 'Klein anfangen und messen ist klüger. Ladenhüter verkaufen sich auf dem Marktplatz meist auch nicht.' },
+        { frage: 'Ein Influencer bietet an, euren Kaffee in seinem Instagram-Shop zu verkaufen. Wie heißt dieser Kanal?', antworten: ['Social Commerce', 'Dropshipping', 'Affiliate-Rechnung'], richtig: 0,
+          erklaerung: 'Verkauf direkt in sozialen Netzwerken heißt Social Commerce. Gut für junge Zielgruppen, aber abhängig von der Plattform.' }
+      ]
+    },
+    {
+      id: 'k6', shop: 'kaffee', titel: 'Warum kauft keiner die Probierbox?', thema: 'Nutzerverhalten auswerten',
+      geschichte: 'Die neue Probierbox hat viele Besucher, aber kaum Bestellungen. Selin gibt dir Zugang zur Webanalyse und fragt: Woran liegt es?',
+      schritte: [
+        { frage: 'Der Funnel zeigt: 1.000 Besucher auf der Produktseite, 300 legen die Box in den Warenkorb, 40 bestellen. Wo steigen die meisten aus?', antworten: ['Vor der Produktseite', 'Zwischen Warenkorb und fertiger Bestellung', 'Nach der Bestellung'], richtig: 1,
+          erklaerung: 'Von 300 im Warenkorb bestellen nur 40. Der größte Verlust passiert also im Kassenbereich.' },
+        { frage: 'Was könnte im Kassenbereich abschrecken?', antworten: ['Die Farbe des Logos', 'Überraschend hohe Versandkosten oder eine fehlende Lieblings-Zahlart', 'Zu viele Produktfotos'], richtig: 1,
+          erklaerung: 'Typische Gründe für Abbrüche an der Kasse sind unerwartete Kosten, fehlende Zahlarten und ein Zwang zum Kundenkonto.' },
+        { frage: 'Du willst prüfen, ob der Hinweis „Versandkostenfrei“ direkt auf der Produktseite hilft. Wie gehst du vor?', antworten: ['Einfach einbauen und hoffen', 'Einen A/B-Test machen: Die Hälfte sieht den Hinweis, die andere nicht', 'Gleichzeitig Preis, Bilder und Text ändern'], richtig: 1,
+          erklaerung: 'Beim A/B-Test wird nur eine Sache verändert. So sieht man klar, ob genau diese Änderung wirkt.' },
+        { frage: 'Nach zwei Wochen bestellen mit dem Hinweis 7 Prozent der Warenkorb-Besucher, ohne nur 4 Prozent. Und jetzt?', antworten: ['Den Hinweis für alle übernehmen und die nächste Schwachstelle suchen', 'Den Test löschen und alles beim Alten lassen', 'Den Hinweis wieder entfernen'], richtig: 0,
+          erklaerung: 'Die Kennzahl hat sich deutlich verbessert. Die neue Version wird übernommen, und der Verbesserungskreislauf beginnt von vorne.' }
+      ]
+    },
+    {
+      id: 'k7', shop: 'kaffee', titel: 'Lohnt sich die Espresso-Sorte?', thema: 'Kosten und Deckungsbeitrag',
+      geschichte: 'Selin möchte wissen, ob sich eine neue Espresso-Sorte lohnt. Sie gibt dir die Zahlen und bittet um eine kurze Einschätzung.',
+      schritte: [
+        { frage: 'Welche dieser Kosten sind fix?', antworten: ['Rohkaffee pro Kilo', 'Die Leasingrate für die Röstmaschine', 'Die Verpackung jeder Tüte'], richtig: 1,
+          erklaerung: 'Die Leasingrate fällt jeden Monat gleich an. Rohkaffee und Verpackung steigen mit jeder verkauften Tüte.' },
+        { frage: 'Eine Tüte kostet netto 12 Euro. Rohkaffee, Tüte und Versand kosten zusammen 7 Euro. Wie hoch ist der Deckungsbeitrag?', antworten: ['19 Euro', '5 Euro', '7 Euro'], richtig: 1,
+          erklaerung: '12 Euro minus 7 Euro variable Kosten ergibt 5 Euro Deckungsbeitrag pro Tüte.' },
+        { frage: 'Für die Sorte fallen zusätzlich 1.500 Euro fixe Kosten im Monat an, vor allem Werbung. Wie viele Tüten müssen verkauft werden, um die Gewinnschwelle zu erreichen?', antworten: ['150 Tüten', '300 Tüten', '1.500 Tüten'], richtig: 1,
+          erklaerung: '1.500 Euro geteilt durch 5 Euro Deckungsbeitrag ergibt 300 Tüten. Erst ab der 301. Tüte entsteht Gewinn.' },
+        { frage: 'Die Sorte verkauft sich gut, aber das Konto ist am Monatsende trotzdem fast leer. Woran kann das liegen?', antworten: ['Gewinn und Liquidität sind dasselbe, also an nichts', 'Viel Geld steckt im Lager oder in offenen Kundenrechnungen und fehlt deshalb gerade auf dem Konto', 'An der Mehrwertsteuer auf Espresso'], richtig: 1,
+          erklaerung: 'Ein Unternehmen kann Gewinn machen und trotzdem knapp bei Kasse sein. Deshalb plant man die Liquidität voraus.' }
+      ]
+    },
+    {
+      id: 'k8', shop: 'kaffee', titel: 'Das Adventskalender-Projekt', thema: 'Projektarbeit',
+      geschichte: 'Die Rösterei will zum ersten Mal einen Kaffee-Adventskalender verkaufen. Selin macht dich zur Projektleiterin. Bis zum 15. November muss alles fertig sein.',
+      schritte: [
+        { frage: 'Welches Projektziel ist am besten formuliert?', antworten: ['Ein schöner Adventskalender', 'Bis zum 15. November ist der Kalender im Shop, bis Weihnachten werden 400 Stück verkauft', 'Mehr Umsatz im Winter'], richtig: 1,
+          erklaerung: 'Ein SMARTes Ziel ist konkret, messbar und hat einen Termin. Nur so kann man am Ende prüfen, ob es erreicht wurde.' },
+        { frage: 'Wie behältst du den Überblick über die vielen Aufgaben im Team?', antworten: ['Alles im Kopf behalten', 'Ein Kanban-Board mit den Spalten „Zu erledigen“, „In Arbeit“ und „Erledigt“', 'Jeden Tag alle per Anruf fragen'], richtig: 1,
+          erklaerung: 'Auf dem Kanban-Board sieht jeder sofort, wer woran arbeitet und was noch fehlt.' },
+        { frage: 'Welcher Termin eignet sich als Meilenstein?', antworten: ['Jeden Morgen um 9 Uhr', '„Alle 24 Sorten sind festgelegt und beim Lieferanten bestellt“ bis zum 1. Oktober', 'Irgendwann im Herbst'], richtig: 1,
+          erklaerung: 'Ein Meilenstein ist ein wichtiges, überprüfbares Zwischenziel mit festem Datum.' },
+        { frage: 'Nach Weihnachten ist das Projekt vorbei. Was gehört noch dazu?', antworten: ['Nichts, Hauptsache verkauft', 'Ein Projektbericht mit Ergebnis, Zahlen und Lessons Learned für das nächste Jahr', 'Alle Unterlagen löschen'], richtig: 1,
+          erklaerung: 'Zum Abschluss gehört eine ehrliche Auswertung. Was gut lief und was schiefging, macht das nächste Projekt besser.' }
+      ]
     }
   ];
+
+  // Antworten in zufälliger Reihenfolge zeigen, damit die richtige nicht immer an derselben Stelle steht
+  const mischen = (liste) => { const a = liste.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   let aktuell = null;   // Index der Mission
   let schritt = 0;
@@ -182,13 +298,14 @@
       const kopf = el('div', null, 'rs-shop');
       kopf.appendChild(el('h3', shop.name + ': Missionen'));
       box.appendChild(kopf);
-      MISSIONEN.forEach((m, i) => { if (m.shop === gewaehlt) karteFuer(m, i); });
+      let nr = 0;
+      MISSIONEN.forEach((m, i) => { if (m.shop === gewaehlt) karteFuer(m, i, ++nr); });
     }
-    function karteFuer(m, i) {
+    function karteFuer(m, i, nr) {
       const e = s[m.id];
       const karte = el('div', null, 'card modulkarte');
       const body = el('div', null, 'card-body');
-      const titel = el('h4', (i + 1) + '. ' + m.titel, 'card-title');
+      const titel = el('h4', nr + '. ' + m.titel, 'card-title');
       body.appendChild(titel);
       body.appendChild(el('p', m.thema, 'modulinfo'));
       if (e && e.geschafft) body.appendChild(el('p', sterne(e.sterne) + '  bestes Ergebnis', 'rs-sterne'));
@@ -220,7 +337,7 @@
     $('rs-liste').hidden = true;
     $('rs-mission').hidden = false;
     $('rs-titel').textContent = m.titel;
-    $('rs-thema').textContent = ((SHOPS.find((x) => x.id === m.shop) || {}).name || 'Praxis') + ' · Mission ' + (i + 1) + ' · ' + m.thema;
+    $('rs-thema').textContent = ((SHOPS.find((x) => x.id === m.shop) || {}).name || 'Praxis') + ' · Mission ' + (MISSIONEN.filter((x) => x.shop === m.shop).indexOf(m) + 1) + ' · ' + m.thema;
     $('rs-geschichte').textContent = m.geschichte;
     $('rs-ende').hidden = true;
     $('rs-aufgabe').hidden = false;
@@ -238,13 +355,14 @@
     $('rs-weiter').hidden = true;
     const box = $('rs-antworten');
     box.textContent = '';
-    st.antworten.forEach((a, ai) => {
+    mischen(st.antworten.map((a, ai) => [a, ai])).forEach(([a, ai]) => {
       const b = el('button', a); b.type = 'button';
+      if (ai === st.richtig) b.dataset.richtig = '1';
       b.addEventListener('click', () => {
         box.querySelectorAll('button').forEach((x) => { x.disabled = true; });
         const ok = ai === st.richtig;
         b.classList.add(ok ? 'btn-success' : 'btn-danger');
-        if (!ok) box.children[st.richtig].classList.add('btn-success');
+        if (!ok) box.querySelector('[data-richtig]').classList.add('btn-success');
         if (ok) richtigBeimErsten++;
         $('rs-rueck').textContent = (ok ? 'Richtig! ' : 'Nicht ganz. ') + st.erklaerung;
         $('rs-weiter').textContent = schritt < m.schritte.length - 1 ? 'Weiter' : 'Mission abschließen';

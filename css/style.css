@@ -460,3 +460,14 @@ textarea { max-height: 50vh; overflow-y: auto; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Kompass: Themenbereiche der Umschulung */
+.kompass-liste { list-style: none; padding: 0; margin: 8px 0 0; }
+.kompass-liste li { padding: 5px 0; font-size: 15px; border-top: 1px dashed var(--grau, #7a766d); line-height: 1.35; text-indent: 0; }
+.kompass-liste li::before { content: none; }
+.kompass-liste strong { font-weight: 700; }
+.kompass-wo { display: block; color: var(--grau, #7a766d); font-size: 14px; margin-top: 1px; }
+.kompass-haken { color: var(--richtig, #2d7a3e); font-weight: 700; margin-left: 6px; }
+.kompass { -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.kompass-liste li { break-inside: avoid; }
+@media (max-width: 767px) { .kompass { break-inside: auto; } }

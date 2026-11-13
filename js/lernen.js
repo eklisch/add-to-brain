@@ -57,6 +57,38 @@
       karte.appendChild(body);
       box.appendChild(karte);
     });
+    box.appendChild(kompass());
+  }
+
+  // ---------- Kompass: die Themenbereiche der Umschulung und wo sie hier vorkommen ----------
+  const THEMENBEREICHE = [
+    ['Onlinesortimente gestalten und die Beschaffung unterstützen', [2, 11], 'Rechnen: Lager und Kosten'],
+    ['Verträge im Onlinevertrieb anbahnen und bearbeiten', [3, 12], 'Praxis: Eine Hotelkette fragt an'],
+    ['Wertströme erfassen, auswerten und beurteilen', [9, 13], 'Rechnen: Kalkulation'],
+    ['Rückabwicklungsprozesse und Leistungsstörungen bearbeiten', [4, 7, 12], 'Praxis: Das Café zahlt nicht'],
+    ['Servicekommunikation kundenorientiert gestalten', [8], 'Gespräch üben'],
+    ['Online-Marketing-Maßnahmen umsetzen und bewerten', [5], 'Rechnen: Online-Werbung'],
+    ['Onlinevertriebskanäle auswählen', [1, 14], 'Praxis: Shop oder Marktplatz?'],
+    ['Kennzahlengestützte Optimierung des Onlinevertriebs', [6, 10], 'Rechnen: Shop-Kennzahlen'],
+    ['Berufsbezogene Projektarbeit', [15], 'Praxis: Das Adventskalender-Projekt']
+  ];
+  function kompass() {
+    const karte = el('div', null, 'card modulkarte kompass');
+    const body = el('div', null, 'card-body');
+    body.appendChild(el('h4', 'Kompass: deine Umschulung', 'card-title'));
+    body.appendChild(el('p', 'Die neun Themenbereiche der Umschulung und wo du sie hier übst.', 'lesbar leise'));
+    const ul = el('ul', null, 'kompass-liste');
+    THEMENBEREICHE.forEach(([thema, nummern, extra]) => {
+      const li = el('li');
+      const fertig = nummern.every((n) => { const m = window.MODULE[n - 1]; return m && fortschritt()[m.id] && fortschritt()[m.id].bestanden; });
+      li.appendChild(el('strong', thema));
+      if (fertig) li.appendChild(el('span', '✓', 'kompass-haken'));
+      li.appendChild(el('span', 'Modul ' + nummern.join(', ') + ' · ' + extra, 'kompass-wo'));
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+    karte.appendChild(body);
+    return karte;
   }
 
   // ---------- Modul lesen ----------
@@ -191,6 +223,8 @@
   window.addEventListener('hashchange', () => stoppeVorlesen(true));
 
   // ---------- Mini-Quiz ----------
+  // Antworten in zufälliger Reihenfolge zeigen, damit die richtige nicht immer an derselben Stelle steht
+  const mischen = (liste) => { const a = liste.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   $('ln-zum-quiz').addEventListener('click', () => {
     stoppeVorlesen(true);
     const m = window.MODULE[aktuellesModul];
@@ -202,14 +236,15 @@
       fs.appendChild(el('p', (qi + 1) + '. ' + q.frage, 'qz-frage lesbar'));
       const antworten = el('div', null, 'qz-antworten');
       const rueck = el('p', '', 'lesbar');
-      q.antworten.forEach((a, ai) => {
+      mischen(q.antworten.map((a, ai) => [a, ai])).forEach(([a, ai]) => {
         const b = el('button', a); b.type = 'button';
+        if (ai === q.richtig) b.dataset.richtig = '1';
         b.addEventListener('click', () => {
           antworten.querySelectorAll('button').forEach((x) => { if (x !== b) x.disabled = true; });
           b.style.pointerEvents = 'none';
           const ok = ai === q.richtig;
           b.classList.add(ok ? 'btn-success' : 'btn-danger');
-          if (!ok) antworten.children[q.richtig].classList.add('btn-success');
+          if (!ok) antworten.querySelector('[data-richtig]').classList.add('btn-success');
           rueck.textContent = (ok ? 'Richtig! ' : 'Leider falsch. ') + q.erklaerung;
           beantwortet++; if (ok) richtige++;
           if (beantwortet === m.quiz.length) quizFertig(m, richtige);

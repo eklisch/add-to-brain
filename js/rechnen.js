@@ -118,6 +118,27 @@
           return { text: 'Ihr plant ' + eur(kost) + ' Werbekosten und wollt einen ROAS von ' + ziel + ' erreichen. Wie viel Umsatz muss die Werbung bringen?', loesung: u, einheit: '€',
             weg: [eur(kost) + ' × ' + ziel + ' = ' + eur(u), 'ROAS ' + ziel + ' heißt: Jeder Werbe-Euro soll ' + eur(ziel) + ' Umsatz bringen.'] }; }
       ]
+    },
+    lager: {
+      titel: 'Lager und Kosten',
+      formeln: ['Meldebestand = Tagesverbrauch × Lieferzeit in Tagen + Mindestbestand', 'Durchschnittlicher Lagerbestand = (Anfangsbestand + Endbestand) ÷ 2', 'Lagerumschlagshäufigkeit = Wareneinsatz ÷ durchschnittlicher Lagerbestand', 'Deckungsbeitrag pro Stück = Nettoverkaufspreis − variable Kosten pro Stück', 'Gewinnschwelle (Stück) = fixe Kosten ÷ Deckungsbeitrag pro Stück'],
+      aufgaben: [
+        () => { const tv = zufall(4, 40), lz = zufall(2, 10), mb = zufall(2, 12) * 10, m = tv * lz + mb;
+          return { text: 'Von einem Artikel werden täglich ' + tv + ' Stück verkauft. Die Lieferzeit beträgt ' + lz + ' Tage, der Mindestbestand ' + mb + ' Stück. Wie hoch ist der Meldebestand?', loesung: m, einheit: '',
+            weg: [tv + ' × ' + lz + ' = ' + (tv * lz), (tv * lz) + ' + ' + mb + ' = ' + m + ' Stück', 'Sobald nur noch ' + m + ' Stück im Lager sind, wird nachbestellt.'] }; },
+        () => { const a = zufall(10, 80) * 100, e = zufall(10, 80) * 100, d = (a + e) / 2;
+          return { text: 'Zu Jahresbeginn lag Ware im Wert von ' + eur(a) + ' im Lager, am Jahresende im Wert von ' + eur(e) + '. Wie hoch ist der durchschnittliche Lagerbestand?', loesung: d, einheit: '€',
+            weg: ['(' + eur(a) + ' + ' + eur(e) + ') ÷ 2 = ' + eur(d)] }; },
+        () => { const d = zufall(4, 30) * 1000, u = wahl([4, 5, 6, 8, 10, 12]), w = d * u;
+          return { text: 'Der Wareneinsatz eines Jahres beträgt ' + eur(w) + ', der durchschnittliche Lagerbestand ' + eur(d) + '. Wie oft wurde das Lager umgeschlagen?', loesung: u, einheit: '',
+            weg: [eur(w) + ' ÷ ' + eur(d) + ' = ' + u, 'Die Ware wurde also ' + u + '-mal im Jahr komplett verkauft und ersetzt. Im Schnitt lag sie ' + zahl(rund(360 / u), 0) + ' Tage im Lager.'] }; },
+        () => { const vk = preis(15, 90), ek = rund(vk * wahl([0.4, 0.5, 0.55, 0.6])), vers = wahl([3.5, 4.2, 4.9, 5.5]), db = rund(vk - ek - vers);
+          return { text: 'Ihr verkauft ' + wahl(produkte) + ' für ' + eur(vk) + ' netto. Einkauf: ' + eur(ek) + ', Verpackung und Versand: ' + eur(vers) + '. Wie hoch ist der Deckungsbeitrag pro Stück?', loesung: db, einheit: '€',
+            weg: [eur(vk) + ' − ' + eur(ek) + ' − ' + eur(vers) + ' = ' + eur(db), 'Mit diesem Betrag trägt jedes Stück zur Deckung der fixen Kosten bei.'] }; },
+        () => { const db = zufall(3, 25), st = zufall(5, 60) * 10, fix = db * st;
+          return { text: 'Euer Shop hat im Monat ' + eur(fix) + ' fixe Kosten. Jedes verkaufte Stück bringt einen Deckungsbeitrag von ' + eur(db) + '. Wie viele Stück müsst ihr verkaufen, um die Gewinnschwelle zu erreichen?', loesung: st, einheit: '',
+            weg: [eur(fix) + ' ÷ ' + eur(db) + ' = ' + zahl(st) + ' Stück', 'Ab dem nächsten Stück macht ihr Gewinn.'] }; }
+      ]
     }
   };
 

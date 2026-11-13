@@ -361,5 +361,251 @@ window.MODULE = [
       { frage: 'Was ist Skonto?', antworten: ['Ein Nachlass für große Mengen', 'Ein Nachlass für schnelles Bezahlen', 'Eine Gebühr für späte Zahlung', 'Ein anderer Name für Umsatzsteuer'], richtig: 1, erklaerung: 'Skonto gibt es für Zahlung innerhalb einer kurzen Frist, zum Beispiel 2 Prozent innerhalb von 10 Tagen.' },
       { frage: 'Eine Rechnung über 800 Euro wird mit 2 Prozent Skonto bezahlt. Wie viel wird überwiesen?', antworten: ['784 Euro', '798 Euro', '760 Euro', '816 Euro'], richtig: 0, erklaerung: '2 Prozent von 800 Euro sind 16 Euro. 800 minus 16 ergibt 784 Euro.' }
     ]
+  },
+  {
+    id: 'm10',
+    titel: 'Shop gestalten und Nutzerverhalten auswerten',
+    kurz: 'Shopsystem, Bedienbarkeit, Webanalyse und wie man mit Kennzahlen einen Shop Schritt für Schritt verbessert.',
+    minuten: 11,
+    bloecke: [
+      { h: 'Der Shop als Verkaufsraum' },
+      { p: 'Ein Onlineshop ist wie ein Laden, nur ohne Verkäuferin, die den Weg zeigt. Alles muss sich von selbst erklären. Kauffrauen und Kaufleute im E-Commerce programmieren den Shop meistens nicht selbst, aber sie **pflegen** ihn, planen neue Seiten und sagen der Technik, was verbessert werden soll.' },
+      { p: 'Grundlage ist ein **Shopsystem**, zum Beispiel Shopware, Shopify, WooCommerce oder JTL. Das **Frontend** ist alles, was Kundinnen und Kunden sehen. Im **Backend** arbeitet das Team: Artikel anlegen, Preise ändern, Bestellungen bearbeiten, Gutscheine einrichten.' },
+
+      { h: 'Was einen guten Shop ausmacht' },
+      { liste: [
+        '**Klare Navigation:** Kategorien mit verständlichen Namen, höchstens drei Ebenen tief.',
+        '**Gute Suche und Filter:** Wer weiß, was er will, tippt es ein. Filter nach Größe, Farbe oder Preis sparen Zeit.',
+        '**Mobile zuerst:** Die meisten Besuche kommen vom Handy. Knöpfe müssen groß genug sein, Texte gut lesbar.',
+        '**Schnelle Ladezeit:** Jede Sekunde Wartezeit kostet Käufe. Große Bilder werden deshalb verkleinert.',
+        '**Vertrauen:** Echte Bewertungen, Gütesiegel, klare Versandkosten und ein gut erreichbarer Kundenservice.',
+        '**Barrierefreiheit:** Der Shop soll auch mit Screenreader, Tastatur oder großer Schrift bedienbar sein. Seit Juni 2025 ist das für viele Onlineshops in Deutschland gesetzlich vorgeschrieben, sehr kleine Unternehmen sind ausgenommen.'
+      ] },
+
+      { h: 'Webanalyse: Was machen die Besucher?' },
+      { p: 'Mit einem **Webanalyse-Programm** sieht man, wie Menschen den Shop nutzen. Wichtig: Bevor solche Daten gesammelt werden, muss die Person über das **Cookie-Banner** zustimmen. Typische Werte sind:' },
+      { liste: [
+        '**Sitzungen:** Wie oft der Shop besucht wurde.',
+        '**Traffic-Quellen:** Woher die Besucher kommen, zum Beispiel aus der Suchmaschine, aus Anzeigen, aus Social Media oder aus dem Newsletter.',
+        '**Absprungrate:** Wie viele die Seite verlassen, ohne etwas anzuklicken.',
+        '**Verweildauer:** Wie lange jemand bleibt.',
+        '**Funnel**, auf Deutsch Trichter: Wie viele von der Produktseite in den Warenkorb, zur Kasse und bis zur fertigen Bestellung kommen. An der Stelle, an der besonders viele aussteigen, lohnt sich die Suche nach dem Grund.'
+      ] },
+      { p: 'Weitere Werkzeuge sind die **Heatmap**, die farbig zeigt, wohin am meisten geklickt wird, und die **Customer Journey**. Das ist der ganze Weg einer Kundin: von der ersten Anzeige über den Vergleich bis zum Kauf und zur Bewertung danach.' },
+
+      { h: 'Mit Kennzahlen steuern' },
+      { p: 'Kennzahlen sind kein Selbstzweck. Sie helfen, gezielt zu verbessern. Bewährt hat sich ein Kreislauf in vier Schritten:' },
+      { liste: [
+        '**Beobachten:** Eine Kennzahl fällt auf, zum Beispiel brechen viele Kunden an der Kasse ab.',
+        '**Vermuten:** Woran könnte es liegen? Vielleicht fehlt die beliebte Zahlart oder die Versandkosten erscheinen zu spät.',
+        '**Testen:** Mit einem **A/B-Test** sehen die Hälfte der Besucher die alte Kasse und die andere Hälfte die neue.',
+        '**Auswerten:** Hat sich die Conversion Rate verbessert, wird die neue Version für alle übernommen. Dann beginnt der Kreislauf von vorne.'
+      ] },
+      { p: 'Wichtig ist, immer nur eine Sache auf einmal zu ändern. Sonst weiß man hinterher nicht, was gewirkt hat.' }
+    ],
+    quiz: [
+      { frage: 'Was zeigt ein Funnel in der Webanalyse?', antworten: ['Wie viele Artikel im Lager liegen', 'Wie viele Besucher an jedem Schritt bis zur Bestellung übrig bleiben', 'Wie hoch die Werbekosten sind', 'Welche Farbe der Shop hat'], richtig: 1, erklaerung: 'Der Funnel, also Trichter, zeigt den Weg von der Produktseite bis zur Bestellung. So sieht man, wo besonders viele aussteigen.' },
+      { frage: 'Was braucht ein Shop, bevor er Besucher mit einem Analyse-Programm auswerten darf?', antworten: ['Nichts, das ist immer erlaubt', 'Die Einwilligung der Besucher, meist über das Cookie-Banner', 'Eine Genehmigung vom Finanzamt', 'Einen Eintrag im Impressum'], richtig: 1, erklaerung: 'Für Analyse-Cookies und Tracking muss die Person vorher zustimmen. Das passiert in der Regel über das Cookie-Banner.' },
+      { frage: 'Warum ändert man bei einem A/B-Test nur eine Sache?', antworten: ['Weil mehr technisch nicht geht', 'Damit man weiß, welche Änderung gewirkt hat', 'Weil es billiger ist', 'Das ist egal, man kann alles gleichzeitig ändern'], richtig: 1, erklaerung: 'Ändert man mehrere Dinge gleichzeitig, weiß man nicht, welche davon das Ergebnis verbessert oder verschlechtert hat.' }
+    ]
+  },
+  {
+    id: 'm11',
+    titel: 'Beschaffung und Lager',
+    kurz: 'Lieferanten finden, Angebote vergleichen, den richtigen Bestellzeitpunkt wählen und Ware richtig annehmen.',
+    minuten: 10,
+    bloecke: [
+      { h: 'Ohne Ware kein Verkauf' },
+      { p: 'Bevor ein Produkt im Shop stehen kann, muss es eingekauft werden. Diese Aufgabe heißt **Beschaffung**. In der Umschulung lernst du, die Beschaffung zu unterstützen: Bedarf erkennen, Lieferanten finden, Angebote vergleichen und bestellen.' },
+
+      { h: 'Lieferanten finden' },
+      { p: 'Mögliche **Bezugsquellen** sind Hersteller, Großhändler, Fachmessen, Branchenverzeichnisse und B2B-Plattformen im Internet. Viele Händler pflegen eine eigene **Lieferantendatei** mit Ansprechpartnern, Preisen, Lieferzeiten und Erfahrungen aus früheren Bestellungen.' },
+
+      { h: 'Angebote vergleichen' },
+      { p: 'Das günstigste Angebot ist nicht immer das beste. Man vergleicht deshalb auf zwei Arten:' },
+      { liste: [
+        '**In Zahlen:** Was kostet die Ware am Ende wirklich? Vom Listenpreis werden Rabatt und Skonto abgezogen, dazu kommen Bezugskosten wie Fracht. Das Ergebnis ist der **Bezugspreis**. Nur Bezugspreise sind vergleichbar.',
+        '**Ohne Zahlen:** Wie gut ist die Qualität? Wie schnell und zuverlässig liefert der Lieferant? Gibt es Mindestmengen? Wie ist der Service? Achtet er auf Umwelt und faire Arbeitsbedingungen?'
+      ] },
+      { p: 'Viele Betriebe nutzen dafür eine **Entscheidungsbewertungstabelle**: Jedes Kriterium bekommt eine Gewichtung und jeder Lieferant Punkte. Wer am Ende die meisten gewichteten Punkte hat, gewinnt.' },
+
+      { h: 'Wann bestellen?' },
+      { p: 'Bestellt man zu spät, ist der Artikel ausverkauft und Kunden gehen zur Konkurrenz. Bestellt man zu früh oder zu viel, liegt Geld im Lager fest. Hilfreich ist der **Meldebestand**. Erreicht der Lagerbestand diese Menge, wird nachbestellt.' },
+      { p: 'Die Formel lautet: **Meldebestand = Tagesverbrauch mal Lieferzeit in Tagen plus Mindestbestand.** Der **Mindestbestand**, auch eiserner Bestand genannt, ist eine Reserve für Überraschungen wie eine verspätete Lieferung.' },
+      { p: 'Beispiel: Täglich werden 20 Kaffeebecher verkauft, die Lieferzeit beträgt 5 Tage und der Mindestbestand 50 Stück. 20 mal 5 ergibt 100, plus 50 ergibt einen Meldebestand von 150 Stück.' },
+
+      { h: 'Ware annehmen' },
+      { p: 'Kommt die Lieferung an, wird sie sofort kontrolliert: Stimmt die Anzahl der Pakete mit dem **Lieferschein** überein? Ist die Verpackung beschädigt? Sichtbare Schäden lässt man sich vom Fahrer bestätigen. Danach wird der Inhalt geprüft und die Ware im Warenwirtschaftssystem eingebucht. Zwischen Firmen gilt: Mängel müssen **unverzüglich** gemeldet werden, sonst können Rechte verloren gehen.' },
+
+      { h: 'Dropshipping und Lagerkennzahlen' },
+      { p: 'Beim **Dropshipping** hat der Händler gar kein eigenes Lager. Der Lieferant schickt die Ware direkt an den Kunden. Das spart Lagerkosten, aber man hat weniger Kontrolle über Lieferzeit und Verpackung.' },
+      { p: 'Für das eigene Lager wichtig ist die **Lagerumschlagshäufigkeit**. Sie zeigt, wie oft der durchschnittliche Lagerbestand in einem Jahr verkauft und ersetzt wird. Je höher, desto kürzer liegt die Ware herum und desto weniger Geld ist gebunden.' }
+    ],
+    quiz: [
+      { frage: 'Ein Artikel wird täglich 10-mal verkauft, die Lieferzeit beträgt 4 Tage, der Mindestbestand 30 Stück. Wie hoch ist der Meldebestand?', antworten: ['44 Stück', '70 Stück', '120 Stück', '40 Stück'], richtig: 1, erklaerung: '10 mal 4 ergibt 40. Dazu kommt der Mindestbestand von 30. Der Meldebestand beträgt 70 Stück.' },
+      { frage: 'Warum vergleicht man Lieferanten anhand des Bezugspreises und nicht des Listenpreises?', antworten: ['Weil der Bezugspreis immer niedriger ist', 'Weil erst im Bezugspreis Rabatt, Skonto und Fracht berücksichtigt sind', 'Weil der Listenpreis geheim ist', 'Das macht keinen Unterschied'], richtig: 1, erklaerung: 'Ein hoher Rabatt oder teure Fracht können die Reihenfolge der Angebote komplett verändern. Vergleichbar ist nur, was die Ware am Ende wirklich kostet.' },
+      { frage: 'Was ist Dropshipping?', antworten: ['Ware wird per Drohne geliefert', 'Der Lieferant schickt die Ware direkt an den Kunden, der Händler hat kein eigenes Lager', 'Ein besonders schneller Versand', 'Der Verkauf von Restposten'], richtig: 1, erklaerung: 'Beim Dropshipping verkauft der Händler, aber lagert und versendet nicht selbst. Das spart Kosten, kostet aber Kontrolle.' }
+    ]
+  },
+  {
+    id: 'm12',
+    titel: 'Verträge und Leistungsstörungen',
+    kurz: 'Vom Angebot bis zur Auftragsbestätigung, und was passiert, wenn etwas schiefgeht: Lieferverzug, Mängel, Zahlungsverzug und Mahnwesen.',
+    minuten: 12,
+    bloecke: [
+      { h: 'Verträge im Onlinevertrieb' },
+      { p: 'Im Modul zu Bestellungen hast du gelernt, wie ein Kaufvertrag im Shop entsteht. Im Geschäft mit anderen Firmen, also im **B2B-Bereich**, läuft es oft ausführlicher ab:' },
+      { liste: [
+        '**Anfrage:** Der Kunde möchte wissen, zu welchen Bedingungen er etwas bekommt. Eine Anfrage ist immer unverbindlich.',
+        '**Angebot:** Der Verkäufer nennt Preis, Menge, Lieferzeit und Zahlungsbedingungen. Ein Angebot ist verbindlich, es sei denn, es enthält eine Klausel wie „freibleibend“ oder „solange der Vorrat reicht“.',
+        '**Bestellung:** Bestellt der Kunde genau zu den Bedingungen des Angebots, ist der Vertrag geschlossen.',
+        '**Auftragsbestätigung:** Weicht die Bestellung vom Angebot ab oder gab es vorher kein Angebot, kommt der Vertrag erst mit der Auftragsbestätigung zustande.'
+      ] },
+      { p: 'Aus dem Kaufvertrag entstehen Pflichten auf beiden Seiten. Der Verkäufer muss die Ware **rechtzeitig und ohne Mängel** liefern. Der Käufer muss die Ware **annehmen und pünktlich bezahlen**. Wird eine dieser Pflichten verletzt, spricht man von einer **Leistungsstörung**.' },
+
+      { h: 'Lieferverzug' },
+      { p: 'Der Verkäufer liefert nicht rechtzeitig. Ist ein fester Liefertermin vereinbart, gerät er mit Ablauf dieses Tages in Verzug. Sonst muss der Käufer ihn zuerst **mahnen**. Der Käufer kann weiter auf der Lieferung bestehen und den Schaden durch die Verspätung ersetzt verlangen. Nach einer angemessenen **Nachfrist** darf er vom Vertrag zurücktreten und unter Umständen Schadensersatz verlangen.' },
+
+      { h: 'Mangelhafte Lieferung' },
+      { p: 'Die Ware ist kaputt, falsch oder es fehlt etwas. Dann hat der Käufer zuerst ein Recht auf **Nacherfüllung**: Reparatur oder neue Ware. Klappt das nicht, kann er den Preis **mindern**, vom Vertrag **zurücktreten** oder **Schadensersatz** verlangen. Zwischen zwei Firmen gilt zusätzlich: Die Ware muss sofort geprüft und Mängel müssen unverzüglich gemeldet werden.' },
+
+      { h: 'Annahmeverzug' },
+      { p: 'Der Käufer nimmt die richtig gelieferte Ware nicht an. Der Verkäufer muss die Ware dann nur noch sorgfältig aufbewahren und darf die Kosten dafür verlangen. Im Onlinehandel passiert das zum Beispiel, wenn ein Paket nicht abgeholt wird und zurückkommt.' },
+
+      { h: 'Zahlungsverzug und Mahnwesen' },
+      { p: 'Der Kunde zahlt nicht. Spätestens **30 Tage** nach Fälligkeit und Erhalt der Rechnung ist er in Verzug. Bei Privatkunden gilt das nur, wenn auf der Rechnung ausdrücklich darauf hingewiesen wurde. Ab dann darf der Händler **Verzugszinsen** verlangen.' },
+      { p: 'Im Alltag läuft das **Mahnwesen** meist in Stufen ab:' },
+      { liste: [
+        '**Zahlungserinnerung:** freundlich, vielleicht hat der Kunde die Rechnung nur übersehen.',
+        '**Erste Mahnung:** deutlicher, mit neuer Zahlungsfrist.',
+        '**Letzte Mahnung:** mit Hinweis auf die nächsten Schritte.',
+        '**Gerichtliches Mahnverfahren:** Beim Amtsgericht wird ein **Mahnbescheid** beantragt. Widerspricht der Kunde nicht, folgt der Vollstreckungsbescheid.'
+      ] },
+      { p: 'Offene Forderungen **verjähren** in der Regel nach drei Jahren, gerechnet ab dem Ende des Jahres, in dem sie entstanden sind. Wer zu lange wartet, bekommt sein Geld unter Umständen nie.' },
+      { p: 'Rechtliche Einzelheiten wie Fristen und Zinssätze lernst du ausführlich in der Umschulung. Im Zweifel fragt man im Betrieb oder bei einer Rechtsberatung nach.' }
+    ],
+    quiz: [
+      { frage: 'Ein Lieferant schreibt in sein Angebot „freibleibend“. Was bedeutet das?', antworten: ['Die Lieferung ist kostenlos', 'Das Angebot ist für ihn nicht verbindlich', 'Der Kunde muss nicht bezahlen', 'Die Ware hat keine Gewährleistung'], richtig: 1, erklaerung: 'Mit „freibleibend“ schließt der Verkäufer die Bindung an sein Angebot aus. Er muss nicht zu diesen Bedingungen liefern.' },
+      { frage: 'Ein Kunde erhält kaputte Ware. Was kann er zuerst verlangen?', antworten: ['Sofort das Geld zurück', 'Nacherfüllung, also Reparatur oder neue Ware', 'Einen Gutschein', 'Gar nichts'], richtig: 1, erklaerung: 'Bei einem Mangel steht zuerst die Nacherfüllung. Erst wenn sie scheitert, kommen Minderung, Rücktritt oder Schadensersatz in Frage.' },
+      { frage: 'Welche Reihenfolge ist im Mahnwesen üblich?', antworten: ['Mahnbescheid, Erinnerung, Mahnung', 'Zahlungserinnerung, Mahnung, letzte Mahnung, gerichtliches Mahnverfahren', 'Sofort Inkasso', 'Letzte Mahnung, dann Zahlungserinnerung'], richtig: 1, erklaerung: 'Man beginnt freundlich und wird dann Schritt für Schritt deutlicher. Das gerichtliche Mahnverfahren steht am Ende.' }
+    ]
+  },
+  {
+    id: 'm13',
+    titel: 'Wertströme und Rechnungswesen',
+    kurz: 'Geld- und Warenströme erfassen: Belege, Inventur, Bilanz, Gewinn und Verlust, Kosten und Deckungsbeitrag.',
+    minuten: 12,
+    bloecke: [
+      { h: 'Wo Werte fließen' },
+      { p: 'In jedem Unternehmen fließen ständig **Werte**: Ware kommt ins Lager, Geld geht an den Lieferanten, Kunden bezahlen, Miete und Löhne werden überwiesen. Diese Wertströme zu erfassen und auszuwerten ist die Aufgabe des **Rechnungswesens**. Es zeigt, ob das Geschäft sich lohnt und ob immer genug Geld da ist.' },
+
+      { h: 'Keine Buchung ohne Beleg' },
+      { p: 'Jeder Geschäftsvorfall wird in der **Buchführung** festgehalten. Grundlage ist immer ein **Beleg**: eine Eingangsrechnung, eine Ausgangsrechnung, ein Kontoauszug oder eine Quittung. Belege müssen geordnet und mehrere Jahre lang aufbewahrt werden, damit das Finanzamt sie prüfen kann.' },
+      { p: 'In der doppelten Buchführung wird jeder Vorgang auf zwei Konten gebucht, einmal im **Soll** und einmal im **Haben**. Kauft der Shop zum Beispiel Ware gegen Banküberweisung, nimmt der Warenbestand zu und das Bankguthaben ab.' },
+
+      { h: 'Inventur, Inventar und Bilanz' },
+      { p: 'Mindestens einmal im Jahr wird alles gezählt, gemessen und gewogen. Das ist die **Inventur**. Das Ergebnis, ein genaues Verzeichnis aller Vermögensteile und Schulden, heißt **Inventar**.' },
+      { p: 'Daraus entsteht die **Bilanz**. Sie ist wie eine Waage mit zwei Seiten:' },
+      { liste: [
+        '**Aktiva**, also das Vermögen: zum Beispiel Lagerregale und Computer als Anlagevermögen sowie Ware, Forderungen und Bankguthaben als Umlaufvermögen.',
+        '**Passiva**, also das Kapital: Wo kommt das Geld her? Aus dem **Eigenkapital** der Inhaber oder aus **Fremdkapital** wie Krediten und offenen Lieferantenrechnungen.',
+        'Beide Seiten sind immer gleich groß.'
+      ] },
+
+      { h: 'Gewinn oder Verlust?' },
+      { p: 'Die **Gewinn- und Verlustrechnung** stellt alle **Aufwendungen** eines Jahres, zum Beispiel Wareneinsatz, Löhne, Miete und Werbung, allen **Erträgen** gegenüber, vor allem den Umsatzerlösen. Sind die Erträge höher, bleibt ein Gewinn. Sonst entsteht ein Verlust.' },
+
+      { h: 'Kosten und Deckungsbeitrag' },
+      { p: 'Kosten lassen sich in zwei Gruppen teilen. **Fixe Kosten** fallen immer an, egal wie viel verkauft wird, zum Beispiel Miete, Gehälter und die Gebühr für das Shopsystem. **Variable Kosten** steigen mit jedem verkauften Stück, zum Beispiel Wareneinsatz, Verpackung und Versand.' },
+      { p: 'Der **Deckungsbeitrag** ist der Nettoverkaufspreis minus die variablen Kosten pro Stück. Er zeigt, wie viel jedes verkaufte Stück zur Deckung der fixen Kosten beiträgt. Sind alle fixen Kosten gedeckt, beginnt der Gewinn. Diesen Punkt nennt man **Gewinnschwelle** oder Break-even.' },
+      { p: 'Beispiel: Ein Rucksack wird für 40 Euro netto verkauft. Einkauf, Verpackung und Versand kosten zusammen 25 Euro. Der Deckungsbeitrag beträgt 15 Euro. Bei 3.000 Euro fixen Kosten im Monat müssen 200 Rucksäcke verkauft werden, um die Gewinnschwelle zu erreichen.' },
+
+      { h: 'Liquidität' },
+      { p: 'Ein Shop kann Gewinn machen und trotzdem in Not geraten, wenn das Geld zum falschen Zeitpunkt fehlt. **Liquidität** heißt, jederzeit seine Rechnungen bezahlen zu können. Viel Ware im Lager, lange Zahlungsziele für Kunden und kurze für Lieferanten machen es eng. Deshalb planen Händler ihre Zahlungen voraus.' }
+    ],
+    quiz: [
+      { frage: 'Was steht auf der Aktivseite der Bilanz?', antworten: ['Das Eigenkapital', 'Das Vermögen, zum Beispiel Ware, Computer und Bankguthaben', 'Die Kredite', 'Die Umsätze des Jahres'], richtig: 1, erklaerung: 'Die Aktiva zeigen, was im Unternehmen steckt. Die Passiva zeigen, woher das Geld dafür kommt.' },
+      { frage: 'Ein Artikel kostet netto 30 Euro, die variablen Kosten betragen 18 Euro. Wie hoch ist der Deckungsbeitrag pro Stück?', antworten: ['48 Euro', '12 Euro', '18 Euro', '30 Euro'], richtig: 1, erklaerung: '30 Euro minus 18 Euro ergibt einen Deckungsbeitrag von 12 Euro pro verkauftem Stück.' },
+      { frage: 'Welche Kosten sind fix?', antworten: ['Versandkosten pro Paket', 'Die monatliche Miete für das Lager', 'Der Einkaufspreis jedes Artikels', 'Die Verpackung jeder Bestellung'], richtig: 1, erklaerung: 'Die Miete fällt jeden Monat gleich an, egal wie viel verkauft wird. Versand, Einkauf und Verpackung steigen mit jedem Stück.' }
+    ]
+  },
+  {
+    id: 'm14',
+    titel: 'Vertriebskanäle und Angebotsregeln',
+    kurz: 'Eigener Shop, Marktplatz oder Social Commerce? Und wie man Preise, Versandkosten, Gutscheine und Zahlarten festlegt.',
+    minuten: 11,
+    bloecke: [
+      { h: 'Wo wird verkauft?' },
+      { p: 'Ein Händler muss entscheiden, über welche **Vertriebskanäle** er verkauft. Jeder Kanal hat Vor- und Nachteile:' },
+      { liste: [
+        '**Eigener Onlineshop:** volle Kontrolle über Gestaltung, Preise und Kundendaten. Aber die Besucher muss man selbst gewinnen, zum Beispiel durch Werbung.',
+        '**Marktplatz** wie Amazon, eBay, Kaufland oder Otto: riesige Reichweite und Vertrauen der Kunden. Dafür fallen **Verkaufsprovisionen** und Gebühren an, die Konkurrenz ist direkt daneben und man ist von den Regeln der Plattform abhängig.',
+        '**Social Commerce:** Verkauf direkt in sozialen Netzwerken wie Instagram oder TikTok. Gut für junge Zielgruppen und spontane Käufe, aber stark abhängig von den Plattformen.',
+        '**Preisvergleichsportale:** bringen Besucher, die gezielt nach dem günstigsten Angebot suchen.'
+      ] },
+      { p: 'Wer mehrere Kanäle nebeneinander nutzt, betreibt **Multichannel**. Sind die Kanäle eng verbunden, zum Beispiel online bestellen und im Laden abholen, spricht man von **Omnichannel**.' },
+
+      { h: 'Den richtigen Kanal auswählen' },
+      { p: 'Bei der Auswahl helfen Fragen wie: Wo ist meine Zielgruppe unterwegs? Wie hoch sind die Gebühren im Verhältnis zu meiner Marge? Passt der Kanal zu meinem Sortiment? Wie viel Arbeit macht die Pflege der Produktdaten? Oft rechnet man den **Deckungsbeitrag pro Kanal** aus, denn eine Marktplatzprovision von 15 Prozent kann einen kleinen Gewinn schnell auffressen.' },
+
+      { h: 'Angebotsregeln festlegen' },
+      { p: 'Neben dem Kanal legt der Händler fest, zu welchen Bedingungen er verkauft. Diese **Angebotsregeln** sind ein wichtiger Teil des Berufs:' },
+      { liste: [
+        '**Preisstrategie:** Hochpreis für Qualität und Marke, Niedrigpreis für Masse, Schwellenpreise wie 19,99 Euro oder **dynamische Preise**, die sich nach Nachfrage und Konkurrenz ändern.',
+        '**Versandkostenregeln:** zum Beispiel kostenloser Versand ab 50 Euro. Das erhöht oft den durchschnittlichen Warenkorbwert.',
+        '**Mindestbestellwert:** lohnt sich bei günstigen Artikeln, damit sich Verpackung und Versand rechnen.',
+        '**Gutscheine und Aktionen:** Neukundenrabatt, Gutscheincodes oder Bundles, also Pakete aus mehreren Produkten zum Sonderpreis.',
+        '**Zahlarten:** Welche Bezahlsysteme werden angeboten? Jede Zahlart hat eigene Gebühren und ein eigenes Ausfallrisiko. Zu wenige Zahlarten führen aber zu Kaufabbrüchen.'
+      ] },
+
+      { h: 'Vorsicht bei Rabatten' },
+      { p: 'Wer mit einem reduzierten Preis wirbt, muss in Deutschland als Vergleich den **niedrigsten Preis der letzten 30 Tage** angeben. So soll verhindert werden, dass Preise kurz vorher künstlich erhöht werden. Außerdem gilt: Rabatte kosten Marge. Vor jeder Aktion rechnet man deshalb aus, wie viel mehr verkauft werden muss, damit es sich lohnt.' }
+    ],
+    quiz: [
+      { frage: 'Was ist ein typischer Nachteil eines Marktplatzes wie Amazon?', antworten: ['Er hat zu wenige Besucher', 'Verkaufsprovisionen und Abhängigkeit von den Regeln der Plattform', 'Man darf dort keine Bilder zeigen', 'Kunden vertrauen Marktplätzen nicht'], richtig: 1, erklaerung: 'Marktplätze bringen viel Reichweite, aber sie kosten Provision und der Händler muss sich an ihre Regeln halten.' },
+      { frage: 'Warum bieten viele Shops „kostenloser Versand ab 50 Euro“ an?', antworten: ['Weil es gesetzlich vorgeschrieben ist', 'Damit Kunden mehr in den Warenkorb legen und der Warenkorbwert steigt', 'Weil Versand nichts kostet', 'Damit weniger Kunden bestellen'], richtig: 1, erklaerung: 'Viele Kunden legen noch etwas dazu, um die Grenze zu erreichen. Der durchschnittliche Warenkorbwert steigt.' },
+      { frage: 'Was muss ein Shop angeben, wenn er mit einer Preisermäßigung wirbt?', antworten: ['Den Einkaufspreis', 'Den niedrigsten Preis der letzten 30 Tage', 'Den Preis der Konkurrenz', 'Nichts'], richtig: 1, erklaerung: 'Bei Preisermäßigungen muss der niedrigste Preis der letzten 30 Tage als Vergleich genannt werden.' }
+    ]
+  },
+  {
+    id: 'm15',
+    titel: 'Projektarbeit im E-Commerce',
+    kurz: 'Projekte planen, steuern und abschließen: Ziele, Phasen, Meilensteine, Kanban und der Projektbericht.',
+    minuten: 10,
+    bloecke: [
+      { h: 'Was ist ein Projekt?' },
+      { p: 'Ein neuer Shop, eine Weihnachtskampagne, der Start auf einem Marktplatz: Vieles im E-Commerce läuft als **Projekt**. Ein Projekt ist **einmalig**, hat ein klares **Ziel**, einen festen **Anfang und ein Ende** und begrenzte Mittel wie Geld, Zeit und Personal. Die tägliche Bearbeitung von Bestellungen ist dagegen kein Projekt, sondern Routine.' },
+      { p: 'In der Umschulung gehört die **berufsbezogene Projektarbeit** fest dazu. Auch in der Abschlussprüfung stellst du ein Projekt aus deinem Praktikumsbetrieb vor. Die genauen Regeln dafür erklärt dir dein Bildungsträger.' },
+
+      { h: 'Gute Ziele formulieren' },
+      { p: 'Ein Ziel wie „mehr verkaufen“ ist zu ungenau. Besser sind **SMARTe Ziele**:' },
+      { liste: [
+        '**Spezifisch:** Was genau soll erreicht werden?',
+        '**Messbar:** Woran erkennt man, dass es geschafft ist?',
+        '**Attraktiv:** Lohnt sich der Aufwand für alle Beteiligten?',
+        '**Realistisch:** Ist das mit den vorhandenen Mitteln machbar?',
+        '**Terminiert:** Bis wann?'
+      ] },
+      { p: 'Beispiel: „Bis zum 31. März steigt die Conversion Rate in der Kategorie Kaffee von 1,5 auf 2 Prozent.“' },
+
+      { h: 'Die Phasen eines Projekts' },
+      { liste: [
+        '**Start:** Auftrag klären, Ziel festlegen, Beteiligte benennen.',
+        '**Planung:** Aufgaben sammeln und in einem **Projektstrukturplan** ordnen, Zeiten und Kosten schätzen, Verantwortliche festlegen. Wichtige Zwischenziele heißen **Meilensteine**. Ein **Gantt-Diagramm** zeigt als Balken, welche Aufgabe wann läuft.',
+        '**Durchführung:** Arbeiten erledigen und regelmäßig prüfen, ob Zeitplan und Budget eingehalten werden.',
+        '**Abschluss:** Ergebnis übergeben, Ziel überprüfen, Erfahrungen festhalten. Diese **Lessons Learned** helfen beim nächsten Projekt.'
+      ] },
+
+      { h: 'Den Überblick behalten' },
+      { p: 'Viele Teams arbeiten mit einem **Kanban-Board**. Das ist eine Tafel mit drei Spalten: „Zu erledigen“, „In Arbeit“ und „Erledigt“. Jede Aufgabe ist eine Karte, die von links nach rechts wandert. So sieht jeder sofort, wo das Projekt steht. In der Softwareentwicklung arbeiten Teams oft **agil**, also in kurzen Abschnitten mit regelmäßiger Abstimmung.' },
+
+      { h: 'Der Projektbericht' },
+      { p: 'Am Ende wird das Projekt dokumentiert. Ein guter **Projektbericht** beschreibt die Ausgangslage, das Ziel, die geplanten und tatsächlich durchgeführten Schritte, das Ergebnis mit Zahlen und eine ehrliche Bewertung: Was lief gut, was würde ich nächstes Mal anders machen? Genau diese Fragen übst du auch im Tagebuch von Add to Brain.' }
+    ],
+    quiz: [
+      { frage: 'Welche Aufgabe ist ein Projekt?', antworten: ['Täglich Bestellungen verpacken', 'Den Shop bis zum Herbst auf ein neues Shopsystem umziehen', 'Jeden Morgen E-Mails beantworten', 'Retouren einbuchen'], richtig: 1, erklaerung: 'Der Umzug auf ein neues Shopsystem ist einmalig, hat ein Ziel und ein Ende. Die anderen Aufgaben sind Routine.' },
+      { frage: 'Wofür steht das M in SMART?', antworten: ['Modern', 'Messbar', 'Mutig', 'Monatlich'], richtig: 1, erklaerung: 'Ein Ziel muss messbar sein, damit man am Ende prüfen kann, ob es erreicht wurde.' },
+      { frage: 'Was zeigt ein Kanban-Board?', antworten: ['Die Umsätze des Monats', 'Welche Aufgaben zu erledigen, in Arbeit und erledigt sind', 'Die Lieferantenpreise', 'Den Lagerbestand'], richtig: 1, erklaerung: 'Auf einem Kanban-Board wandern Aufgaben als Karten von „Zu erledigen“ über „In Arbeit“ nach „Erledigt“.' }
+    ]
   }
 ];
