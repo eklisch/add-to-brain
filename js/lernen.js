@@ -247,7 +247,9 @@
           if (!ok) antworten.querySelector('[data-richtig]').classList.add('btn-success');
           rueck.textContent = (ok ? 'Richtig! ' : 'Leider falsch. ') + q.erklaerung;
           beantwortet++; if (ok) richtige++;
+          fs.dataset.fertig = '1';
           if (beantwortet === m.quiz.length) quizFertig(m, richtige);
+          weiterNach(fs, ok, rueck.textContent);
         });
         antworten.appendChild(b);
       });
@@ -261,6 +263,28 @@
     $('ln-quiz').hidden = false;
     $('ln-quiz').scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   });
+
+  // Nach der Antwort (und der Reaktion der Katze) automatisch zur nächsten offenen Frage blättern.
+  // Die Wartezeit richtet sich nach der Länge der Erklärung, damit man sie in Ruhe lesen kann.
+  // Blättert oder tippt man selbst, wird nicht automatisch weitergeblättert.
+  let weiterTimer = null;
+  const spurEl = document.getElementById('spur');
+  const selbst = () => { clearTimeout(weiterTimer); weiterTimer = null; };
+  ['wheel', 'touchstart'].forEach((e) => spurEl && spurEl.addEventListener(e, () => { if (weiterTimer) selbst(); }, { passive: true }));
+  function weiterNach(fs, ok, text) {
+    selbst();
+    const naechste = [...fs.parentElement.querySelectorAll('.ln-frage')].find((f) => !f.dataset.fertig && f.compareDocumentPosition(fs) & Node.DOCUMENT_POSITION_PRECEDING)
+      || fs.parentElement.querySelector('.ln-frage:not([data-fertig])');
+    const ziel = naechste || $('ln-ergebnis');
+    const woerter = text.split(/\s+/).length;
+    const warten = Math.min(7000, Math.max(ok ? 2800 : 3600, woerter * 230));
+    weiterTimer = setTimeout(() => {
+      weiterTimer = null;
+      if ($('ln-quiz').hidden) return;
+      if (window.SPUR) window.SPUR.zeige(ziel);
+      if (window.KATZE && window.KATZE.zurAufgabe) setTimeout(() => window.KATZE.zurAufgabe(ziel), 750);
+    }, warten);
+  }
 
   function quizFertig(m, richtige) {
     const bestanden = richtige >= 2;

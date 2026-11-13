@@ -708,14 +708,49 @@
     };
     wecken();
   }
+  // Reaktion auf eine Antwort – auch wenn sie gerade schläft oder unterwegs ist: dann kurz warten bzw. sofort aufwachen
+  let reaktionsTimer = null;
+  function reagiere(richtig, versuche) {
+    clearTimeout(reaktionsTimer);
+    if (wahl === 'aus' || ruhig.matches) return;
+    if (schlaeft) { schlaeft = false; clearTimeout(nickerchenTimer); }
+    if (trotzig) { trotzig = false; clearTimeout(trotzTimer); }
+    if (anker.art === 'weg') { clearTimeout(rueckkehr); hereinlaufen(Math.random() < 0.5 ? 'links' : 'rechts'); }
+    if (aktion && aktion.istFolge) folgenEnde();
+    if (aktion) {                                   // noch mitten in einem Sprung: gleich danach reagieren
+      if ((versuche || 0) < 40) reaktionsTimer = setTimeout(() => reagiere(richtig, (versuche || 0) + 1), 150);
+      return;
+    }
+    folge = null; lauert = false; streichelt = false;
+    jagdPause = Date.now() + 6000;                  // nach der Antwort nicht gleich die Maus jagen
+    if (richtig) jubeln(); else empoeren();
+  }
   document.addEventListener('click', (ev) => {
-    const b = ev.target.closest && ev.target.closest('#qz-antworten button, #rs-antworten button');
-    if (!b || wahl === 'aus' || ruhig.matches || schlaeft) return;
-    if (aktion && !aktion.istFolge) return;
-    folge = null;
-    if (b.classList.contains('btn-danger')) empoeren();
-    else if (b.classList.contains('btn-success')) jubeln();
+    const b = ev.target.closest && ev.target.closest('#qz-antworten button, #rs-antworten button, #ln-fragen button');
+    if (!b) return;
+    if (b.classList.contains('btn-danger')) reagiere(false);
+    else if (b.classList.contains('btn-success')) reagiere(true);
   });
+
+  // Zur nächsten Aufgabe hüpfen: unter den Anfang der Aufgabe, am Boden
+  function zurAufgabe(ziel, versuche) {
+    if (wahl === 'aus' || ruhig.matches || !ziel) return;
+    if (aktion || anker.art === 'weg') {             // erst die Reaktion bzw. das Hereinlaufen beenden
+      if ((versuche || 0) < 20) setTimeout(() => zurAufgabe(ziel, (versuche || 0) + 1), 200);
+      return;
+    }
+    if (schlaeft) { schlaeft = false; clearTimeout(nickerchenTimer); }
+    clearTimeout(besonders);
+    const r = ziel.getBoundingClientRect();
+    if (!r.width || r.right < 0 || r.left > window.innerWidth) return;
+    const x = freierBoden(Math.max(16, r.left + 20));
+    const hin = () => {
+      blick(x > pos.x);
+      if (Math.abs(x - pos.x) < 280) springeZu({ art: 'boden', x }, () => eineWeile('sitzen', ['schaut'], 2000));
+      else laufeZu(x - (x > pos.x ? 90 : -90), () => springeZu({ art: 'boden', x }, () => eineWeile('sitzen', ['schaut'], 2000)));
+    };
+    if (anker.art === 'ziel') runterklettern(hin); else hin();
+  }
 
   // Anklicken mag sie nicht: beleidigt wegspringen
   el.addEventListener('click', (ev) => {
@@ -963,5 +998,5 @@
   setzePose('sitzen');
   zeichne();
   if (!ruhig.matches) plane();
-  window.KATZE = { nickerchen, verschwinden, trotzen, zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
+  window.KATZE = { zurAufgabe, reagiere, nickerchen, verschwinden, trotzen, zustand: () => ({ lauert, folge: !!folge, pause: jagdPause - Date.now(), aktion: !!aktion, jagdStart, streichelt }), empoeren, jubeln, putzen, frech, einschlafen, aufwachen, erschrecken, zuSitzplatz, sitzplaetze, runterklettern };
 })();
